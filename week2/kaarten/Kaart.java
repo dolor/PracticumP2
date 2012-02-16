@@ -10,37 +10,47 @@ import java.util.Scanner;
  * @author  Arend Rensink, Rieks op den Akker en Theo Ruys
  * @version 2006.02.05
  */
-public class Kaart { 
+public class Kaart implements Serializable{ 
 	
 	public static void main(String[] args) {
 		//TODO een aantal kaarten laten maken
-		Kaart k1 = new Kaart(HARTEN, BOER);
+		Kaart k1 = new Kaart(RUITEN, BOER);
 		Kaart k2 = new Kaart(KLAVEREN, VROUW);
 		
-		PrintWriter print;
-		BufferedReader reader;
+		ObjectOutput print;
+		ObjectInput reader;
 		if (args.length > 0) {
 			String file = args[0];
 			try {
-				print = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-				reader = new BufferedReader(new FileReader(file));
+				print = new ObjectOutputStream(new FileOutputStream(file));
+				reader = new ObjectInputStream(new FileInputStream(file));
 			} catch (IOException e) {
 				System.out.println("IO error: " + e.getMessage());
 				return;
 			}
 		} else {
-			print = new PrintWriter(System.out);
-			reader = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				print = new ObjectOutputStream(System.out);
+				reader = new ObjectInputStream(System.in);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
 		}
 		
-		k1.schrijf(print);
-		k2.schrijf(print);
+		try {
+			k1.schrijf(print);
+			k2.schrijf(print);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 		
 		boolean cont = true;
 		while (cont) {
 			try {
 				System.out.println("Read: " + lees(reader));
 			} catch (EOFException e) {
+				System.out.println("End of file!");
 				cont = false;
 			} catch (Exception e) {
 				System.out.println("Unexpected error thrown: " + e.getMessage());
@@ -189,17 +199,49 @@ public class Kaart {
     }
 
     /**
-     * 
+     * Reads 2 chars from a data file and returns a new Kaart if valid. If either one of the chars is invalid, returns null.
      * @param DataInput input
      * @return
      * @throws EOFException
      */
     public static Kaart lees(DataInput in) throws EOFException {
-        return null; // NOG TOE TE VOEGEN: BODY + JAVADOC !
+    	Kaart kaart = null;
+    	
+    	try {
+        	char k = in.readChar();
+        	if (!geldigeKleur(k))
+        		return null;
+        	char r = in.readChar();
+        	if (!geldigeRang(r))
+        		return null;
+        	kaart = new Kaart(k, r);
+    	} catch (EOFException e) {
+   			throw new EOFException("End of file!");
+    	} catch (IOException e) {
+    		System.out.println("Error processing file");
+    	}
+    		
+        return kaart; 
     }
 
+    /**
+     * Takes an ObjectInput and returns 1 Kaart. Throws EOFException when at the end of the file.
+     * @param ObjectInput
+     * @return Kaart
+     * @throws EOFException
+     */
     public static Kaart lees(ObjectInput ois) throws EOFException {
-        return null; // NOG TOE TE VOEGEN: BODY + JAVADOC !
+    	Kaart kaart = null;
+    	try {
+			kaart = (Kaart) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			if (e.getClass() == EOFException.class)
+				throw new EOFException("End of file");
+			e.printStackTrace();
+		}
+        return kaart;
     }
 
     /**
@@ -218,7 +260,7 @@ public class Kaart {
    			if (line == null)
    				throw new EOFException("End of file reached");
    			
-   			scan = new Scanner(line).useDelimiter(" ");
+   			scan = new Scanner(line);
     		if (!scan.hasNext())
     			return null;
     		char kleur = kleurString2Char(scan.next());
@@ -357,12 +399,22 @@ public class Kaart {
         return rangOpvolgend(this.getRang(), kaart.getRang());
     }
 
+    /**
+     * Takes a dataOutput and writes this Kaart to the output.
+     * @param DataOutput output
+     * @throws IOException
+     */
     public void schrijf(DataOutput out) throws IOException {
-        // NOG TOE TE VOEGEN: BODY + JAVADOC !
+        out.writeChars("" + this.kleur + this.rang);
     }
 
+    /**
+     * Takes an ObjectOutput and writes this Kaart to that output.
+     * @param ObjectOutput output
+     * @throws IOException
+     */
     public void schrijf(ObjectOutput oos) throws IOException {
-        // NOG TOE TE VOEGEN: BODY + JAVADOC !
+        oos.writeObject(this);
     }
     
     /**

@@ -99,12 +99,16 @@ public class KaartLezer {
         boolean doorgaan = true;
         while (doorgaan)
             try {
+            	System.out.println("Reading");
                 Kaart k = lees();
                 if (k == null)
                     System.err.println("Fout in invoer");
-                else 
+                else {
                     schrijf(k);
+                    System.out.println(k.toString() + " gelezen");
+                }
             } catch (EOFException exc) {
+            	System.out.println("At the end of file");
                 doorgaan = false;
             } catch (IOException exc) {
                 System.err.println(exc.getMessage());
