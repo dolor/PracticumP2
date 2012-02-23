@@ -2,42 +2,39 @@ package week3.stem;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
 
-public class StemFrame extends Frame implements ItemListener, WindowListener, ActionListener{
+public class StemFrame extends Frame implements ItemListener, WindowListener, ActionListener, Observer{
 
 	java.awt.Label tekstLabel;
 	Button keuzeButton;
-	Choice keuze1;
+	Choice partijKeuzeLijst;
+	Uitslag uitslag;
 
-	public static void main(String args[]) {
-		new StemFrame();
-	}
-
-	public StemFrame() {
+	public StemFrame(Uitslag uitslag) {
 		super("Stem");
+		this.uitslag = uitslag;
+		uitslag.addObserver(this);
 		init();
 	}
 
 	private void init() {
 		this.setBounds(20, 20, 250, 200);
-		setLayout(new FlowLayout()); // verander naar FlowLayout
-		// default is BorderLayout
+		setLayout(new FlowLayout());
 		Panel tekstPanel = new Panel();
-		//tekstPanel.setBounds(0, 0, 250, 40);
 		tekstLabel = new Label();
 		tekstLabel.setText("Kies een partij");
 		tekstLabel.setSize(200, 15);
-		//tekstPanel.add(tekstLabel);
 		this.add(tekstLabel);
 		this.addWindowListener(this);
 
-		keuze1 = new Choice();
-		keuze1.setSize(50, 10);
-		keuze1.addItem("Maak een keuze");
-		keuze1.addItem("Partij 1");
-		keuze1.addItem("Partij 2");
-		keuze1.addItemListener(this);
-		this.add(keuze1);
+		partijKeuzeLijst = new Choice();
+		partijKeuzeLijst.setSize(50, 10);
+		partijKeuzeLijst.addItem("Maak een keuze");
+		partijKeuzeLijst.addItemListener(this);
+		this.add(partijKeuzeLijst);
 
 		keuzeButton = new Button("Confirm");
 		keuzeButton.setEnabled(false);
@@ -66,8 +63,9 @@ public class StemFrame extends Frame implements ItemListener, WindowListener, Ac
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(keuzeButton)) {
-			System.out.println("Gestemd voor " + keuze1.getSelectedItem());
-			keuze1.select(0);
+			System.out.println("Gestemd voor " + partijKeuzeLijst.getSelectedItem());
+			uitslag.stem(partijKeuzeLijst.getSelectedItem());
+			partijKeuzeLijst.select(0);
 			keuzeButton.setEnabled(false);
 			tekstLabel.setText("Kies een partij");
 		}
@@ -113,6 +111,17 @@ public class StemFrame extends Frame implements ItemListener, WindowListener, Ac
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o.getClass().equals(Uitslag.class)) {
+			Set<String> partijLijst = ((Uitslag)o).getPartijen();
+			partijKeuzeLijst.removeAll();
+			partijKeuzeLijst.addItem("Maak een keuze");
+			for (String p:partijLijst)
+				partijKeuzeLijst.add(p);
+		}
 	}
 
 }

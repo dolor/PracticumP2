@@ -14,10 +14,10 @@ public class GetalObserver extends javax.swing.JFrame implements Observer {
 	public GetalObserver(Getal getalToObserve, int radix) {
 		getalToObserve.addObserver(this);
 		this.radix = radix;
+		init();
 		int i = getalToObserve.getWaarde();
 		if (i != 0)
 			setLabel(i);
-		init();
 	}
 	
 	public void init() {
