@@ -5,10 +5,16 @@ import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class ClientGUI extends JFrame 
-                       implements ActionListener, MessageUI {
+                       implements ActionListener, MessageUI, DocumentListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -127977638163760634L;
 	private JButton     connectButton;
     private JTextField  portTextField;
     private JTextField  hostnameTextField;
@@ -39,17 +45,17 @@ public class ClientGUI extends JFrame
     private void buildGUI() {
     	setSize(600,400);
 
-        // Panel p1 - Listen
-
         JPanel p1 = new JPanel(new FlowLayout());
         JPanel pp = new JPanel(new GridLayout(3,3));
 
         JLabel hostnameLabel = new JLabel("Address: ");
         hostnameTextField = new JTextField("", 12);
+        hostnameTextField.getDocument().addDocumentListener(this);
         hostnameTextField.addActionListener(this);
 
         JLabel portLabel = new JLabel("Port:");
         portTextField        = new JTextField("2727", 5);
+        portTextField.getDocument().addDocumentListener(this);
         portTextField.addActionListener(this);
         
         JLabel nameLabel = new JLabel("Name:");
@@ -58,6 +64,7 @@ public class ClientGUI extends JFrame
 		} catch (UnknownHostException e) {
 			nameTextField = new JTextField("name");
 		}
+        nameTextField.getDocument().addDocumentListener(this);
         nameTextField.addActionListener(this);
 
         pp.add(hostnameLabel);
@@ -78,7 +85,6 @@ public class ClientGUI extends JFrame
         p1.add(connectButton, BorderLayout.EAST);
         p1.add(errorLabel, BorderLayout.EAST);
 
-        // Panel p2 - Messages
         JPanel p2c = new JPanel(); //For the chatting
         p2c.setLayout(new BorderLayout());
 
@@ -112,23 +118,38 @@ public class ClientGUI extends JFrame
 
     /** Afhandeling van een actie van het GUI. */
     public void actionPerformed(ActionEvent ev) {
+    	System.out.println("Action performed!");
     	Object s = ev.getSource();
-        if (s.equals(hostnameTextField) || s.equals(portTextField) || s.equals(nameTextField)) {
+    	boolean canTryConnect = true;
+        if (s.equals(connectButton) || (s.getClass().equals(JTextField.class) && connectButton.isEnabled())) {
+        	if (!isValidIP(hostnameTextField.getText())) {
+        		errorLabel.setText("Invalid IP");
+        		canTryConnect = false;
+        	} else {
+        		 errorLabel.setText("");
+        	} if (!isValidPort(portTextField.getText())) {
+        		errorLabel.setText("Invalid Port");
+        		canTryConnect = false;
+        	} else {
+        		errorLabel.setText("");
+        	}
+        	if (canTryConnect) {
+        		connect();
+        	}
+        }
+    }
+    
+    @Override
+	public void changedUpdate(DocumentEvent ev) {
+    	Object s = ev.getDocument();
+    	if (s.equals(hostnameTextField.getDocument()) || s.equals(portTextField.getDocument()) || s.equals(nameTextField.getDocument())) {
         	if (!hostnameTextField.getText().isEmpty() && !portTextField.getText().isEmpty() && !nameTextField.getText().isEmpty()) {
         		connectButton.setEnabled(true);
         	} else {
         		connectButton.setEnabled(false);
         	}
-        } else if (s.equals(connectButton)) {
-        	if (!isValidIP(hostnameTextField.getText())) {
-        		errorLabel.setText("Invalid IP");
-        	} else if (!isValidPort(portTextField.getText())) {
-        		errorLabel.setText("Invalid Port");
-        	} else {
-        		System.out.println("Now trying to connect!");
-        	}
         }
-    }
+	}
     
     public boolean isValidIP(String ip) {
     	boolean certainlyFalse = false;
@@ -189,7 +210,8 @@ public class ClientGUI extends JFrame
      * niet selecteerbaar gemaakt.
      */
     public void connect() {
-        // BODY NOG TOE TE VOEGEN
+		System.out.println("Now trying to connect!");
+
         addMessage("Connected to server...");
     }
 
@@ -202,5 +224,18 @@ public class ClientGUI extends JFrame
     public static void main(String args[]) {
         ClientGUI gui = new ClientGUI();
     }
+
+	
+    @Override
+	public void insertUpdate(DocumentEvent e) {
+		changedUpdate(e);
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		changedUpdate(e);
+	}
+    
+	
 
 } // end of class ClientGUI

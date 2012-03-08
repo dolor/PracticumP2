@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import week4.cmdline.Peer;
+
 /**
  * P2 prac wk5. <br>
  * Server. Een Thread-klasse die luistert naar socketverbindingen op
@@ -29,7 +31,29 @@ public class Server extends Thread {
      * communicatie met de Client afhandelt.
      */
     public void run() {
-        // BODY NOG TOE TE VOEGEN
+    	ServerSocket socket = null;
+    	
+        try {
+        	socket = new ServerSocket(port);
+        } catch (IOException e) {
+        	System.out.println("Could not listen on port " + port + ": " + e.getMessage());
+			e.printStackTrace();
+			System.exit(0);
+		}
+        
+        System.out.println("Port opened, awaiting connection...");
+        
+        boolean tryConnection = true;
+        while (tryConnection) {
+        	try {
+				Socket sock = socket.accept();
+	            ClientHandler handler = new ClientHandler(this, sock);
+	            handler.start();
+			} catch (IOException e) {
+				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
+				e.printStackTrace();
+			}
+        }
     }
 
     /**

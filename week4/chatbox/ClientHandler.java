@@ -24,7 +24,11 @@ public class ClientHandler extends Thread {
      * @require server != null && sock != null
      */
     public ClientHandler(Server server, Socket sock) throws IOException {
-        // BODY NOG TOE TE VOEGEN
+        this.server = server;
+        this.sock = sock;
+        this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+        announce();
     }
 
     /**
