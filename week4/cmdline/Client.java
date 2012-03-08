@@ -32,19 +32,26 @@ public class Client {
 				addr = InetAddress.getLocalHost();
 			} catch (UnknownHostException e) {e.printStackTrace();}
         } else {
-        	String[] nums = args[1].split(".");
-        	if (nums.length == 4) {
+        	String[] numStrings = args[1].split("\\.");
+        	byte[] addressBytes = new byte[4];
+        	if (numStrings.length == 4) {
         		for (int i = 0; i < 4; i++) {
-        			if (Integer.parseInt(nums[i]) < 0 || Integer.parseInt(nums[i]) > 255) {
+        			if (Integer.parseInt(numStrings[i]) < 0 || Integer.parseInt(numStrings[i]) > 255) {
         				System.out.println(args[1] + ": Not a valid IP address");
                 		System.out.println(USAGE);
                 		System.exit(0);
+        			} else {
+        				addressBytes[i] = (byte) Integer.parseInt(numStrings[i]);
         			}
         		}
         	} else {
         		System.out.println(USAGE);
         		System.exit(0);
         	}
+        	System.out.println("Valid address!");
+        	try {
+				addr = InetAddress.getByAddress(addressBytes);
+			} catch (UnknownHostException e) {e.printStackTrace();}
         	//TODO (?): Add support for ipv6
         }
         
@@ -62,6 +69,7 @@ public class Client {
         }
 
         try {
+        	System.out.println("Trying to make a socket at " + addr + "[" + port + "]");
             sock = new Socket(addr, port);
         } catch (IOException e) {
             System.out.println("ERROR: " + e.getMessage() + " on port " + port);
