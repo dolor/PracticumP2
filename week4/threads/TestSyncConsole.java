@@ -8,15 +8,19 @@ public class TestSyncConsole extends Thread {
 		super(name);
 	}
 	
-	public synchronized void run() {
-		som();
+	public void run() {
+		synchronized (System.in) {
+			som();
+		}
 	}
 	
-	private synchronized void som() {
-		int getal1 = SyncConsole.readInt(getName() + ": getal 1?");
-		int getal2 = SyncConsole.readInt(getName() + ": getal 2?");
-		int result = getal1+getal2;
-		SyncConsole.println(getName() + ": " + getal1 + " + " + getal2 + " = " + result);
+	private void som() {
+		synchronized (System.in) {
+			int getal1 = SyncConsole.readInt(getName() + ": getal 1?");
+			int getal2 = SyncConsole.readInt(getName() + ": getal 2?");
+			int result = getal1+getal2;
+			SyncConsole.println(getName() + ": " + getal1 + " + " + getal2 + " = " + result);
+		}
 	}
 	
 	 public static void main(String[] args) {

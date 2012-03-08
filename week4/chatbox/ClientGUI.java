@@ -2,6 +2,7 @@ package week4.chatbox;
 
 import java.io.*;
 import java.net.*;
+import java.security.InvalidParameterException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class ClientGUI extends JFrame
     private JTextArea   messageTextArea;
     private JLabel 		errorLabel;
     private Server      server;
+    private Client 		client;
 
     /** Construeert een ClientGUI object. */
     public ClientGUI() {
@@ -137,6 +139,10 @@ public class ClientGUI extends JFrame
         		connect();
         	}
         }
+        if (s.equals(chatTextField)) {
+        	client.sendMessage(chatTextField.getText());
+        	chatTextField.setText("");
+        }
     }
     
     @Override
@@ -210,14 +216,39 @@ public class ClientGUI extends JFrame
      * niet selecteerbaar gemaakt.
      */
     public void connect() {
+    	boolean crashed = false;
 		System.out.println("Now trying to connect!");
-
-        addMessage("Connected to server...");
+		String name = nameTextField.getText();
+		String host = hostnameTextField.getText();
+		int port = Integer.parseInt(portTextField.getText());
+		InetAddress addr;
+		try {
+			addr = InetAddress.getByName(host);
+			client = new Client(name, addr, port, this);
+	        addMessage("Connected to server...");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			crashed = true;
+		} catch (InvalidParameterException e) {
+			e.printStackTrace();
+			crashed = true;
+		} catch (IOException e) {
+			System.out.println("Could not connect: " + e.getMessage());
+			crashed = true;
+		}
+		
+		if (!crashed) {
+	        connectButton.setEnabled(false);
+	        hostnameTextField.setEnabled(false);
+	        portTextField.setEnabled(false);
+	        nameTextField.setEnabled(false);
+	        chatTextField.setEnabled(true);
+		}
     }
 
     /** Voegt een bericht toe aan de TextArea op het frame. */
     public void addMessage(String msg) {
-        // BODY NOG TOE TE VOEGEN
+        messageTextArea.append("\n" + msg);
     }
 
     /** Start een ClientGUI applicatie op. */

@@ -21,7 +21,9 @@ public class Server extends Thread {
 
     /** Construeert een nieuw Server-object. */
     public Server(int port, MessageUI mui) {
-        // BODY NOG TOE TE VOEGEN
+        this.port = port;
+        this.mui = mui;
+        this.threads = new ArrayList<ClientHandler>();
     }
 
     /**
@@ -47,8 +49,13 @@ public class Server extends Thread {
         while (tryConnection) {
         	try {
 				Socket sock = socket.accept();
+				System.out.println("Socket accepted!");
 	            ClientHandler handler = new ClientHandler(this, sock);
+	            System.out.println("Handler initialized");
+	            addHandler(handler);
+	            System.out.println("Handler added");
 	            handler.start();
+	            System.out.println("And should now be running");
 			} catch (IOException e) {
 				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
 				e.printStackTrace();
@@ -62,7 +69,12 @@ public class Server extends Thread {
      * @param msg bericht dat verstuurd wordt
      */
     public void broadcast(String msg) {
-        // BODY NOG TOE TE VOEGEN
+    	System.out.println("Broadcasting " + msg);
+    	mui.addMessage(msg);
+        for (ClientHandler handler:threads) {
+        	System.out.println("Broadcasting to " + handler.getName());
+        	handler.sendMessage(msg);
+        }
     }
 
     /**
@@ -70,7 +82,7 @@ public class Server extends Thread {
      * @param handler ClientHandler die wordt toegevoegd
      */
     public void addHandler(ClientHandler handler) {
-        // BODY NOG TOE TE VOEGEN
+        this.threads.add(handler);
     }
 
     /**
@@ -78,7 +90,7 @@ public class Server extends Thread {
      * @param handler ClientHandler die verwijderd wordt
      */
     public void removeHandler(ClientHandler handler) {
-        // BODY NOG TOE TE VOEGEN
+        this.threads.remove(handler);
     }
 
 } // end of class Server

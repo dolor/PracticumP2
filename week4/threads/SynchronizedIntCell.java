@@ -25,8 +25,9 @@ public class SynchronizedIntCell implements IntCell {
 			} catch (InterruptedException e) {}
 		}
 		containsReadVariable = true;
+		int returnValue = value;
 		notifyAll();
-		return value;
+		return returnValue;
 	}
 
 }

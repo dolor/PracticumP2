@@ -33,14 +33,13 @@ public class Client extends Thread {
         if (!isValidIP(host.getHostAddress()) || !isValidPort(port))
         	throw new InvalidParameterException("Invalid IP or port!");
         sock = new Socket(host, port);
-        
-        Thread streamInputHandler = new Thread(this);
-        streamInputHandler.start();
 
     	in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-        out.write(getClientName());
+		System.out.println("In is now defined");    
 		
+        Thread streamInputHandler = new Thread(this);
+        streamInputHandler.start();
     }
 
     /**
@@ -50,10 +49,22 @@ public class Client extends Thread {
      * socketverbinding.
      */
     public void run() {
+    	System.out.println("Client running!");
+    	try {
+			out.write(getClientName() + "\n");
+			out.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    	System.out.println("Got this far");
     	while (true) {
     		try {
-				String next = in.readLine();
-				mui.addMessage(next);
+    			if (in.ready()) {
+    				String next = in.readLine();
+    				if (next.equals("[" + clientName + " has entered]"))
+    					next = "[You entered the room]";
+    				mui.addMessage(next);
+    			}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -63,7 +74,8 @@ public class Client extends Thread {
     /** Stuurt een bericht over de socketverbinding naar de ClientHandler. */
     public void sendMessage(String msg) {
         try {
-			out.write("<" + getClientName() + ">" + msg);
+			out.write(msg + "\n");
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +84,11 @@ public class Client extends Thread {
     /** Sluit de socketverbinding van deze client. */
     public void shutdown() {
         mui.addMessage("Closing socket connection...");
-        // REST NOG TOE TE VOEGEN
+        try {
+        	in.close();
+        	out.close();
+			sock.close();
+		} catch (IOException e) {}
     }
 
     /** Levert de naam van de gebruiker van deze Client. */

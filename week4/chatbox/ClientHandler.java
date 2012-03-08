@@ -24,11 +24,11 @@ public class ClientHandler extends Thread {
      * @require server != null && sock != null
      */
     public ClientHandler(Server server, Socket sock) throws IOException {
+    	System.out.println("New clienthandler formed!");
         this.server = server;
         this.sock = sock;
         this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-        announce();
     }
 
     /**
@@ -53,7 +53,33 @@ public class ClientHandler extends Thread {
      * shutdown() aangeroepen.
      */
     public void run() {
-        // BODY NOG TOE TE VOEGEN
+    	System.out.println("Handler running");
+        try {
+			announce();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+        	/*try {
+        		String nextString;
+				while ((nextString = in.readLine()) != null) {
+					String next = "[" + clientName + "] " + nextString;
+					server.broadcast(next);
+				}
+			} catch (IOException e) {
+				System.out.println("Error! " + e.getMessage());
+				shutdown();
+			}*/
+        
+        try {
+        	String receive;
+        	
+        	while ((receive = in.readLine()) != null) {
+        		server.broadcast("[" + this.clientName + "] " + receive);
+        	} 
+        } catch (IOException e) {
+        	this.shutdown();
+        }
     }
 
     /**
@@ -63,7 +89,13 @@ public class ClientHandler extends Thread {
      * socketverbinding verbroken is en roept shutdown() aan.
      */
     public void sendMessage(String msg) {
-        // BODY NOG TOE TE VOEGEN
+        try {
+			out.write(msg + "\n");
+			out.flush();
+		} catch (IOException e) {
+			System.out.println("Connection lost: " + e.getMessage());
+			shutdown();
+		}
     }
 
     /**
@@ -72,6 +104,7 @@ public class ClientHandler extends Thread {
      * dat de Client niet langer deelneemt aan de chatbox.
      */
     private void shutdown() {
+    	System.out.println("Shutting down");
         server.removeHandler(this);
         server.broadcast("[" + clientName + " has left]");
     }
