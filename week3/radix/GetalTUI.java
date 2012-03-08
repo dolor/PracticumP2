@@ -13,7 +13,7 @@ import java.util.*;
  * @author Rieks op den Akker, Arend Rensink en Theo Ruys
  * @version 2005.02.13
  */
-public class GetalTUI implements java.util.Observer{
+public class GetalTUI implements Observer{
     
     /** Lijst met commando's van deze TUI. */
     private final List<Commando> commandos;
@@ -36,7 +36,7 @@ public class GetalTUI implements java.util.Observer{
         commandos.add(new WaardeCommando());
         commandos.add(new HulpCommando());
         commandos.add(new ExitCommando());
-        
+
     }
     /** Zet een GetalTUI op en start deze. */
     public static void main(String args[]) {
@@ -151,9 +151,6 @@ public class GetalTUI implements java.util.Observer{
             super('o', 1, "radix .............. maak nieuwe observer");
         }
         
-        /**
-         * par1 = radix
-         */
         public void voerUit(String par1, String par2) {
         	new GetalObserver(getal, Integer.parseInt(par1));
         }
@@ -196,7 +193,6 @@ public class GetalTUI implements java.util.Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		System.out.println("Getal verandert naar " + arg);
+		System.out.println("Waarde is veranderd in "+arg.toString());
 	}
 } 

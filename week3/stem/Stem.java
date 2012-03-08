@@ -15,11 +15,16 @@ public class Stem {
         uitslagJFrame.setVisible(true);
         stemFrame.setVisible(true);
         String partij;
+        
+        
+        
         do {
             partij = readString("Nieuwe partij? ");
             if (partij.length() != 0)
                    uitslag.voegPartijToe(partij);
         } while (partij.length() != 0);
+        
+        
     }
     
     public static String readString(String prompt) {

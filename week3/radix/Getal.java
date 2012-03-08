@@ -1,12 +1,14 @@
 package week3.radix;
 
+import java.util.Observable;
+
 /**
  * Observeerbaar getal.
  * Practicumopgave Programmeren 2.
  * @author Rieks op den Akker en Arend Rensink
  * @version 2.0
  */
-public class Getal extends java.util.Observable{
+public class Getal extends Observable{
     // ---- Instantievariabelen ------------------------------
 
     int waarde;
@@ -27,6 +29,7 @@ public class Getal extends java.util.Observable{
      */
     public Getal(int waarde) {
         setWaarde(waarde);
+        
     }
 
     // ---- Queries ------------------------------------------
@@ -45,6 +48,6 @@ public class Getal extends java.util.Observable{
     protected void setWaarde(int waarde){
         this.waarde = waarde;
         this.setChanged();
-    	notifyObservers(waarde);
+        this.notifyObservers(waarde);
     }
 } // end Getal

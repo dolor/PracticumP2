@@ -1,37 +1,44 @@
 package week3.stem;
 
 public class Partij implements Comparable{
-	private String naam;
-	private int stemmen;
-	private int partijNummer;
+	String naam;
+	int nr;
+	int stemmen;
 	
-	/**
-	 * Creates a new Partij object.
-	 * @requires partijnummer, partijnaam
-	 */
-	public Partij(int nummer, String naam) {
-		
+	public Partij(int nr, String naam)
+	{
+		this.naam = naam;
+		this.nr = nr;
+		this.stemmen = 0;
 	}
 	
-	public void addStem() {
-		stemmen++;
+	public void Stem()
+	{
+		this.stemmen++;
 	}
 	
-	public int getStemmen() {
-		return stemmen;
+	public String getNaam()
+	{
+		return this.naam;
+	}
+	public int getNr()
+	{
+		return this.nr;
+	}
+	public int getStemmen()
+	{
+		return this.stemmen;
 	}
 	
-	public String getNaam() {
-		return naam;
-	}
-	
-	public int getPartijNummber() {
-		return partijNummer;
-	}
-	
-	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return ((Partij)o).naam.compareTo(naam);
+	public int compareTo(Object c)
+	{
+		if (this.getNr() < ((Partij)c).getNr())
+		{
+			return 1;
+		}
+		else
+		{
+			return -1;    			
+		}
 	}
 }

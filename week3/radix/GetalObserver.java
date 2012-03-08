@@ -1,39 +1,36 @@
 package week3.radix;
 
-import java.awt.Container;
 import java.util.Observable;
-import javax.swing.*;
 import java.util.Observer;
-import week1.getallen.NaarRadix;
+import java.awt.*;
 
-public class GetalObserver extends javax.swing.JFrame implements Observer {
+import javax.swing.JFrame;
 
-	JLabel textLabel;
+public class GetalObserver extends JFrame implements Observer{
+
 	int radix;
-	
-	public GetalObserver(Getal getalToObserve, int radix) {
-		getalToObserve.addObserver(this);
+	Label lblGetal;
+	public GetalObserver(Getal o, int radix)
+	{
+		super("Getal Observer");
+		o.addObserver(this);
 		this.radix = radix;
-		init();
-		int i = getalToObserve.getWaarde();
-		if (i != 0)
-			setLabel(i);
-	}
-	
-	public void init() {
-		this.setSize(150, 100);
-		Container c = getContentPane();
-		textLabel = new JLabel();
-		c.add(textLabel);
+		displayWaarde(o.getWaarde());
+		this.add(lblGetal);
 		this.setVisible(true);
+		this.setSize(100, 100);
+	}
+
+	private void displayWaarde(int waarde)
+	{
+		lblGetal = new Label(NaarRadix.naarRadix(radix, waarde));
 	}
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		setLabel(Integer.parseInt(arg.toString()));
+		displayWaarde(Integer.parseInt(arg.toString()));
 	}
+	
+	
 
-	public void setLabel(int waarde) {
-		textLabel.setText("" + NaarRadix.naarRadix(radix, waarde));
-	}
 }
