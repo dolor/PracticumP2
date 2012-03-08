@@ -8,7 +8,15 @@ import javax.swing.*;
 
 public class ClientGUI extends JFrame 
                        implements ActionListener, MessageUI {
-    // NOG TOE TE VOEGEN
+	
+	private JButton     connectButton;
+    private JTextField  portTextField;
+    private JTextField  hostnameTextField;
+    private JTextField  nameTextField;
+    private JTextField  chatTextField;
+    private JTextArea   messageTextArea;
+    private JLabel 		errorLabel;
+    private Server      server;
 
     /** Construeert een ClientGUI object. */
     public ClientGUI() {
@@ -29,12 +37,85 @@ public class ClientGUI extends JFrame
 
     /** Bouwt de daadwerkelijke GUI. */
     private void buildGUI() {
-        // BODY NOG TOE TE VOEGEN
+    	setSize(600,400);
+
+        // Panel p1 - Listen
+
+        JPanel p1 = new JPanel(new FlowLayout());
+        JPanel pp = new JPanel(new GridLayout(3,3));
+
+        JLabel hostnameLabel = new JLabel("Address: ");
+        hostnameTextField = new JTextField("", 12);
+        hostnameTextField.addActionListener(this);
+
+        JLabel portLabel = new JLabel("Port:");
+        portTextField        = new JTextField("2727", 5);
+        portTextField.addActionListener(this);
+        
+        JLabel nameLabel = new JLabel("Name:");
+        try {
+			nameTextField = new JTextField(InetAddress.getLocalHost().getHostName());
+		} catch (UnknownHostException e) {
+			nameTextField = new JTextField("name");
+		}
+        nameTextField.addActionListener(this);
+
+        pp.add(hostnameLabel);
+        pp.add(hostnameTextField);
+        pp.add(portLabel);
+        pp.add(portTextField);
+        pp.add(nameLabel);
+        pp.add(nameTextField);
+
+        connectButton = new JButton("Start Listening");
+        connectButton.addActionListener(this);
+        connectButton.setEnabled(false);
+        
+        errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.RED);
+
+        p1.add(pp, BorderLayout.WEST);
+        p1.add(connectButton, BorderLayout.EAST);
+        p1.add(errorLabel, BorderLayout.EAST);
+
+        // Panel p2 - Messages
+        JPanel p2c = new JPanel(); //For the chatting
+        p2c.setLayout(new BorderLayout());
+
+        JLabel chatLabel = new JLabel("My message:");
+        chatTextField = new JTextField();
+        chatTextField.addActionListener(this);
+        chatTextField.setEnabled(false);
+
+        p2c.add(chatLabel, BorderLayout.NORTH);
+        p2c.add(chatTextField, BorderLayout.SOUTH);
+
+        JPanel p2m = new JPanel(); //For displaying the sent messages
+        p2m.setLayout(new BorderLayout());
+        
+        JLabel messagesLabel = new JLabel("Messages:");
+        messageTextArea = new JTextArea("", 15, 50);
+        messageTextArea.setEditable(false);
+        p2m.add(messagesLabel);
+        p2m.add(messageTextArea, BorderLayout.SOUTH);
+
+        JPanel p2 = new JPanel();
+        p2.setLayout(new BorderLayout());
+        
+        p2.add(p2c, BorderLayout.NORTH);
+        p2.add(p2m, BorderLayout.SOUTH);
+        
+        Container cc = getContentPane();
+        cc.setLayout(new FlowLayout());
+        cc.add(p1); cc.add(p2);
     }
 
     /** Afhandeling van een actie van het GUI. */
     public void actionPerformed(ActionEvent ev) {
-        // BODY NOG TOE TE VOEGEN
+    	Object s = ev.getSource();
+        if (s.equals(hostnameTextField) || s.equals(portTextField) || s.equals(nameTextField)) {
+        	
+        }
     }
 
     /**
