@@ -49,7 +49,9 @@ public class Peer implements Runnable {
         				System.out.println("Connection terminated by other side");
         				shutDown();
         			}
-        			System.out.println("[Him]: " + input);
+        			//System.out.print("#{reset}");
+        			System.out.println("\r" + input);
+        			System.out.print(">");
         		}
         	}
         } catch (IOException e) {
@@ -71,8 +73,12 @@ public class Peer implements Runnable {
     	String userInput;
         while (!stop) {
         	try {
-				while ((userInput = readString("[" + getName() + "]")).equals("")) {
-				}
+        		System.out.print(">");
+        		userInput = readString("");
+				/*while ((userInput = readString("")).equals("")) {
+					try {Thread.sleep(250);} catch (InterruptedException e) {}
+				}*/
+        		//System.out.println("\r[" + getName() + "]" + userInput + "\n");
 				out.write("[" + getName() + "]" + userInput + "\n");
 				out.flush();
 				if (userInput.equals("EXIT")) {
