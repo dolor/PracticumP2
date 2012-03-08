@@ -114,7 +114,67 @@ public class ClientGUI extends JFrame
     public void actionPerformed(ActionEvent ev) {
     	Object s = ev.getSource();
         if (s.equals(hostnameTextField) || s.equals(portTextField) || s.equals(nameTextField)) {
-        	
+        	if (!hostnameTextField.getText().isEmpty() && !portTextField.getText().isEmpty() && !nameTextField.getText().isEmpty()) {
+        		connectButton.setEnabled(true);
+        	} else {
+        		connectButton.setEnabled(false);
+        	}
+        } else if (s.equals(connectButton)) {
+        	if (!isValidIP(hostnameTextField.getText())) {
+        		errorLabel.setText("Invalid IP");
+        	} else if (!isValidPort(portTextField.getText())) {
+        		errorLabel.setText("Invalid Port");
+        	} else {
+        		System.out.println("Now trying to connect!");
+        	}
+        }
+    }
+    
+    public boolean isValidIP(String ip) {
+    	boolean certainlyFalse = false;
+    	InetAddress addr = null;
+    	if (ip.toLowerCase().equals("localhost")) {
+        	try {
+				addr = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {return false;}
+        } else {
+        	String[] numStrings = ip.split("\\.");
+        	byte[] addressBytes = new byte[4];
+        	if (numStrings.length == 4) {
+        		for (int i = 0; i < 4; i++) {
+        			if (Integer.parseInt(numStrings[i]) < 0 || Integer.parseInt(numStrings[i]) > 255) {
+                		return false;
+        			} else {
+        				addressBytes[i] = (byte) Integer.parseInt(numStrings[i]);
+        			}
+        		}
+        	} else {
+        		return false;
+        	}
+        	System.out.println("Valid address!");
+        	if (!certainlyFalse) {
+        		try {
+    				addr = InetAddress.getByAddress(addressBytes);
+    			} catch (UnknownHostException e) {return false;}
+            	//TODO (?): Add support for ipv6
+        	}
+        }
+    	if (addr != null)
+    		return true;
+    	else
+    		return false;
+    }
+    
+    public boolean isValidPort(String port) {
+    	try {
+        	int p = Integer.parseInt(port);
+        	if (p < 0 || p > 65535) {
+				System.out.println(port + ": Not a valid port number");
+        		return false;    		
+        	} else
+        		return true;
+        } catch (NumberFormatException e) {
+    		return false;      	
         }
     }
 
