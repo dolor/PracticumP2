@@ -42,17 +42,19 @@ public class Peer implements Runnable {
      */
     public void run() {
         try {
-        	while (true) {
-        		if (in.ready()) {
-        			String input = in.readLine();
-        			if (input.contains("EXIT")) {
-        				System.out.println("Connection terminated by other side");
-        				shutDown();
-        			}
-        			//System.out.print("#{reset}");
-        			System.out.println("\r" + input);
-        			System.out.print(">");
+        	String next;
+        	in.ready();
+        	next = in.readLine();
+        	while (next != null) {
+        		//String input = in.readLine();
+        		if (next.contains("EXIT")) {
+        			System.out.println("Connection terminated by other side");
+        			shutDown();
         		}
+        		System.out.println("\r" + next);
+        		System.out.print(">");
+        		in.ready();
+        		next = in.readLine();
         	}
         } catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");
