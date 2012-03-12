@@ -1,4 +1,4 @@
-package eindopdracht.bord;
+package eindopdracht.gui;
 
 import javax.swing.JPanel;
 
