@@ -1,4 +1,4 @@
-package eindopdracht.gui;
+package eindopdracht.client.gui;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
