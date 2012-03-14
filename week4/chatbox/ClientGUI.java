@@ -76,7 +76,7 @@ public class ClientGUI extends JFrame
         pp.add(nameLabel);
         pp.add(nameTextField);
 
-        connectButton = new JButton("Start Listening");
+        connectButton = new JButton("Connect");
         connectButton.addActionListener(this);
         connectButton.setEnabled(false);
         

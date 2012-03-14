@@ -57,7 +57,7 @@ public class Client extends Thread {
 			e1.printStackTrace();
 		}
     	System.out.println("Got this far");
-    	while (true) {
+    	/*while (true) {
     		try {
     			if (in.ready()) {
     				String next = in.readLine();
@@ -68,7 +68,16 @@ public class Client extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-    	}
+    	}*/
+    	try {
+        	String receive;
+        	
+        	while ((receive = in.readLine()) != null) {
+        		mui.addMessage(receive);
+        	} 
+        } catch (IOException e) {
+        	this.shutdown();
+        }
     }
 
     /** Stuurt een bericht over de socketverbinding naar de ClientHandler. */
