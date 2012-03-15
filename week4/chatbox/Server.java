@@ -49,13 +49,9 @@ public class Server extends Thread {
         while (tryConnection) {
         	try {
 				Socket sock = socket.accept();
-				System.out.println("Socket accepted!");
 	            ClientHandler handler = new ClientHandler(this, sock);
-	            System.out.println("Handler initialized");
 	            addHandler(handler);
-	            System.out.println("Handler added");
 	            handler.start();
-	            System.out.println("And should now be running");
 			} catch (IOException e) {
 				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
 				e.printStackTrace();

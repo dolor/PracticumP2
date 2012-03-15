@@ -60,17 +60,6 @@ public class ClientHandler extends Thread {
 			e1.printStackTrace();
 		}
 
-        	/*try {
-        		String nextString;
-				while ((nextString = in.readLine()) != null) {
-					String next = "[" + clientName + "] " + nextString;
-					server.broadcast(next);
-				}
-			} catch (IOException e) {
-				System.out.println("Error! " + e.getMessage());
-				shutdown();
-			}*/
-        
         try {
         	String receive;
         	
