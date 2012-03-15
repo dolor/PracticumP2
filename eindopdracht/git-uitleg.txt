@@ -1,0 +1,13 @@
+Update:
+- Ga naar folder (in PracticumP2)
+- git pull origin master
+
+Commit:
+- git add .
+- git commit -a -m "<message>"
+
+Versturen naar server:
+- git push origin master
+
+Status:
+- git status
