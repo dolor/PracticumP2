@@ -9,7 +9,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-import eindopdracht.client.model.Command;
+import eindopdracht.model.Command;
+import eindopdracht.util.NetworkUtil;
 
 public class Network extends Observable{
 	
@@ -22,24 +23,7 @@ public class Network extends Observable{
 	 */
 	public void processNetworkInput(String input) {
 		System.out.println(input);
-		Scanner scanner = new Scanner(input); 
-		
-		if (!scanner.hasNext())
-		{
-			System.out.println("Empty command received!");
-			System.exit(0);
-		}
-		String comm = scanner.next();
-		String[] args = new String[0];
-		int i = 0;
-		//Add all the arguments
-		while (scanner.hasNext()) {
-			args = new String[args.length + 1];
-			args[i] = scanner.next();
-			i++;
-		}
-		
-		Command command = new Command(comm, args);
+		Command command = new Command(input);
 		System.out.println(command.toString());
 		this.setChanged();
 		this.notifyObservers(command);
@@ -52,7 +36,7 @@ public class Network extends Observable{
 	 * @return true if connected, false if not.
 	 */
 	public boolean Connect(String server, int port) {
-		if (isValidHost(server) && isValidPort(port)) {
+		if (NetworkUtil.isValidHost(server) && NetworkUtil.isValidPort(port)) {
 			try {
 				Socket sock = new Socket(server, port);
 				handler = new ConnectionHandler(sock, this);
@@ -126,40 +110,5 @@ public class Network extends Observable{
 		else {
 			System.out.println("[Error] Not connected to a server!");
 		}
-	}
-	
-	/**
-	 * Whether or not the host is a valid hostname or IP address.
-	 * @param host
-	 *
-	 */
-	private boolean isValidHost (String host) {
-		if (host.toLowerCase().equals("localhost")) {
-        	try {
-        		//If the local host is not a valid address, it will throw an Exception and thus not return true.
-				InetAddress.getLocalHost();
-				return true;
-			} catch (UnknownHostException e) {return false;}
-        } else {
-        	String[] numStrings = host.split("\\.");
-        	byte[] addressBytes = new byte[4];
-        	//Loop through the bytes
-        	if (numStrings.length == 4) {
-        		for (int i = 0; i < 4; i++) {
-        			if (Integer.parseInt(numStrings[i]) < 0 || Integer.parseInt(numStrings[i]) > 255)
-                		return false;
-        		}
-        	} else {
-        		return false;
-        	}
-        	return true;
-        	//TODO support for IPV6?
-        }
-        
-        
-	}
-	
-	private boolean isValidPort(int port) {
-		return (port >= 0 && port <= 65535);
 	}
 }
