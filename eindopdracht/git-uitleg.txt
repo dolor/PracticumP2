@@ -11,3 +11,4 @@ Versturen naar server:
 
 Status:
 - git status
+- git remote show origin
