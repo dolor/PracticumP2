@@ -5,10 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import eindopdracht.server.Server;
+
 public class Network {
 	private ArrayList<PlayerHandler> players;
+	private Server server;
 	
-	public Network(int port) {
+	public Network(int port, Server server) {
+		this.server = server;
 		this.listen(port);
 		players = new ArrayList<PlayerHandler>();
 	}
@@ -34,7 +38,7 @@ public class Network {
 	    while (tryConnection) {
 	    	try {
 				Socket sock = socket.accept();
-	            PlayerHandler client = new PlayerHandler(sock);
+	            PlayerHandler client = new PlayerHandler(sock, server);
 			} catch (IOException e) {
 				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
 				e.printStackTrace();

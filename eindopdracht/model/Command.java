@@ -54,6 +54,18 @@ public class Command {
 	}
 	
 	/**
+	 * Returns the argument at position arg. Returns null if out of bounds.
+	 * @param arg
+	 * @return
+	 */
+	public String getArg(int arg) {
+		if (arg < args.length)
+			return args[arg];
+		else
+			return null;
+	}
+	
+	/**
 	 * Checks if the command is valid; A command is valid if it has a command string.
 	 * @return
 	 */
