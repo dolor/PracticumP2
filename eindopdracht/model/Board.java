@@ -53,12 +53,12 @@ public class Board {
 		ArrayList<Integer> winners = new ArrayList<Integer>();
 		
 		// check cols
-		for (int y = 0; y < 8; y++)
+		for (int y = 0; y <= 8; y++)
 		{
 			int count = 0;
 			int lastcolor = 0;
 			
-			for (int x = 0; x < 8; x++)
+			for (int x = 0; x <= 8; x++)
 			{
 				
 				// haal de kleur van de tegel op
@@ -78,16 +78,17 @@ public class Board {
 				{
 					winners.add(color);
 				}
+				lastcolor = color;
 			}
 		
 		}
 		// check rows
-		for (int x = 0; x < 8; x++)
+		for (int x = 0; x <= 8; x++)
 		{
 			int count = 0;
 			int lastcolor = 0;
 			
-			for (int y = 0; y < 8; y++)
+			for (int y = 0; y <= 8; y++)
 			{
 				
 				// haal de kleur van de tegel op
@@ -107,11 +108,80 @@ public class Board {
 				{
 					winners.add(color);
 				}
+				lastcolor = color;
 			}
-			
-			// check diagonal
-		
 		}
+			
+		// check diagonal
+		// ga alle diagonalen af
+		// voor links boven naar rechts onder
+		for (int dY = -7; dY <= 8; dY++)
+		{
+			int count = 0;
+			int lastcolor = 0;
+			for (int x = 0; x <= 8; x++)
+			{
+				int y = dY - x;
+
+				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
+				{
+					// haal de kleur van de tegel op
+					int color = GetTileXY(x,y).GetColor();
+
+					// kijk of die dezelfde kleur is
+					if (color == lastcolor)
+					{
+						count += 1; // doe de count +1
+					}
+					else
+					{
+						count = 1; // het is de eerste keer dus = 1
+					}
+
+					if (count >= 5) // 5 op een rij
+					{
+						winners.add(color);
+					}
+					lastcolor = color;
+				}
+
+			}
+		}
+		
+		// voor rechts boven naar links onder
+		for (int dY = 0; dY <= 16; dY++)
+		{
+			int count = 0;
+			int lastcolor = 0;
+			for (int x = 0; x <= 8; x++)
+			{
+				int y = dY + x;
+
+				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
+				{
+					// haal de kleur van de tegel op
+					int color = GetTileXY(x,y).GetColor();
+
+					// kijk of die dezelfde kleur is
+					if (color == lastcolor)
+					{
+						count += 1; // doe de count +1
+					}
+					else
+					{
+						count = 1; // het is de eerste keer dus = 1
+					}
+
+					if (count >= 5) // 5 op een rij
+					{
+						winners.add(color);
+					}
+					lastcolor = color;
+				}
+
+			}
+		}
+		
 		
 		return winners;
 	}
