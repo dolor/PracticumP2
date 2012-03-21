@@ -83,7 +83,7 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 				connectFrame = new Connect(this);
 		} else if (e.getSource().equals(startMenuItem)) {
 			if (newGameFrame == null) 
-				newGameFrame = new NewGame();
+				newGameFrame = new NewGame(this);
 		} else if (e.getSource().equals(disconnectMenuItem)) {
 			disconnect();
 		} else if (((JMenuItem)e.getSource()).getText().equals("Exit")) {
@@ -110,7 +110,13 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 			connectFrame = null;
 	}
 	
+	public void newGameFrameDismissed() {
+		if (newGameFrame != null)
+			newGameFrame = null;
+	}
+	
 	public void join(String name, int players) {
+		System.out.println("Joining as " + name + " in a lobby with " + players + " players max");
 		if (network != null) {
 			network.join(name, players);
 		}

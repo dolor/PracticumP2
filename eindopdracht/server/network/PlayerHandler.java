@@ -97,7 +97,12 @@ public class PlayerHandler implements Runnable{
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
 		} else if (c.equals("quit")) {
-			player.quit();
+			server.removePlayer(player);
+			try {
+				socket.close();
+			} catch (IOException e) {
+				System.out.println("Error thrown while quitting: " + e.getMessage());
+			}
 		} else if (c.equals("chat")) {
 			player.chat(command.getArg(0));
 		} else if (c.equals("challenge")) {

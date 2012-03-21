@@ -85,6 +85,7 @@ public class Player {
 	 */
 	public void quit() {
 		System.out.println("Trying to quit. Could not escape!");
+		
 	}
 	
 	/**

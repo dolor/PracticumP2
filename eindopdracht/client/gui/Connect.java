@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,7 +13,7 @@ import javax.swing.event.DocumentListener;
 
 import eindopdracht.util.NetworkUtil;
 
-public class Connect extends JFrame implements ActionListener, DocumentListener {
+public class Connect extends JFrame implements ActionListener, DocumentListener, WindowListener {
 
 	private JTextField hostnameTextField;
 	private JTextField portTextField;
@@ -25,16 +26,7 @@ public class Connect extends JFrame implements ActionListener, DocumentListener 
 		this.observer = observer;
 		buildGUI();
 		setVisible(true);
-
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				e.getWindow().dispose();
-			}
-
-			public void windowClosed(WindowEvent e) {
-				//e.getWindow().dispose();
-			}
-		});
+		addWindowListener(this);
 	}
 
 	public void buildGUI() {
@@ -72,6 +64,7 @@ public class Connect extends JFrame implements ActionListener, DocumentListener 
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource().equals(cancelButton)) {
 			this.dispose();
+			observer.connectFrameDismissed();
 		} else if (ev.getSource().equals(okayButton)) {
 			String hostname = hostnameTextField.getText();
 			String port = portTextField.getText();
@@ -113,5 +106,47 @@ public class Connect extends JFrame implements ActionListener, DocumentListener 
 		} else {
 			okayButton.setEnabled(false);
 		}
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		this.dispose();
+		observer.connectFrameDismissed();
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
