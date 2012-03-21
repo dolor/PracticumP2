@@ -33,7 +33,7 @@ public class Block {
 			
 			
 			// kijk waar die moet komen
-			int newI;
+			int newI = i;
 			
 			// kijk dan hoe het in het nieuwe tegel blok is
 			if (rotation == CW)
@@ -41,7 +41,7 @@ public class Block {
 				
 				newI = (col) * 3 + Math.abs(row-2);
 			}
-			else // CCW
+			else if (rotation == CCW)
 			{
 				newI = Math.abs((col)-2) * 3 + row;
 			}
@@ -64,7 +64,7 @@ public class Block {
 	{
 		for (int i = 0; i <= 2; i++)
 		{
-			System.out.println(tiles[i*3+0].GetColor() + "|" + tiles[i*3+1].GetColor() + "|" + tiles[i*3+2].GetColor());
+			System.out.println(tiles[i*3+0].getColor() + "|" + tiles[i*3+1].getColor() + "|" + tiles[i*3+2].getColor());
 		}
 	}
 	
