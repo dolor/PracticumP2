@@ -11,7 +11,7 @@ public class Server {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
 	private Network network;
-	private static int defaultPort;
+	private static int defaultPort = 8888;
 	
 	public Server() {
 		this.lobbies = new ArrayList<Lobby>();
@@ -45,6 +45,10 @@ public class Server {
 	 * @param player
 	 */
 	public void removePlayer(Player player) {
+		for (Lobby l:lobbies) {
+			if (l.containsPlayer(player))
+				l.removePlayer(player);
+		}
 		players.remove(player);
 	}
 	
@@ -65,12 +69,17 @@ public class Server {
 	 * @return
 	 */
 	public Lobby getLobby(int players) {
+		System.out.println("Getting lobby " + players);
 		for (Lobby lobby:lobbies) {
-			if (lobby.maxNumberOfPlayers() == players)
+			if (lobby.maxNumberOfPlayers() == players) {
+				System.out.println("Found, returning!");
 				return lobby;
+			}
 		}
+		System.out.println("No lobby found, creating a new one");
 		Lobby newLobby = new Lobby(players, this);
 		lobbies.add(newLobby);
+		System.out.println("Returning!");
 		return newLobby;
 	}
 	

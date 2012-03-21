@@ -27,31 +27,52 @@ public class PlayerHandler implements Runnable{
      * @throws IOException if the socket's in and out can't be accessed
      */
 	public PlayerHandler(Socket socket, Server server) throws IOException {
+		System.out.println("PlayerHandler created");
 		this.server = server;
 		this.socket = socket;
 		this.player = new Player(this);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		Thread handlerThread = new Thread(this);
-		handlerThread.start();
+		
 	}
 
 	@Override
 	public void run() {
+		System.out.println("PlayerHandler running");
 		this.listen();
+		
 	}
+	
+	/** Leest een regel tekst van standaardinvoer. */
+    public String readString(String tekst) {
+        System.out.print(tekst);
+        String antw = null;
+        try {
+            BufferedReader in = 
+                new BufferedReader(new InputStreamReader(System.in));            
+            antw = in.readLine();
+        } catch (IOException e) {
+        }
+
+        return (antw == null) ? "" : antw;
+    }
 	
 	public void listen() {
 		try {
+			System.out.println("Listener now listening!");
         	String next;
         	in.ready();
         	next = in.readLine();
+        	System.out.println("Read a line!");
         	while (next != null) {
         		//If null, the connection was terminated
+            	System.out.println("[Handler]: " + next);
         		this.handleInput(next);
+        		next = in.readLine();
         	}
         } catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");
+			server.removePlayer(player);
 		} catch (NullPointerException e) {
 			//TODO Check if this is really necessary
 			System.exit(0);
@@ -94,7 +115,9 @@ public class PlayerHandler implements Runnable{
 	 */
 	public void sendMessage(String msg) {
 		try {
+			System.out.println("Sending message " + msg + " to player");
 			out.write(msg + "\n");
+			out.flush();
 		} catch (IOException e) {
 			System.out.println("[Error] error thrown in PlayerHandler sendMessage");
 			e.printStackTrace();

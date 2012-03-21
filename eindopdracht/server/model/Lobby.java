@@ -13,6 +13,7 @@ public class Lobby {
 	public Lobby(int maxPlayers, Server server) {
 		this.server = server;
 		this.maxNumberOfPlayers = maxPlayers;
+		this.players = new ArrayList<Player>();
 	}
 	
 	/**
@@ -47,7 +48,7 @@ public class Lobby {
 		while (!validName) {
 			boolean numRaised = false;
 			for (Player p:players) {
-				if (p.name().equals(player.name())) {
+				if (p.name().equals(player.name()) && !p.equals(player)) {
 					numRaised = true;
 					num++;
 				}
@@ -60,10 +61,10 @@ public class Lobby {
 		 * Tells the player his current name
 		 */
 		if (num > 0)
-			player.sendMessage("connected " + player.name() + "_" + num);
-		else
-			player.sendMessage("connected " + player.name());
-		
+			player.setName(player.name() + "_" + num);
+
+		player.sendMessage("connected " + player.name());
+				
 		if (players.size() == maxNumberOfPlayers) {
 			server.startGame(this);
 		} else {
@@ -74,13 +75,33 @@ public class Lobby {
 			}
 			player.sendMessage(msg);
 		}
-		
-		
+
 		return true;
 	}
 	
 	public ArrayList<Player> getPlayers() {
 		return this.players;
+	}
+	
+	/**
+	 * Checks if this lobby contains the given player
+	 * @param player
+	 * @return
+	 */
+	public boolean containsPlayer(Player player) {
+		for (Player p:players) {
+			if (p.equals(player))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes the given player
+	 * @param player
+	 */
+	public void removePlayer(Player player) {
+		this.players.remove(player);
 	}
 	
 	/**

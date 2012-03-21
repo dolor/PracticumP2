@@ -32,13 +32,16 @@ public class Network {
 			System.exit(0);
 		}
 	    
-	    System.out.println("Port opened, awaiting connection...");
+	    System.out.println("Port " + port + " opened, awaiting connection...");
 
 		boolean tryConnection = true;
 	    while (tryConnection) {
 	    	try {
 				Socket sock = socket.accept();
+	    		System.out.println("Found a connection!");
 	            PlayerHandler client = new PlayerHandler(sock, server);
+	            Thread handlerThread = new Thread(client);
+	    		handlerThread.start();
 			} catch (IOException e) {
 				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
 				e.printStackTrace();

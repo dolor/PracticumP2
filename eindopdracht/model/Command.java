@@ -27,15 +27,21 @@ public class Command {
 		String comm = scanner.next();
 		String[] args = new String[0];
 		int i = 0;
+		System.out.println(comm);
 		//Add all the arguments
 		while (scanner.hasNext()) {
 			args = new String[args.length + 1];
+			if (this.args != null)
+				System.arraycopy(this.args, 0, args, 0, this.args.length);
 			args[i] = scanner.next();
+			this.args = args;
 			i++;
 		}
-		
+				
 		this.command = comm;
 		this.args = args;
+		for (int a = 0; a < args.length; a++)
+			System.out.println(args[a] + " | " + this.args[a]);
 	}
 	
 	/**
