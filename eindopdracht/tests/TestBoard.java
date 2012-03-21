@@ -31,11 +31,21 @@ public class TestBoard
 			
 			try
 			{
-				int x = Integer.parseInt(argumenten[0]);
-				int y = Integer.parseInt(argumenten[1]);
-				int color = Integer.parseInt(argumenten[2]);
-				
-				b.getTileXY(x, y).setColor(color, true);
+				if (argumenten[0].equals("s"))
+				{
+					int x = Integer.parseInt(argumenten[1]);
+					int y = Integer.parseInt(argumenten[2]);
+					int color = Integer.parseInt(argumenten[3]);
+					
+					b.getTileXY(x, y).setColor(color, true);
+				}
+				else if (argumenten[0].equals("t"))
+				{
+					int block = Integer.parseInt(argumenten[1]);
+					int rotation = Integer.parseInt(argumenten[2]);
+					
+					b.Turn(block, rotation);
+				}
 				
 			}
 			catch (NumberFormatException e)
