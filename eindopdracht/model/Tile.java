@@ -1,14 +1,14 @@
 package eindopdracht.model;
 
 public class Tile {
-
-	Color color;
+	
+	int color;
 	public Tile()
 	{
-		this.color = null;
+		this.color = 0;
 	}
 
-	public boolean SetColor(Color color)
+	public boolean SetColor(int color)
 	{
 		return SetColor(color, false);
 	}
@@ -21,7 +21,7 @@ public class Tile {
 	 * @param force: force the tile to place this color. Even when it has to override his color
 	 * @return boolean if the color is placed
 	 */
-	public boolean SetColor(Color color, boolean force)
+	public boolean SetColor(int color, boolean force)
 	{
 		if (force) // de color wordt geforceerd.
 		{
@@ -30,7 +30,7 @@ public class Tile {
 		}
 		else
 		{
-			if (this.GetColor() == null)
+			if (this.GetColor() == 0)
 			{
 				this.color = color;
 				return true;
@@ -42,7 +42,7 @@ public class Tile {
 		}
 	}
 	
-	public Color GetColor()
+	public int GetColor()
 	{
 		return this.color;
 	}
