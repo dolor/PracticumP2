@@ -30,8 +30,6 @@ public class Block {
 			int col = i % 3;
 			int row = (int) Math.floor(i/3);
 			
-			
-			
 			// kijk waar die moet komen
 			int newI = i;
 			
