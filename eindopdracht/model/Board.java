@@ -33,7 +33,7 @@ public class Board {
 	 * @return
 	 */
 	
-	public Tile GetTileXY (int x, int y)
+	public Tile getTileXY (int x, int y)
 	{
 		// kijk welk block het is
 		int BlockCol = (int) Math.floor(x / 3);
@@ -62,7 +62,7 @@ public class Board {
 			{
 				
 				// haal de kleur van de tegel op
-				int color = GetTileXY(x,y).GetColor();
+				int color = getTileXY(x,y).getColor();
 				
 				// kijk of die dezelfde kleur is
 				if (color == lastcolor)
@@ -74,7 +74,7 @@ public class Board {
 					count = 1;
 				}
 				
-				if (count >= 5) // 5 op een rij
+				if (count >= 5 && !winners.contains(color)) // 5 op een rij
 				{
 					winners.add(color);
 				}
@@ -92,7 +92,7 @@ public class Board {
 			{
 				
 				// haal de kleur van de tegel op
-				int color = GetTileXY(x,y).GetColor();
+				int color = getTileXY(x,y).getColor();
 				
 				// kijk of die dezelfde kleur is
 				if (color == lastcolor)
@@ -104,7 +104,7 @@ public class Board {
 					count = 1;
 				}
 				
-				if (count >= 5) // 5 op een rij
+				if (count >= 5 && !winners.contains(color)) // 5 op een rij
 				{
 					winners.add(color);
 				}
@@ -126,7 +126,7 @@ public class Board {
 				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
 				{
 					// haal de kleur van de tegel op
-					int color = GetTileXY(x,y).GetColor();
+					int color = getTileXY(x,y).getColor();
 
 					// kijk of die dezelfde kleur is
 					if (color == lastcolor)
@@ -138,7 +138,7 @@ public class Board {
 						count = 1; // het is de eerste keer dus = 1
 					}
 
-					if (count >= 5) // 5 op een rij
+					if (count >= 5 && !winners.contains(color)) // 5 op een rij
 					{
 						winners.add(color);
 					}
@@ -155,12 +155,12 @@ public class Board {
 			int lastcolor = 0;
 			for (int x = 0; x <= 8; x++)
 			{
-				int y = dY + x;
+				int y = dY + x; // bereken de y behorend bij de x
 
 				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
 				{
 					// haal de kleur van de tegel op
-					int color = GetTileXY(x,y).GetColor();
+					int color = getTileXY(x,y).getColor();
 
 					// kijk of die dezelfde kleur is
 					if (color == lastcolor)
@@ -172,7 +172,7 @@ public class Board {
 						count = 1; // het is de eerste keer dus = 1
 					}
 
-					if (count >= 5) // 5 op een rij
+					if (count >= 5 && !winners.contains(color)) // 5 op een rij
 					{
 						winners.add(color);
 					}
@@ -182,6 +182,8 @@ public class Board {
 			}
 		}
 		
+		// 0 is uiteraard geen winnaar
+		winners.remove(0);
 		
 		return winners;
 	}
@@ -189,6 +191,35 @@ public class Board {
 	public boolean GameOver()
 	{
 		return !GetWinners().isEmpty(); // als de lijst niet leeg is is er een winner en dus game over
+	}
+	
+	public void drawBoard()
+	{
+		for (int y = 0; y <= 8; y++)
+		{
+			if (y % 3 == 0)
+			{
+				System.out.println("-----------------------");
+			}
+			for (int x = 0; x <= 8; x++)
+			{
+				if (x % 3 == 0)
+				{
+					System.out.print("||");
+				}
+				else
+				{
+					System.out.print("|");
+				}
+				System.out.print(this.getTileXY(x, y).getColor());
+			}
+			
+			System.out.print("||");
+			System.out.println();
+			
+			
+		}
+		
 	}
 	
 }

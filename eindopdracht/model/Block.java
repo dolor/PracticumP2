@@ -64,7 +64,7 @@ public class Block {
 	{
 		for (int i = 0; i <= 2; i++)
 		{
-			System.out.println(tiles[i*3+0].GetColor() + "|" + tiles[i*3+1].GetColor() + "|" + tiles[i*3+2].GetColor());
+			System.out.println(tiles[i*3+0].getColor() + "|" + tiles[i*3+1].getColor() + "|" + tiles[i*3+2].getColor());
 		}
 	}
 	

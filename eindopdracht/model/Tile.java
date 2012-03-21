@@ -10,10 +10,11 @@ public class Tile {
 
 	public boolean SetColor(int color)
 	{
-		return SetColor(color, false);
+		return setColor(color, false);
 	}
 	
-	/** @ensure: 	if force == true, => return == true;
+	/** @ensure: 	if 1 <= color <= 4, return == false;
+	 * 				if force == true => return == true;
 	 * 				if GetColor() == null => return == true;
 	 * 				if return == true, this.GetColor() == color;
 	 *
@@ -21,8 +22,13 @@ public class Tile {
 	 * @param force: force the tile to place this color. Even when it has to override his color
 	 * @return boolean if the color is placed
 	 */
-	public boolean SetColor(int color, boolean force)
+	public boolean setColor(int color, boolean force)
 	{
+		if (!(1 <= color && color <= 4)) // als color niet tussen 1 en 4 is
+		{
+			return false;
+		}
+		
 		if (force) // de color wordt geforceerd.
 		{
 			this.color = color;
@@ -30,7 +36,7 @@ public class Tile {
 		}
 		else
 		{
-			if (this.GetColor() == 0)
+			if (this.getColor() == 0)
 			{
 				this.color = color;
 				return true;
@@ -42,7 +48,7 @@ public class Tile {
 		}
 	}
 	
-	public int GetColor()
+	public int getColor()
 	{
 		return this.color;
 	}
