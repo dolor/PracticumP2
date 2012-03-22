@@ -25,7 +25,10 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 		super("Connect");
 		this.observer = observer;
 		buildGUI();
+		this.setLocation(observer.getLocationOnScreen().x + 15, observer.getLocationOnScreen().y + 15);
 		setVisible(true);
+		hostnameTextField.setText("localhost");
+		portTextField.setText("8888");
 		addWindowListener(this);
 	}
 

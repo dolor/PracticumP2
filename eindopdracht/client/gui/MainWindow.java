@@ -36,6 +36,7 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 	Network network;
 	private Game game;
 	Player localPlayer;
+	BordPanel bord;
 	
 	public MainWindow() {
 		super("Pentago XL");
@@ -152,6 +153,8 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 	public void update(Observable sender, Object object) {
 		if (object.getClass().equals(Game.class)) {
 			this.game = game;
+			bord = new BordPanel(game);
+			this.add(bord);
 		} else if (object.getClass().equals(Command.class)){
 			System.out.println("Received a command in mainwindow!");
 			Command command = (Command)object;

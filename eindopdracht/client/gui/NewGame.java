@@ -31,6 +31,7 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	    super("New Game");
 	    this.observer = observer;
 	    buildGUI();
+		this.setLocation(observer.getLocationOnScreen().x + 15, observer.getLocationOnScreen().y + 15);
 	    setVisible(true);
 	    this.addWindowListener(this);
 	}
