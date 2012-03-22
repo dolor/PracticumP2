@@ -46,8 +46,8 @@ public class Game extends Observable{
 	}
 	
 	public void start() {
-
 		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
+		System.out.println("Player " + settingPlayer.getName() + " got the turn");
 		this.giveSet();
 	}
 	

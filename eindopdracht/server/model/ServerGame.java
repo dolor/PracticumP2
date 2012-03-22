@@ -3,6 +3,7 @@ package eindopdracht.server.model;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import eindopdracht.server.Server;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.model.Board;
@@ -14,11 +15,6 @@ public class ServerGame extends Observable {
 	ServerPlayer settingPlayer; // Player die aan de beurt is
 
 	Board board;
-
-	public static int endDueToWinner = 1;
-	public static int endDueToRemise = 2;
-	public static int endDueToCheat = 3;
-	public static int endDueToDisconnect = 4;
 
 	public ServerGame(ArrayList<ServerPlayer> players) {
 		this.players = players;
@@ -52,12 +48,12 @@ public class ServerGame extends Observable {
 	 */
 	public boolean set(Set set) {
 		if (set.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.SETTING)) {
-			this.endGame(set.getPlayer(), endDueToCheat);
+			this.endGame(set.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
 			if (!board.Set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
-				this.endGame(set.getPlayer(), endDueToCheat);
+				this.endGame(set.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {
 				settingPlayer.setState(ServerPlayer.TURNING);
@@ -76,11 +72,11 @@ public class ServerGame extends Observable {
 	 */
 	public boolean turn(Turn turn) {
 		if (turn.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.TURNING)) {
-			this.endGame(turn.getPlayer(), endDueToCheat);
+			this.endGame(turn.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
 			if (!board.Turn(turn.getBlock(), turn.getRotation())) {
-				this.endGame(turn.getPlayer(), endDueToCheat);
+				this.endGame(turn.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {
 				settingPlayer.setState(ServerPlayer.IDLE);
@@ -120,6 +116,19 @@ public class ServerGame extends Observable {
 		for (ServerPlayer p:players) {
 			players.remove(p);
 		}
+	}
+	
+	/**
+	 * Checks if this lobby contains the given player
+	 * @param player
+	 * @return
+	 */
+	public boolean containsPlayer(ServerPlayer player) {
+		for (ServerPlayer p:players) {
+			if (p.equals(player))
+				return true;
+		}
+		return false;
 	}
 	
 	public void broadcast(String message) {

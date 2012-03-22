@@ -16,6 +16,11 @@ public class Server {
 	private ArrayList<ServerPlayer> players;
 	private Network network;
 	private static int defaultPort = 8888;
+
+	public static int endDueToWinner = 1;
+	public static int endDueToRemise = 2;
+	public static int endDueToCheat = 3;
+	public static int endDueToDisconnect = 4;
 	
 	public Server() {
 		this.lobbies = new ArrayList<Lobby>();
@@ -54,7 +59,7 @@ public class Server {
 	 * @param player
 	 */
 	public void addPlayer(ServerPlayer player) {
-		players.add(player);
+		players.add(players.size(), player);
 		this.getLobby(player.preferredNumberOfPlayers()).addPlayer(player);
 	}
 	
@@ -67,6 +72,10 @@ public class Server {
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player))
 				l.removePlayer(player);
+		}
+		for (ServerGame g:games) {
+			if (g.containsPlayer(player))
+				g.endGame(player, endDueToDisconnect);
 		}
 		players.remove(player);
 	}

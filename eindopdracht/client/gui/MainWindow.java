@@ -78,6 +78,9 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 		exitMenuItem.addActionListener(this);
 		gameMenu.add(exitMenuItem);
 		
+		bord = new BordPanel(this.game);
+		this.add(bord);
+		
 		connectedLabel = new JLabel("Not connected");
 		this.add(connectedLabel);
 	}
@@ -152,32 +155,38 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 	@Override
 	public void update(Observable sender, Object object) {
 		if (object.getClass().equals(Game.class)) {
-			this.game = game;
-			bord = new BordPanel(game);
+			this.game = ((Game)object);
+			bord = new BordPanel(this.game);
 			this.add(bord);
 		} else if (object.getClass().equals(Command.class)){
 			System.out.println("Received a command in mainwindow!");
 			Command command = (Command)object;
 			if (command.getCommand().equals("start")) {
-				ArrayList<Player> players = new ArrayList<Player>();
 				String[] p = command.getArgs();
-				for (int i = 0; i<p.length; i++) {
-					if (p[i].equals(localPlayer.getName())) {
-						//was the local player
-						players.add(localPlayer);
-					} else {
-						NetworkPlayer newPlayer = new NetworkPlayer();
-						newPlayer.setName(p[i]);
-					}
-				}
-				this.game = new Game(players);
-				game.addObserver(network);
-				game.start();
+				this.startGame(p);
 			} else if (command.getCommand().equals("connected")) {
 				localPlayer.setName(command.getArg(0));
 				System.out.println("Joined, now has the name " + command.getArg(0));
 			}
 		}
+	}
+	
+	public void startGame(String[] p) {
+		ArrayList<Player> players = new ArrayList<Player>();
+		for (int i = 0; i<p.length; i++) {
+			if (p[i].equals(localPlayer.getName())) {
+				//was the local player
+				System.out.println("Found the local player");;
+				players.add(players.size(), localPlayer);
+			} else {
+				NetworkPlayer newPlayer = new NetworkPlayer();
+				System.out.println("Adding a networkplayer");
+				newPlayer.setName(p[i]);
+			}
+		}
+		this.game = new Game(players);
+		game.addObserver(network);
+		game.start();
 	}
 	
 	@Override

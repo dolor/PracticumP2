@@ -77,7 +77,6 @@ public class PlayerHandler implements Runnable {
 		} catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");
 			server.removePlayer(player);
-
 		} catch (NullPointerException e) {
 			// TODO Check if this is really necessary
 			System.exit(0);
