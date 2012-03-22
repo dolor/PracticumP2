@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import eindopdracht.model.Board;
+import eindopdracht.model.Set;
+import eindopdracht.model.Turn;
 
 public class Game extends Observable {
 	
 	ArrayList<Player> players;
 	Board board;
+	Player settingPlayer;
 	
 	/**
 	 * Maakt een game aan.
@@ -30,10 +33,57 @@ public class Game extends Observable {
 			player.setColor(color);
 			color++;
 		}	
-		this.board = new Board();
+		this.board = new Board();	
 		
+		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
+	}
+	/**
+	 * maakt een set object aan en stuurt dat naar observers
+	 */
+	public void giveSet()
+	{
+		Set set = new Set(this.getSettingPlayer());
 		
+		this.setChanged();
+		this.notifyObservers(set);	
+	}
+	/** geeft een turn object naar de observers
+	 *
+	 */
+	public void giveTurn()
+	{
+		Turn turn = new Turn(this.getSettingPlayer());
 		
+		this.setChanged();
+		this.notifyObservers(turn);	
+	}
+	
+	public Player getSettingPlayer()
+	{
+		return this.settingPlayer;
+	}
+	
+	public void setSettingPlayer(Player player)
+	{
+		if (this.players.contains(player))
+		{
+			this.settingPlayer = player;
+		}
+	}
+	public void nextSettingPlayer()
+	{
+		int index = players.indexOf(getSettingPlayer());
+		
+		if (index + 1 < players.size()) // als de volgende index binnen de range ligt
+		{
+			index++;
+		}
+		else // begin bij het begin.
+		{
+			index = 0;
+		}
+		
+		setSettingPlayer(players.get(index));
 	}
 	
 	
