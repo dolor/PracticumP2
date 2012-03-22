@@ -27,6 +27,7 @@ public class Turn {
 	{
 		return this.executed;
 	}
+
 	public void setValid(boolean valid)
 	{
 		this.valid = valid;
@@ -35,6 +36,7 @@ public class Turn {
 	{
 		return this.valid;
 	}
+
 	public int getBlock()
 	{
 		return this.block;
