@@ -1,5 +1,6 @@
 package eindopdracht.model;
-import java.util.*;
+
+
 public class Block {
 	Tile[] tiles;
 	public static int CW = 1; // clock wise;
