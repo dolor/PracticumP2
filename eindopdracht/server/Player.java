@@ -4,7 +4,7 @@ import eindopdracht.server.model.Game;
 import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.PlayerHandler;
 
-public class Player {
+public class Player extends eindopdracht.model.Player{
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
@@ -26,22 +26,6 @@ public class Player {
 	
 	public int preferredNumberOfPlayers() {
 		return this.preferredNumberOfPlayers;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String name() {
-		return this.name;
-	}
-	
-	public void setColor(int color) {
-		this.color = color;
-	}
-	
-	public int getColor() {
-		return this.color;
 	}
 	
 	public void sendMessage(String message) {

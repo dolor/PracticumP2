@@ -1,5 +1,6 @@
-package eindopdracht.model;
+package eindopdracht.server.model;
 
+import eindopdracht.server.Player;
 
 public class Set {
 	Player player;
@@ -9,9 +10,9 @@ public class Set {
 	public Set(Player player)
 	{
 		this.player = player;
-		int block = -1;
-		int tile = -1;
-		boolean executed = false;
+		this.block = -1;
+		this.tile = -1;
+		this.executed = false;
 	}
 	
 	public Player getPlayer()

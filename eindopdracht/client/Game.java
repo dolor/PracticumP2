@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import eindopdracht.model.Board;
+import eindopdracht.model.Player;
 
 public class Game extends Observable {
 	
