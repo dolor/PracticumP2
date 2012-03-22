@@ -52,7 +52,7 @@ public class Game extends Observable {
 	 * @return
 	 */
 	public boolean set(Set set) {
-		if (!set.getPlayer().equals(settingPlayer) || !settingPlayer.getState() == Player.SETTING) {
+		if (set.getPlayer().getState() == Player.IDLE || !(settingPlayer.getState() == Player.SETTING)) {
 			this.invalidTurn(set.getPlayer(), endDueToCheat);
 			return false;
 		} else {
@@ -76,7 +76,7 @@ public class Game extends Observable {
 	 * @return
 	 */
 	public boolean turn(Turn turn) {
-		if (turn.getPlayer().getState() == IDLE || !settingPlayer.getState() == Player.TURNING) {
+		if (turn.getPlayer().getState() == Player.IDLE || !(settingPlayer.getState() == Player.TURNING)) {
 			this.invalidTurn(turn.getPlayer(), endDueToCheat);
 			return false;
 		} else {
@@ -112,7 +112,7 @@ public class Game extends Observable {
 		return nextPlayer;
 	}
 
-	public void invalidTurn(eindopdracht.model.Player player, int reason) {
+	public void invalidTurn(eindopdracht.model.player.Player player, int reason) {
 		this.broadcast("end_game " + player.getName() + " " + reason);
 	}
 
