@@ -39,7 +39,11 @@ public class Board {
 		{
 			return blocks[block].Turn(rotation);
 		}
-		
+	}
+	
+	public Block[] getBlocks()
+	{
+		return this.blocks;
 	}
 	/**
 	 * Kijkt naar het board als geheel met een x van 0 8 en een y van 0 tot 8 0,0 is bovenin
