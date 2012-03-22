@@ -31,11 +31,17 @@ public class NetworkUtil {
         	return true;
         	//TODO support for IPV6?
         }
-        
-        
 	}
 	
 	public static boolean isValidPort(int port) {
 		return (port >= 0 && port <= 65535);
+	}
+	
+	public static boolean isValidPort(String port) {
+		try {
+			return isValidPort(Integer.parseInt(port));
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 }

@@ -46,7 +46,7 @@ public class Board {
 
 	}
 	
-	// board weet alleen of er 5 op een rij is of niet. Het aantal knikkers controlleerd game
+	// board weet alleen of er 5 op een rij is of niet. Het aantal knikkers controlleert game
 	public ArrayList<Integer> GetWinners()
 	{
 		// ga alle rijen af

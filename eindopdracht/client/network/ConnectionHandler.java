@@ -34,8 +34,11 @@ public class ConnectionHandler implements Runnable{
 	 * @param string text to be sent
 	 */
 	public void sendString(String string) {
+		System.out.println("Sending string: " + string);
 		try {
-			out.write(string);
+			out.write(string + "\n");
+			out.flush();
+			System.out.println("Sent!");
 		} catch (IOException e) {
 			// TODO Check how an error for sending should be handled; Locally or throwing to the caller.
 			e.printStackTrace();
@@ -54,6 +57,7 @@ public class ConnectionHandler implements Runnable{
         	while (next != null) {
         		//If null, the connection was terminated
         		network.processNetworkInput(next);
+        		next = in.readLine();
         	}
         } catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");

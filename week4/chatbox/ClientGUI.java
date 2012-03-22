@@ -28,9 +28,9 @@ public class ClientGUI extends JFrame
 
     /** Construeert een ClientGUI object. */
     public ClientGUI() {
-        super("Client GUI");
-        buildGUI();
-        setVisible(true);
+    super("Client GUI");
+    buildGUI();
+    setVisible(true);
 
         addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {

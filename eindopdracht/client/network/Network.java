@@ -1,6 +1,8 @@
 package eindopdracht.client.network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -22,9 +24,7 @@ public class Network extends Observable{
 	 * Creates a Command object and passes it through notifyObservers.
 	 */
 	public void processNetworkInput(String input) {
-		System.out.println(input);
 		Command command = new Command(input);
-		System.out.println(command.toString());
 		this.setChanged();
 		this.notifyObservers(command);
 	}
@@ -35,14 +35,18 @@ public class Network extends Observable{
 	 * @param port port to connect on
 	 * @return true if connected, false if not.
 	 */
-	public boolean Connect(String server, int port) {
+	public boolean connect(String server, int port) {
 		if (NetworkUtil.isValidHost(server) && NetworkUtil.isValidPort(port)) {
 			try {
+				System.out.println("Creating socket, connecting to " + server + "(" + port + ")");
 				Socket sock = new Socket(server, port);
+				System.out.println("Creating handler");
 				handler = new ConnectionHandler(sock, this);
+				Thread handlerThread = new Thread(handler);
+				handlerThread.start();
 				return true;
 			} catch (IOException e) {
-				System.out.println("[Error] IOException while trying to open a connection");
+				System.out.println("[Error] IOException while trying to open a connection: " + e.getMessage());
 				return false;
 			}
 		} else {
@@ -51,10 +55,33 @@ public class Network extends Observable{
 	}
 	
 	/**
+	 * Just a test main method
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Network net = new Network();
+		net.connect("localhost", 8888);
+	}
+	
+	/** Leest een regel tekst van standaardinvoer. */
+    static public String readString(String tekst) {
+        System.out.print(tekst);
+        String antw = null;
+        try {
+            BufferedReader in = 
+                new BufferedReader(new InputStreamReader(System.in));            
+            antw = in.readLine();
+        } catch (IOException e) {
+        }
+
+        return (antw == null) ? "" : antw;
+    }
+	
+	/**
 	 * Sends a string as chat to a server, if connected
 	 * @param chat
 	 */
-	public void SendChat(String chat) {
+	public void sendChat(String chat) {
 		if (handler != null) 
 			handler.sendString("chat " + chat);
 		else
@@ -62,11 +89,20 @@ public class Network extends Observable{
 	}
 	
 	/**
+	 * Asks for the name and preferred number of players, then joins
+	 */
+	public void join() {
+		String name = readString("Name? > ");
+		int size = Integer.parseInt(readString("Number of players? > "));
+		this.join(name, size);
+	}
+	
+	/**
 	 * 
 	 * @param name of this client
 	 * @param size of the lobby you wish to join
 	 */
-	public void Join(String name, int size) {
+	public void join(String name, int size) {
 		if (handler != null)
 			handler.sendString("join " + name + " " + size);
 		else
