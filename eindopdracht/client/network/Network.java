@@ -30,6 +30,22 @@ public class Network extends Observable{
 	}
 	
 	/**
+	 * Keeps reading input from the commandline and sends it directly to the server
+	 */
+	public void processTerminalInput() {
+		boolean stop = false;
+    	String userInput;
+        while (!stop) {
+        	System.out.print(">");
+        	userInput = readString("");
+			handler.sendString(userInput);
+			if (userInput.equals("EXIT")) {
+				stop = true;
+			}
+        }
+	}
+	
+	/**
 	 * Try to connect to a server
 	 * @param server ip/hostname
 	 * @param port port to connect on

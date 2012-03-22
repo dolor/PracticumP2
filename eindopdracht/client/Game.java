@@ -100,7 +100,7 @@ public class Game extends Observable{
 	{
 		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING) // hij is aan de beurt
 		{
-			
+			//TODO set verwerken
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class Game extends Observable{
 	{
 		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING) // hij is aan de beurt
 		{
-			//TODO set verwerken
+			//TODO turn verwerken
 		}
 	}
 	
