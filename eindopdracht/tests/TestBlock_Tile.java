@@ -19,11 +19,11 @@ public class TestBlock_Tile {
 		
 		block.DrawBlock();
 		System.out.println("--------");
-		block.Turn(block.CW);
+		block.Turn(Block.CW);
 		
 		block.DrawBlock();
 		System.out.println("--------");
-		block.Turn(block.CCW);
+		block.Turn(Block.CCW);
 		
 		block.DrawBlock();
 		

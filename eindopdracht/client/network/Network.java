@@ -44,9 +44,6 @@ public class Network extends Observable{
 				handler = new ConnectionHandler(sock, this);
 				Thread handlerThread = new Thread(handler);
 				handlerThread.start();
-				
-				this.join();
-				
 				return true;
 			} catch (IOException e) {
 				System.out.println("[Error] IOException while trying to open a connection: " + e.getMessage());
