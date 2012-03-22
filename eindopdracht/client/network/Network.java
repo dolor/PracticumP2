@@ -7,26 +7,107 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+import eindopdracht.client.Game;
 import eindopdracht.model.Command;
+import eindopdracht.model.Set;
+import eindopdracht.model.Turn;
 import eindopdracht.util.NetworkUtil;
+import eindopdracht.model.player.NetworkPlayer;
+import eindopdracht.model.player.Player;
+import eindopdracht.util.ModelUtil;
 
-public class Network extends Observable{
+public class Network extends Observable implements Observer{
 	
 	private ConnectionHandler handler;
+	private ArrayList<NetworkPlayer> networkPlayers;
 	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
+	private Game game;
+	private String localPlayerName;
+	
+	/**
+	 *
+	 * @param players all players that are non-local players
+	 */
+	public void setNetworkPlayers(ArrayList<NetworkPlayer> players) {
+		this.networkPlayers = players;
+	}
+	
+	public void addNetworkPlayer(NetworkPlayer player) {
+		if (this.networkPlayers == null) {
+			networkPlayers = new ArrayList<NetworkPlayer>();
+		}
+		networkPlayers.add(player);
+	}
+	
+	public void setLocalPlayerName(String name) {
+		this.localPlayerName = name;
+	}
+	
+	public String getLocalPlayerName() {
+		return this.localPlayerName;
+	}
 	
 	/**
 	 * Takes a string of input from a connectionHandler and acts appropriately.
 	 * Creates a Command object and passes it through notifyObservers.
 	 */
 	public void processNetworkInput(String input) {
+		System.out.println("Processing input: " + input);
 		Command command = new Command(input);
 		if (command.getCommand().equals("chat")) {
 			System.out.println("[Chat] " + command.getArg(0));
+		} 
+		
+		//Turn the block
+		else if (command.getCommand().equals("turn_block")) {
+			String playerName = command.getArg(2);
+			System.out.println("Player " + playerName + " turned a block");
+			for (NetworkPlayer player:networkPlayers) {
+				if (player.getName().equals(playerName)) {
+					Turn turn = new Turn(player);
+					turn.setBlock(ModelUtil.letterToInt(command.getArg(0)));
+					turn.setRotation(ModelUtil.directionToInt(command.getArg(1)));
+					
+					player.performTurn(turn);
+				}
+			}
+		} 
+		
+		//Set the tile
+		else if (command.getCommand().equals("set_tile")) {
+			String playerName = command.getArg(2);
+			System.out.println("Player " + playerName + " turned a block");
+			for (NetworkPlayer player:networkPlayers) {
+				if (player.getName().equals(playerName)) {
+					Set set = new Set(player);
+					set.setBlock(ModelUtil.letterToInt(command.getArg(0)));
+					set.setTile(Integer.parseInt(command.getArg(1)));
+					
+					player.performSet(set);
+				}
+			}
+		} 
+		
+		//Start a new game
+		else if (command.getCommand().equals("start")) {
+			this.setChanged();
+			this.notifyObservers(command);
+		} 
+		
+		//Give the turn to the localplayer
+		else if (command.getCommand().equals("your_turn")) {
+			game.setSettingPlayer(game.getLocalPlayer());
+		} 
+		
+		//Connected to the server
+		else if (command.getCommand().equals("connected")) {
+			this.setChanged();
+			this.notifyObservers(command);
 		}
 	}
 	
@@ -124,6 +205,19 @@ public class Network extends Observable{
 			handler.sendString("join " + name + " " + size);
 		else
 			System.out.println("[Error] not connected to a server!");
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg.getClass().equals(Set.class)) {
+			Set set = (Set)arg;
+			this.setTile(set.getBlock(), set.getTile());
+		}
+		
+		else if (arg.getClass().equals(Turn.class)) {
+			Turn turn = (Turn)arg;
+			this.turnBlock(turn.getBlock(), turn.getRotation());
+		}
 	}
 	
 	/**

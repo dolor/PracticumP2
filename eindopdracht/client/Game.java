@@ -16,7 +16,7 @@ public class Game extends Observable{
 	ArrayList<Player> players;
 	Board board;
 	Player settingPlayer;
-	
+	Player localPlayer;
 	
 	/**
 	 * Maakt een game aan.
@@ -24,6 +24,7 @@ public class Game extends Observable{
 	 */
 	public Game (ArrayList<Player> players)
 	{
+		System.out.println("Starting a new game!");
 		this.players = players;
 		
 		// geef spelers hun kleur
@@ -42,12 +43,22 @@ public class Game extends Observable{
 			color++;
 		}	
 		this.board = new Board();	
-
-		
-		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
-		
-		this.settingPlayer.setState(Player.SETTING);
 	}
+	
+	public void start() {
+
+		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
+		this.giveSet();
+	}
+	
+	public void setLocalPlayer(Player player) {
+		this.localPlayer = player;
+	}
+	
+	public Player getLocalPlayer() {
+		return this.localPlayer;
+	}
+	
 	/**
 	 * maakt een set object aan en stuurt dat naar observers
 	 */
@@ -78,12 +89,15 @@ public class Game extends Observable{
 	
 	public void setSettingPlayer(Player player)
 	{
+		System.out.println("Set the setting player");
 		if (this.players.contains(player))
 		{
-			this.getSettingPlayer().setState(Player.IDLE);
+			if (this.getSettingPlayer() != null)
+				this.getSettingPlayer().setState(Player.IDLE);
 			this.settingPlayer = player;
 		}
 	}
+	
 	public void nextSettingPlayer()
 	{
 		int index = players.indexOf(getSettingPlayer());

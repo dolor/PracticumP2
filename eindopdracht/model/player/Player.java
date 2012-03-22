@@ -68,8 +68,7 @@ public class Player implements Observer  {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Player object with not yet implemented update method got a set/turn!");
 	}
 
 }

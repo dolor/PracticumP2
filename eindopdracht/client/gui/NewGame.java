@@ -68,7 +68,8 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 		} else if (ev.getSource().equals(okayButton)) {
 			String name = nameTextField.getText();
 			int size = Integer.parseInt((String)lobbySizeBox.getSelectedItem());
-			observer.join(name, size);
+			observer.join(name, size, true);
+			//TODO implement an option to use an AI or not
 			observer.newGameFrameDismissed();
 			this.dispose();
 		} else if (ev.getSource().equals(nameTextField)) {
@@ -79,8 +80,6 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
