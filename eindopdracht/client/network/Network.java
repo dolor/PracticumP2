@@ -25,8 +25,9 @@ public class Network extends Observable{
 	 */
 	public void processNetworkInput(String input) {
 		Command command = new Command(input);
-		this.setChanged();
-		this.notifyObservers(command);
+		if (command.getCommand().equals("chat")) {
+			System.out.println("[Chat] " + command.getArg(0));
+		}
 	}
 	
 	/**
