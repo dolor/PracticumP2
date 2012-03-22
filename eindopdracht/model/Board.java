@@ -19,12 +19,27 @@ public class Board {
 	
 	public boolean Set(int block, int tile, int color)
 	{
-		return blocks[block].GetTile(tile).SetColor(color);
+		if (block >= 0 && block <= 8 && tile >= 0 && tile <= 8)
+		{
+			return false;
+		}
+		else
+		{
+			return blocks[block].GetTile(tile).SetColor(color);
+		}
 	}
 	
-	public void Turn(int block, int rotation)
+	public boolean Turn(int block, int rotation)
 	{
-		blocks[block].Turn(rotation);
+		if (block >= 0 && block <= 8 && rotation >= 1 && rotation <= 2)
+		{
+			return false;
+		}
+		else
+		{
+			return blocks[block].Turn(rotation);
+		}
+		
 	}
 	/**
 	 * Kijkt naar het board als geheel met een x van 0 8 en een y van 0 tot 8 0,0 is bovenin
