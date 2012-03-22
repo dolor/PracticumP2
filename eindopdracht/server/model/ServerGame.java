@@ -3,10 +3,9 @@ package eindopdracht.server.model;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import eindopdracht.server.model.Set;
+import eindopdracht.server.model.Turn;
 import eindopdracht.model.Board;
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
-import eindopdracht.server.ServerPlayer;
 import eindopdracht.util.ModelUtil;
 
 public class ServerGame extends Observable {
@@ -16,10 +15,10 @@ public class ServerGame extends Observable {
 
 	Board board;
 
-	private static int endDueToWinner = 1;
-	private static int endDueToRemise = 2;
-	private static int endDueToCheat = 3;
-	private static int endDueToDisconnect = 4;
+	public static int endDueToWinner = 1;
+	public static int endDueToRemise = 2;
+	public static int endDueToCheat = 3;
+	public static int endDueToDisconnect = 4;
 
 	public ServerGame(ArrayList<ServerPlayer> players) {
 		this.players = players;
@@ -53,12 +52,12 @@ public class ServerGame extends Observable {
 	 */
 	public boolean set(Set set) {
 		if (set.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.SETTING)) {
-			this.invalidTurn(set.getPlayer(), endDueToCheat);
+			this.endGame(set.getPlayer(), endDueToCheat);
 			return false;
 		} else {
 			if (!board.Set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
-				this.invalidTurn(set.getPlayer(), endDueToCheat);
+				this.endGame(set.getPlayer(), endDueToCheat);
 				return false;
 			} else {
 				settingPlayer.setState(ServerPlayer.TURNING);
@@ -77,11 +76,11 @@ public class ServerGame extends Observable {
 	 */
 	public boolean turn(Turn turn) {
 		if (turn.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.TURNING)) {
-			this.invalidTurn(turn.getPlayer(), endDueToCheat);
+			this.endGame(turn.getPlayer(), endDueToCheat);
 			return false;
 		} else {
 			if (!board.Turn(turn.getBlock(), turn.getRotation())) {
-				this.invalidTurn(turn.getPlayer(), endDueToCheat);
+				this.endGame(turn.getPlayer(), endDueToCheat);
 				return false;
 			} else {
 				settingPlayer.setState(ServerPlayer.IDLE);
@@ -112,10 +111,16 @@ public class ServerGame extends Observable {
 		return nextPlayer;
 	}
 
-	public void invalidTurn(eindopdracht.model.player.Player player, int reason) {
+	/**
+	 * Quit the server. Tell all players that the game is over, and the reason why.
+	 */
+	public void endGame(ServerPlayer player, int reason) {
 		this.broadcast("end_game " + player.getName() + " " + reason);
+		for (ServerPlayer p:players) {
+			players.remove(p);
+		}
 	}
-
+	
 	public void broadcast(String message) {
 		System.out.println("Broadcasting: " + message);
 		for (ServerPlayer player : players)

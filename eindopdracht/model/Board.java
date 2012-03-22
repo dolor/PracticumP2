@@ -2,6 +2,7 @@ package eindopdracht.model;
 
 import java.util.ArrayList;
 
+
 public class Board {
 	public static final int DIM = 3;
 	

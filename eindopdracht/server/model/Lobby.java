@@ -2,7 +2,6 @@ package eindopdracht.server.model;
 
 import java.util.ArrayList;
 
-import eindopdracht.server.ServerPlayer;
 import eindopdracht.server.Server;
 
 public class Lobby {
@@ -63,6 +62,7 @@ public class Lobby {
 		if (num > 0)
 			player.setName(player.getName() + "_" + num);
 
+		System.out.println("connected " + player.getName());
 		player.sendMessage("connected " + player.getName());
 				
 		if (players.size() == maxNumberOfPlayers) {

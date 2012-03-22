@@ -13,12 +13,12 @@ import java.util.Observer;
 import java.util.Scanner;
 
 import eindopdracht.client.Game;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
+import eindopdracht.client.model.player.NetworkPlayer;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Command;
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
 import eindopdracht.util.NetworkUtil;
-import eindopdracht.model.player.NetworkPlayer;
-import eindopdracht.model.player.Player;
 import eindopdracht.util.ModelUtil;
 
 public class Network extends Observable implements Observer{
@@ -109,6 +109,8 @@ public class Network extends Observable implements Observer{
 			this.setChanged();
 			this.notifyObservers(command);
 		}
+		
+		
 	}
 	
 	/**

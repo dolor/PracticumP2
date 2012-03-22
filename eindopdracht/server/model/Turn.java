@@ -1,6 +1,5 @@
 package eindopdracht.server.model;
 
-import eindopdracht.server.ServerPlayer;
 
 public class Turn {
 
@@ -25,7 +24,7 @@ public class Turn {
 		return this.executed;
 	}
 	
-	public int GetBlock()
+	public int getBlock()
 	{
 		return this.block;
 	}

@@ -1,4 +1,4 @@
-package eindopdracht.model.player;
+package eindopdracht.client.model.player;
 
 public class AIPlayer extends Player{
 

@@ -1,7 +1,7 @@
-package eindopdracht.model.player;
+package eindopdracht.client.model.player;
 
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 
 public class NetworkPlayer extends Player {
 	public void performSet(Set set) {

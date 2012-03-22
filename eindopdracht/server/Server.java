@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import eindopdracht.server.model.ServerGame;
 import eindopdracht.server.model.Lobby;
+import eindopdracht.server.model.ServerPlayer;
 import eindopdracht.server.network.Network;
 
 public class Server {
@@ -61,6 +62,10 @@ public class Server {
 		ServerGame newGame = new ServerGame(lobby.getPlayers());
 		newGame.start();
 		lobbies.remove(lobby);
+	}
+	
+	public void stopGame(ServerGame game) {
+		games.remove(game);
 	}
 	
 	/**

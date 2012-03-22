@@ -1,23 +1,23 @@
-package eindopdracht.model.player;
+package eindopdracht.client.model.player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Observable;
 
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 import eindopdracht.model.Command;
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
 
 public class HumanPlayer extends Player{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg.getClass().equals(Set.class)) {
+		if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
 			this.makeSet((Set)arg);
 		}
 		
-		else if (arg.getClass().equals(Turn.class)) {
+		else if (arg.getClass().equals(Turn.class) && ((Turn)arg).getPlayer().equals(this)) {
 			this.makeTurn((Turn)arg);
 		}
 	}

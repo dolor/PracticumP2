@@ -1,7 +1,6 @@
-package eindopdracht.model;
+package eindopdracht.client.model;
 
-import eindopdracht.model.player.Player;
-
+import eindopdracht.client.model.player.Player;
 
 public class Set {
 	Player player;

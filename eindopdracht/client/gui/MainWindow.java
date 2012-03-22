@@ -14,12 +14,12 @@ import java.util.Scanner;
 import javax.swing.*;
 
 import eindopdracht.client.Game;
+import eindopdracht.client.model.player.AIPlayer;
+import eindopdracht.client.model.player.HumanPlayer;
+import eindopdracht.client.model.player.NetworkPlayer;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Command;
-import eindopdracht.model.player.AIPlayer;
-import eindopdracht.model.player.HumanPlayer;
-import eindopdracht.model.player.NetworkPlayer;
-import eindopdracht.model.player.Player;
 
 public class MainWindow extends javax.swing.JFrame implements WindowListener, ActionListener, Observer{
 

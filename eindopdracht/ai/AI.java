@@ -1,4 +1,6 @@
 package eindopdracht.ai;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 import eindopdracht.model.*;
 
 public abstract class AI {

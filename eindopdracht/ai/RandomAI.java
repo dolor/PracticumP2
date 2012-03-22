@@ -2,9 +2,9 @@ package eindopdracht.ai;
 
 import java.util.ArrayList;
 
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
 
 
 public class RandomAI extends AI{

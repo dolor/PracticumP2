@@ -1,7 +1,5 @@
-package eindopdracht.server;
+package eindopdracht.server.model;
 
-import eindopdracht.server.model.ServerGame;
-import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.PlayerHandler;
 
 public class ServerPlayer{

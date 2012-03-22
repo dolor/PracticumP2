@@ -1,4 +1,4 @@
-package eindopdracht.model.player;
+package eindopdracht.client.model.player;
 
 import java.util.Observable;
 import java.util.Observer;

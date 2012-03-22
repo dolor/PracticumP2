@@ -3,12 +3,12 @@ package eindopdracht.client;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 
-import eindopdracht.model.Set;
-import eindopdracht.model.Turn;
 
-import eindopdracht.model.player.Player;
 
 
 public class Game extends Observable{
