@@ -158,9 +158,6 @@ public class Game extends Observable{
 				this.broadcast(turn);
 			}
 
-			// nieuwe player is aan de beurt
-			this.nextSettingPlayer();
-
 		}
 	}
 	
