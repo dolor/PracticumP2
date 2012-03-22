@@ -58,7 +58,7 @@ public class Game extends Observable {
 		
 	}
 	
-	public void invalidTurn(eindopdracht.model.Player player, int reason) {
+	public void invalidTurn(eindopdracht.model.player.Player player, int reason) {
 		this.broadcast("end_game " + player.name() + " " + reason);
 	}
 	

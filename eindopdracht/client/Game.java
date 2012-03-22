@@ -8,10 +8,10 @@ import eindopdracht.model.Board;
 import eindopdracht.model.Set;
 import eindopdracht.model.Turn;
 
-import eindopdracht.model.Player;
+import eindopdracht.model.player.Player;
 
 
-public class Game extends Observable {
+public class Game extends Observable{
 	
 	ArrayList<Player> players;
 	Board board;
@@ -90,5 +90,14 @@ public class Game extends Observable {
 		setSettingPlayer(players.get(index));
 	}
 	
+	public void set(Set set)
+	{
+		//TODO set verwerken
+	}
+	
+	public void turn(Turn turn)
+	{
+		//TODO: turn verwerken
+	}
 	
 }

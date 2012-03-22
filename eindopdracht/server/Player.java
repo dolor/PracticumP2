@@ -4,7 +4,7 @@ import eindopdracht.server.model.Game;
 import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.PlayerHandler;
 
-public class Player extends eindopdracht.model.Player{
+public class Player extends eindopdracht.model.player.Player{
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;

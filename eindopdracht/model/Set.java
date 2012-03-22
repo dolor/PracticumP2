@@ -1,5 +1,7 @@
 package eindopdracht.model;
 
+import eindopdracht.model.player.Player;
+
 
 public class Set {
 	Player player;
