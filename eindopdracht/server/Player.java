@@ -4,7 +4,7 @@ import eindopdracht.server.model.Game;
 import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.PlayerHandler;
 
-public class Player {
+public class Player extends eindopdracht.model.Player{
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
@@ -26,22 +26,6 @@ public class Player {
 	
 	public int preferredNumberOfPlayers() {
 		return this.preferredNumberOfPlayers;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String name() {
-		return this.name;
-	}
-	
-	public void setColor(int color) {
-		this.color = color;
-	}
-	
-	public int getColor() {
-		return this.color;
 	}
 	
 	public void sendMessage(String message) {
@@ -94,5 +78,33 @@ public class Player {
 	 */
 	public void chat(String message) {
 		System.out.println("Player chatting: " + message);
+	}
+
+	/**
+	 * @return the game
+	 */
+	public Game getGame() {
+		return game;
+	}
+
+	/**
+	 * @param game the game to set
+	 */
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	/**
+	 * @return the lobby
+	 */
+	public Lobby getLobby() {
+		return lobby;
+	}
+
+	/**
+	 * @param lobby the lobby to set
+	 */
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
 	}
 }
