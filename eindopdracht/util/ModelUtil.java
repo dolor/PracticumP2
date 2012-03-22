@@ -24,6 +24,14 @@ public class ModelUtil {
 	}
 	
 	/**
+	 * Converts an integer index to a letter
+	 * @ensure converts 0-8 to a letter A-I for blocks
+	 */
+	public static String intToLetter(int i) {
+		return letters[i];
+	}
+	
+	/**
 	 * Converts CW to 1 and CCW to 2.
 	 * @param direction
 	 * @return
@@ -33,5 +41,15 @@ public class ModelUtil {
 			return CW;
 		else
 			return CCW;
+	}
+	
+	/**
+	 * @ensure Converts 1 to CW and 2 to CCW
+	 */
+	public static String intToDirection(int direction) {
+		if (direction == CW)
+			return "CW";
+		else
+			return "CCW";
 	}
 }

@@ -24,7 +24,7 @@ public class Turn {
 		return this.executed;
 	}
 	
-	public int GetBlock()
+	public int getBlock()
 	{
 		return this.block;
 	}
