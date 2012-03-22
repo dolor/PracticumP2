@@ -1,14 +1,14 @@
 package eindopdracht.server.model;
 
-import eindopdracht.server.Player;
+import eindopdracht.server.ServerPlayer;
 
 public class Turn {
 
 	int block;
 	int rotation;
-	Player player;
+	ServerPlayer player;
 	boolean executed;
-	public Turn(Player player)
+	public Turn(ServerPlayer player)
 	{
 		this.block = -1;
 		this.rotation = -1;
@@ -44,7 +44,7 @@ public class Turn {
 		this.rotation = rotation;
 	}
 	
-	public Player getPlayer()
+	public ServerPlayer getPlayer()
 	{
 		return this.player;
 	}

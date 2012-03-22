@@ -2,18 +2,18 @@ package eindopdracht.server.model;
 
 import java.util.ArrayList;
 
-import eindopdracht.server.Player;
+import eindopdracht.server.ServerPlayer;
 import eindopdracht.server.Server;
 
 public class Lobby {
 	int maxNumberOfPlayers;
-	ArrayList<Player> players;
+	ArrayList<ServerPlayer> players;
 	Server server;
 	
 	public Lobby(int maxPlayers, Server server) {
 		this.server = server;
 		this.maxNumberOfPlayers = maxPlayers;
-		this.players = new ArrayList<Player>();
+		this.players = new ArrayList<ServerPlayer>();
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class Lobby {
 	 * Adds the player to the lobby. Will start a game automatically if 
 	 * this player fills the lobby up.
 	 */
-	public boolean addPlayer(Player player) {
+	public boolean addPlayer(ServerPlayer player) {
 		if (players.size() < maxNumberOfPlayers)
 			players.add(player);
 		
@@ -47,7 +47,7 @@ public class Lobby {
 		boolean validName = false;
 		while (!validName) {
 			boolean numRaised = false;
-			for (Player p:players) {
+			for (ServerPlayer p:players) {
 				if (p.getName().equals(player.getName()) && !p.equals(player)) {
 					numRaised = true;
 					num++;
@@ -69,7 +69,7 @@ public class Lobby {
 			server.startGame(this);
 		} else {
 			String msg = "players";
-			for (Player p:players) {
+			for (ServerPlayer p:players) {
 				if (!p.equals(player))
 					msg = msg + " " + p.getName();
 			}
@@ -79,7 +79,7 @@ public class Lobby {
 		return true;
 	}
 	
-	public ArrayList<Player> getPlayers() {
+	public ArrayList<ServerPlayer> getPlayers() {
 		return this.players;
 	}
 	
@@ -88,8 +88,8 @@ public class Lobby {
 	 * @param player
 	 * @return
 	 */
-	public boolean containsPlayer(Player player) {
-		for (Player p:players) {
+	public boolean containsPlayer(ServerPlayer player) {
+		for (ServerPlayer p:players) {
 			if (p.equals(player))
 				return true;
 		}
@@ -100,7 +100,7 @@ public class Lobby {
 	 * Removes the given player
 	 * @param player
 	 */
-	public void removePlayer(Player player) {
+	public void removePlayer(ServerPlayer player) {
 		this.players.remove(player);
 	}
 	
@@ -109,7 +109,7 @@ public class Lobby {
 	 * @param message
 	 */
 	public void broadcast(String message) {
-		for (Player player:players) {
+		for (ServerPlayer player:players) {
 			player.sendMessage(message);
 		}
 	}

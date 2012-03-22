@@ -48,7 +48,7 @@ public class Set {
 	{
 		this.executed = executed;
 	}
-	public boolean getExecuted()
+	public boolean isExecuted()
 	{
 		return this.executed;
 	}

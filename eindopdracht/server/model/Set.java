@@ -1,13 +1,13 @@
 package eindopdracht.server.model;
 
-import eindopdracht.server.Player;
+import eindopdracht.server.ServerPlayer;
 
 public class Set {
-	Player player;
+	ServerPlayer player;
 	int block;
 	int tile;
 	boolean executed;
-	public Set(Player player)
+	public Set(ServerPlayer player)
 	{
 		this.player = player;
 		this.block = -1;
@@ -15,7 +15,7 @@ public class Set {
 		this.executed = false;
 	}
 	
-	public Player getPlayer()
+	public ServerPlayer getPlayer()
 	{
 		return this.player;
 	}

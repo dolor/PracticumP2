@@ -122,7 +122,7 @@ public class Game extends Observable{
 	
 	public void set(Set set)
 	{
-		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING && !set.getExecuted()) // hij is aan de beurt
+		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING && !set.isExecuted()) // hij is aan de beurt
 		{
 			// de zet uitvoeren
 			set.setValid(this.board.Set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
@@ -153,7 +153,7 @@ public class Game extends Observable{
 	
 	public void turn(Turn turn)
 	{
-		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING && !turn.getExecuted()) // hij is aan de beurt
+		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING && !turn.isExecuted()) // hij is aan de beurt
 		{
 			//TODO set verwerken
 			turn.setValid(this.board.Turn(turn.getBlock(), turn.getRotation()));

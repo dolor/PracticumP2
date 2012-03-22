@@ -8,12 +8,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import eindopdracht.model.Command;
-import eindopdracht.server.Player;
+import eindopdracht.server.ServerPlayer;
 import eindopdracht.server.Server;
 import eindopdracht.util.ModelUtil;
 
 public class PlayerHandler implements Runnable{
-	private Player player;
+	private ServerPlayer player;
 	private Socket socket; //Not currently used
 	protected BufferedReader in;
     protected BufferedWriter out;
@@ -30,7 +30,7 @@ public class PlayerHandler implements Runnable{
 		System.out.println("PlayerHandler created");
 		this.server = server;
 		this.socket = socket;
-		this.player = new Player(this);
+		this.player = new ServerPlayer(this);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		

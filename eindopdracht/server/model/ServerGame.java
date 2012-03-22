@@ -6,13 +6,13 @@ import java.util.Observable;
 import eindopdracht.model.Board;
 import eindopdracht.model.Set;
 import eindopdracht.model.Turn;
-import eindopdracht.server.Player;
+import eindopdracht.server.ServerPlayer;
 import eindopdracht.util.ModelUtil;
 
-public class Game extends Observable {
+public class ServerGame extends Observable {
 
-	ArrayList<Player> players;
-	Player settingPlayer; // Player die aan de beurt is
+	ArrayList<ServerPlayer> players;
+	ServerPlayer settingPlayer; // Player die aan de beurt is
 
 	Board board;
 
@@ -21,11 +21,11 @@ public class Game extends Observable {
 	private static int endDueToCheat = 3;
 	private static int endDueToDisconnect = 4;
 
-	public Game(ArrayList<Player> players) {
+	public ServerGame(ArrayList<ServerPlayer> players) {
 		this.players = players;
 		this.board = new Board();
 
-		for (Player player : players) {
+		for (ServerPlayer player : players) {
 			player.setGame(this);
 		}
 	}
@@ -38,7 +38,7 @@ public class Game extends Observable {
 
 		// Tell the players that the game is starting
 		String msg = "start";
-		for (Player p : players)
+		for (ServerPlayer p : players)
 			msg = msg + " " + p.getName();
 
 		this.broadcast(msg);
@@ -52,7 +52,7 @@ public class Game extends Observable {
 	 * @return
 	 */
 	public boolean set(Set set) {
-		if (set.getPlayer().getState() == Player.IDLE || !(settingPlayer.getState() == Player.SETTING)) {
+		if (set.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.SETTING)) {
 			this.invalidTurn(set.getPlayer(), endDueToCheat);
 			return false;
 		} else {
@@ -61,7 +61,7 @@ public class Game extends Observable {
 				this.invalidTurn(set.getPlayer(), endDueToCheat);
 				return false;
 			} else {
-				settingPlayer.setState(Player.TURNING);
+				settingPlayer.setState(ServerPlayer.TURNING);
 				this.broadcast("set_tile "
 						+ ModelUtil.intToLetter(set.getBlock()) + " "
 						+ set.getTile() + " " + set.getPlayer().getName());
@@ -76,7 +76,7 @@ public class Game extends Observable {
 	 * @return
 	 */
 	public boolean turn(Turn turn) {
-		if (turn.getPlayer().getState() == Player.IDLE || !(settingPlayer.getState() == Player.TURNING)) {
+		if (turn.getPlayer().getState() == ServerPlayer.IDLE || !(settingPlayer.getState() == ServerPlayer.TURNING)) {
 			this.invalidTurn(turn.getPlayer(), endDueToCheat);
 			return false;
 		} else {
@@ -84,9 +84,9 @@ public class Game extends Observable {
 				this.invalidTurn(turn.getPlayer(), endDueToCheat);
 				return false;
 			} else {
-				settingPlayer.setState(Player.IDLE);
+				settingPlayer.setState(ServerPlayer.IDLE);
 				settingPlayer = getNextPlayer(settingPlayer);
-				settingPlayer.setState(Player.SETTING);
+				settingPlayer.setState(ServerPlayer.SETTING);
 				this.broadcast("turn_block "
 						+ ModelUtil.intToLetter(turn.getBlock()) + " "
 						+ ModelUtil.intToDirection(turn.getRotation()));
@@ -100,8 +100,8 @@ public class Game extends Observable {
 	 * @param currentPlayer
 	 * @return
 	 */
-	public Player getNextPlayer(Player currentPlayer) {
-		Player nextPlayer = players.get(0);
+	public ServerPlayer getNextPlayer(ServerPlayer currentPlayer) {
+		ServerPlayer nextPlayer = players.get(0);
 		//Loops through all but the last player, setting the next player in the list
 		//as the next player. If it doesn't find the current player, the current
 		//player was the last in the list.
@@ -118,7 +118,7 @@ public class Game extends Observable {
 
 	public void broadcast(String message) {
 		System.out.println("Broadcasting: " + message);
-		for (Player player : players)
+		for (ServerPlayer player : players)
 			player.sendMessage(message);
 	}
 }

@@ -23,7 +23,7 @@ public class Turn {
 	{
 		this.executed = executed;
 	}
-	public boolean getExecuted()
+	public boolean isExecuted()
 	{
 		return this.executed;
 	}

@@ -1,18 +1,23 @@
 package eindopdracht.server;
 
-import eindopdracht.server.model.Game;
+import eindopdracht.server.model.ServerGame;
 import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.PlayerHandler;
 
-public class Player extends eindopdracht.model.player.Player{
+public class ServerPlayer{
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
-    private Game game;
+    private ServerGame game;
+	int state;
     private int color;
     private PlayerHandler handler;
+	
+	public static final int TURNING = 2;
+	public static final int SETTING = 1;
+	public static final int IDLE = 0;
     
-    public Player(PlayerHandler handler) {
+    public ServerPlayer(PlayerHandler handler) {
     	this.handler = handler;
     }
 
@@ -83,14 +88,14 @@ public class Player extends eindopdracht.model.player.Player{
 	/**
 	 * @return the game
 	 */
-	/*public Game getGame() {
+	public ServerGame getGame() {
 		return this.game;
-	}*/
+	}
 
 	/**
 	 * @param game the game to set
 	 */
-	public void setGame(Game game) {
+	public void setGame(ServerGame game) {
 		this.game = game;
 	}
 
@@ -106,5 +111,45 @@ public class Player extends eindopdracht.model.player.Player{
 	 */
 	public void setLobby(Lobby lobby) {
 		this.lobby = lobby;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int getState()
+	{
+		return this.state;
+	}
+	public void setState(int state)
+	{
+		if (state >= 0 && state <= 2)
+		{
+			this.state = state;
+		}
+	}
+
+	/**
+	 * @return the color
+	 */
+	public int getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(int color) {
+		this.color = color;
 	}
 }

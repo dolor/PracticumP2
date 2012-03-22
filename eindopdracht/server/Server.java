@@ -2,29 +2,29 @@ package eindopdracht.server;
 
 import java.util.ArrayList;
 
-import eindopdracht.server.model.Game;
+import eindopdracht.server.model.ServerGame;
 import eindopdracht.server.model.Lobby;
 import eindopdracht.server.network.Network;
 
 public class Server {
 	private ArrayList<Lobby> lobbies;
-	private ArrayList<Game> games;
-	private ArrayList<Player> players;
+	private ArrayList<ServerGame> games;
+	private ArrayList<ServerPlayer> players;
 	private Network network;
 	private static int defaultPort = 8888;
 	
 	public Server() {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<Game>();
-		this.players = new ArrayList<Player>();
+		this.games = new ArrayList<ServerGame>();
+		this.players = new ArrayList<ServerPlayer>();
 		
 		this.network = new Network(defaultPort, this);
 	}
 	
 	public Server(int port) {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<Game>();
-		this.players = new ArrayList<Player>();
+		this.games = new ArrayList<ServerGame>();
+		this.players = new ArrayList<ServerPlayer>();
 		
 		this.network = new Network(port, this);
 	}
@@ -34,7 +34,7 @@ public class Server {
 	 * connects. Also adds the player to the lobby.
 	 * @param player
 	 */
-	public void addPlayer(Player player) {
+	public void addPlayer(ServerPlayer player) {
 		players.add(player);
 		this.getLobby(player.preferredNumberOfPlayers()).addPlayer(player);
 	}
@@ -44,7 +44,7 @@ public class Server {
 	 * player quits.
 	 * @param player
 	 */
-	public void removePlayer(Player player) {
+	public void removePlayer(ServerPlayer player) {
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player))
 				l.removePlayer(player);
@@ -58,7 +58,7 @@ public class Server {
 	 * @param lobby
 	 */
 	public void startGame(Lobby lobby) {
-		Game newGame = new Game(lobby.getPlayers());
+		ServerGame newGame = new ServerGame(lobby.getPlayers());
 		newGame.start();
 		lobbies.remove(lobby);
 	}

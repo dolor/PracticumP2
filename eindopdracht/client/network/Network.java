@@ -211,12 +211,14 @@ public class Network extends Observable implements Observer{
 	public void update(Observable o, Object arg) {
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
-			this.setTile(set.getBlock(), set.getTile());
+			if(set.isExecuted())
+				this.setTile(set.getBlock(), set.getTile());
 		}
 		
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn)arg;
-			this.turnBlock(turn.getBlock(), turn.getRotation());
+			if (turn.isExecuted())
+				this.turnBlock(turn.getBlock(), turn.getRotation());
 		}
 	}
 	
