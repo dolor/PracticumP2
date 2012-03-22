@@ -3,7 +3,7 @@ package eindopdracht.model.player;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Player extends Player implements Observer  {
+public class Player implements Observer  {
 	int color;
 	String name;
 	
