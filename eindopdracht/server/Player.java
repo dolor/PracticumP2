@@ -94,4 +94,32 @@ public class Player {
 	public void chat(String message) {
 		System.out.println("Player chatting: " + message);
 	}
+
+	/**
+	 * @return the game
+	 */
+	public Game getGame() {
+		return game;
+	}
+
+	/**
+	 * @param game the game to set
+	 */
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	/**
+	 * @return the lobby
+	 */
+	public Lobby getLobby() {
+		return lobby;
+	}
+
+	/**
+	 * @param lobby the lobby to set
+	 */
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
+	}
 }

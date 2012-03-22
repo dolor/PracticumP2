@@ -193,6 +193,9 @@ public class Board {
 		return !GetWinners().isEmpty(); // als de lijst niet leeg is is er een winner en dus game over
 	}
 	
+	/**
+	 * Prints the board to the commandline
+	 */
 	public void drawBoard()
 	{
 		for (int y = 0; y <= 8; y++)
