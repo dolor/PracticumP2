@@ -48,7 +48,7 @@ public class Lobby {
 		while (!validName) {
 			boolean numRaised = false;
 			for (Player p:players) {
-				if (p.name().equals(player.name()) && !p.equals(player)) {
+				if (p.getName().equals(player.getName()) && !p.equals(player)) {
 					numRaised = true;
 					num++;
 				}
@@ -61,9 +61,9 @@ public class Lobby {
 		 * Tells the player his current name
 		 */
 		if (num > 0)
-			player.setName(player.name() + "_" + num);
+			player.setName(player.getName() + "_" + num);
 
-		player.sendMessage("connected " + player.name());
+		player.sendMessage("connected " + player.getName());
 				
 		if (players.size() == maxNumberOfPlayers) {
 			server.startGame(this);
@@ -71,7 +71,7 @@ public class Lobby {
 			String msg = "players";
 			for (Player p:players) {
 				if (!p.equals(player))
-					msg = msg + " " + p.name();
+					msg = msg + " " + p.getName();
 			}
 			player.sendMessage(msg);
 		}
