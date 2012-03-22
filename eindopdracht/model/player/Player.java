@@ -3,10 +3,13 @@ package eindopdracht.model.player;
 import java.util.Observable;
 import java.util.Observer;
 
+import eindopdracht.client.Game;
+
 public class Player implements Observer  {
 	int color;
 	String name;
 	int state;
+	Game game;
 	
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;
@@ -15,6 +18,17 @@ public class Player implements Observer  {
 	public Player()
 	{
 		this.state = IDLE;
+		this.game = null;
+	}
+	
+	public void setGame(Game game)
+	{
+		this.game = game;
+	}
+	
+	public Game getGame()
+	{
+		return this.game;
 	}
 	
 	public int getState()

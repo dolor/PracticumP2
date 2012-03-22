@@ -84,7 +84,7 @@ public class Player extends eindopdracht.model.player.Player{
 	 * @return the game
 	 */
 	public Game getGame() {
-		return game;
+		return this.game;
 	}
 
 	/**

@@ -33,6 +33,9 @@ public class Game extends Observable{
 			// voeg als observer toe
 			this.addObserver(player);
 			
+			// geef speler de game mee
+			player.setGame(this);
+			
 			
 			// geef kleur
 			player.setColor(color);
@@ -109,14 +112,29 @@ public class Game extends Observable{
 		{
 			// de zet uitvoeren
 			set.setValid(this.board.Set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
-			set.setExecuted(true);
+			if (set.getValid())
+			{
+				System.out.println("DEBUG: Set is invalid!");
+				set.setExecuted(true);
+				
+				this.broadcast(set); // vertel iedereen dat de zet is uitgevoerd
+				
+				// deel een nieuwe turn uit
+				this.giveTurn();
+				
+			}
+			else
+			{
+				this.broadcast(set);
+			}
 			
-			this.setChanged();
-			this.notifyObservers(set); // vertel iedereen dat de zet is uitgevoerd
-			
-			// deel een nieuwe turn uit
-			this.giveTurn();
 		}
+	}
+	
+	public void broadcast(Object o)
+	{
+		this.setChanged();
+		this.notifyObservers(o);
 	}
 	
 	public void turn(Turn turn)
@@ -125,13 +143,21 @@ public class Game extends Observable{
 		{
 			//TODO set verwerken
 			turn.setValid(this.board.Turn(turn.getBlock(), turn.getRotation()));
-			turn.setExecuted(true);
+			if (turn.getValid())
+			{
+				System.out.println("DEBUG: Turn is invalid!");
+				turn.setExecuted(true);
+				
+				this.broadcast(turn); // vertel iedereen dat de zet is uitgevoerd
+				
+				// nieuwe player is aan de beurt
+				this.nextSettingPlayer();
+			}
+			else
+			{
+				this.broadcast(turn);
+			}
 			
-			this.setChanged();
-			this.notifyObservers(turn); // vertel iedereen dat de zet is uitgevoerd
-			
-			// nieuwe player is aan de beurt
-			this.nextSettingPlayer();
 
 		}
 	}
