@@ -6,6 +6,29 @@ import java.util.Observer;
 public class Player implements Observer  {
 	int color;
 	String name;
+	int state;
+	
+	public static final int TURNING = 2;
+	public static final int SETTING = 1;
+	public static final int IDLE = 0;
+	
+	public Player()
+	{
+		this.state = IDLE;
+	}
+	
+	public int getState()
+	{
+		return this.state;
+	}
+	public void setState(int state)
+	{
+		if (state >= 0 && state <= 2)
+		{
+			this.state = state;
+		}
+	}
+	
 	
 	/**
 	 * @ensure 0 <= color <= 4

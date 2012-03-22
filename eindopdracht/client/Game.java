@@ -17,6 +17,7 @@ public class Game extends Observable{
 	Board board;
 	Player settingPlayer;
 	
+	
 	/**
 	 * Maakt een game aan.
 	 * @param players De spelers die mee doen. Lijst staat op volgorde.
@@ -38,8 +39,11 @@ public class Game extends Observable{
 			color++;
 		}	
 		this.board = new Board();	
+
 		
 		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
+		
+		this.settingPlayer.setState(Player.SETTING);
 	}
 	/**
 	 * maakt een set object aan en stuurt dat naar observers
@@ -47,6 +51,7 @@ public class Game extends Observable{
 	public void giveSet()
 	{
 		Set set = new Set(this.getSettingPlayer());
+		this.getSettingPlayer().setState(Player.SETTING);
 		
 		this.setChanged();
 		this.notifyObservers(set);	
@@ -57,6 +62,7 @@ public class Game extends Observable{
 	public void giveTurn()
 	{
 		Turn turn = new Turn(this.getSettingPlayer());
+		this.getSettingPlayer().setState(Player.TURNING);
 		
 		this.setChanged();
 		this.notifyObservers(turn);	
@@ -92,12 +98,18 @@ public class Game extends Observable{
 	
 	public void set(Set set)
 	{
-		//TODO set verwerken
+		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING) // hij is aan de beurt
+		{
+			
+		}
 	}
 	
 	public void turn(Turn turn)
 	{
-		//TODO: turn verwerken
+		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING) // hij is aan de beurt
+		{
+			//TODO set verwerken
+		}
 	}
 	
 }
