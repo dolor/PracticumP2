@@ -107,11 +107,12 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 		System.out.println("Connecting with " + host + " on port " + port);
 		network = new Network();
 		network.addObserver(this);
-		network.connect(host, port);
-		connectMenuItem.setEnabled(false);
-		startMenuItem.setEnabled(true);
-		disconnectMenuItem.setEnabled(true);
-		connectedLabel.setText("Connected!");
+		if (network.connect(host, port)) {
+			connectMenuItem.setEnabled(false);
+			startMenuItem.setEnabled(true);
+			disconnectMenuItem.setEnabled(true);
+			connectedLabel.setText("Connected!");
+		}
 	}
 	
 	public void connectFrameDismissed() {
