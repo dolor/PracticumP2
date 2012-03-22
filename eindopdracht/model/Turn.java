@@ -9,12 +9,14 @@ public class Turn {
 	int rotation;
 	Player player;
 	boolean executed;
+	boolean valid;
 	public Turn(Player player)
 	{
 		this.block = -1;
 		this.rotation = -1;
 		this.player = player;	
 		this.executed = false;
+		this.valid = false;
 	}
 	
 	public void setExecuted(boolean executed)
@@ -25,7 +27,16 @@ public class Turn {
 	{
 		return this.executed;
 	}
-	
+
+	public void setValid(boolean valid)
+	{
+		this.valid = valid;
+	}
+	public boolean getValid()
+	{
+		return this.valid;
+	}
+
 	public int getBlock()
 	{
 		return this.block;

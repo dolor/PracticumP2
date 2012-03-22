@@ -77,6 +77,7 @@ public class Game extends Observable{
 	{
 		if (this.players.contains(player))
 		{
+			this.getSettingPlayer().setState(Player.IDLE);
 			this.settingPlayer = player;
 		}
 	}
@@ -93,22 +94,44 @@ public class Game extends Observable{
 			index = 0;
 		}
 		
-		setSettingPlayer(players.get(index));
+		this.getSettingPlayer().setState(Player.IDLE); // zet de player op idle
+		
+		this.setSettingPlayer(players.get(index));
+		
+		this.giveSet();
+		
+		
 	}
 	
 	public void set(Set set)
 	{
-		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING) // hij is aan de beurt
+		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING && !set.getExecuted()) // hij is aan de beurt
 		{
-			//TODO set verwerken
+			// de zet uitvoeren
+			set.setValid(this.board.Set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
+			set.setExecuted(true);
+			
+			this.setChanged();
+			this.notifyObservers(set); // vertel iedereen dat de zet is uitgevoerd
+			
+			// deel een nieuwe turn uit
+			this.giveTurn();
 		}
 	}
 	
 	public void turn(Turn turn)
 	{
-		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING) // hij is aan de beurt
+		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING && !turn.getExecuted()) // hij is aan de beurt
 		{
-			//TODO turn verwerken
+			//TODO set verwerken
+			turn.setValid(this.board.Turn(turn.getBlock(), turn.getRotation()));
+			turn.setExecuted(true);
+			
+			this.setChanged();
+			this.notifyObservers(turn); // vertel iedereen dat de zet is uitgevoerd
+			
+			// nieuwe player is aan de beurt
+			this.nextSettingPlayer();
 		}
 	}
 	

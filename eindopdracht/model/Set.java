@@ -8,12 +8,16 @@ public class Set {
 	int block;
 	int tile;
 	boolean executed;
+	
+	boolean valid;
+	
 	public Set(Player player)
 	{
 		this.player = player;
-		int block = -1;
-		int tile = -1;
-		boolean executed = false;
+		this.block = -1;
+		this.tile = -1;
+		this.valid = false;
+		this.executed = false;
 	}
 	
 	public Player getPlayer()
@@ -47,6 +51,15 @@ public class Set {
 	public boolean getExecuted()
 	{
 		return this.executed;
+	}
+	
+	public void setValid(boolean valid)
+	{
+		this.valid = valid;
+	}
+	public boolean getValid()
+	{
+		return this.valid;
 	}
 
 
