@@ -88,8 +88,7 @@ public class HumanPlayer extends Player{
             BufferedReader in = 
                 new BufferedReader(new InputStreamReader(System.in));            
             antw = in.readLine();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
 
         return (antw == null) ? "" : antw;
     }

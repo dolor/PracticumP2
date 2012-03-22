@@ -1,5 +1,8 @@
 package eindopdracht.server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import eindopdracht.server.model.ServerGame;
@@ -19,7 +22,11 @@ public class Server {
 		this.games = new ArrayList<ServerGame>();
 		this.players = new ArrayList<ServerPlayer>();
 		
-		this.network = new Network(defaultPort, this);
+		try {
+			this.network = new Network(defaultPort, this);
+		} catch (IOException e) {
+			System.out.println("Failed, port already taken! " + e.getMessage());
+		}
 	}
 	
 	public Server(int port) {
@@ -27,7 +34,18 @@ public class Server {
 		this.games = new ArrayList<ServerGame>();
 		this.players = new ArrayList<ServerPlayer>();
 		
-		this.network = new Network(port, this);
+		while (this.network == null) {
+			try {
+				this.network = new Network(port, this);
+			} catch (IOException e) {
+				System.out.println("Failed, port already taken! " + e.getMessage());
+				try {
+					port = Integer.parseInt(readString("port > "));
+				} catch (NumberFormatException f) {
+					System.out.println("Come on, just enter a fucking NUMBER!");
+				}
+			}
+		}
 	}
 	
 	/**
@@ -91,4 +109,17 @@ public class Server {
 	public static void main(String[] args) {
 		new Server();
 	}
+	
+	/** Leest een regel tekst van standaardinvoer. */
+    public String readString(String tekst) {
+        System.out.print(tekst);
+        String antw = null;
+        try {
+            BufferedReader in = 
+                new BufferedReader(new InputStreamReader(System.in));            
+            antw = in.readLine();
+        } catch (IOException e) {}
+
+        return (antw == null) ? "" : antw;
+    }
 }

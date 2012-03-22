@@ -11,7 +11,7 @@ public class Network {
 	private ArrayList<PlayerHandler> players;
 	private Server server;
 	
-	public Network(int port, Server server) {
+	public Network(int port, Server server) throws IOException{
 		this.server = server;
 		this.listen(port);
 		players = new ArrayList<PlayerHandler>();
@@ -21,16 +21,10 @@ public class Network {
 	 * Starts listening for connecting players
 	 * @param port to listen to
 	 */
-	private void listen(int port) {
+	private void listen(int port) throws IOException{
 		ServerSocket socket = null;
 		
-	    try {
-	    	socket = new ServerSocket(port);
-	    } catch (IOException e) {
-	    	System.out.println("Could not listen on port " + port + ": " + e.getMessage());
-			e.printStackTrace();
-			System.exit(0);
-		}
+	    socket = new ServerSocket(port);
 	    
 	    System.out.println("Port " + port + " opened, awaiting connection...");
 

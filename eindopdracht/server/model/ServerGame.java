@@ -115,6 +115,7 @@ public class ServerGame extends Observable {
 	 * Quit the server. Tell all players that the game is over, and the reason why.
 	 */
 	public void endGame(ServerPlayer player, int reason) {
+		System.out.println("Ending the game due to reason " + reason);
 		this.broadcast("end_game " + player.getName() + " " + reason);
 		for (ServerPlayer p:players) {
 			players.remove(p);
