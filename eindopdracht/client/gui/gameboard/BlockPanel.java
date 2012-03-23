@@ -185,8 +185,10 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 		Rectangle drawingRect = new Rectangle(currentWidth, currentHeight);
 		drawingRect.grow(-1, -1);
 		
+		//Draw the outlines
 		int thirdWidth = drawingRect.width/3;
 		int thirdHeight = drawingRect.height/3;
+		g.setColor(Color.black);
 		for (int x = 0; x < Board.DIM; x++) {
 			//Draw the columns
 			for (int y = 0; y < Board.DIM; y++) {
@@ -194,6 +196,22 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 				g.drawRect(thirdWidth * x, thirdHeight * y, thirdWidth, thirdHeight);
 			}
 		}
+		
+		//Set the actual colors
+		if (blockModel != null) {
+			for (int x = 0; x < Board.DIM; x++) {
+				//Draw the columns
+				for (int y = 0; y < Board.DIM; y++) {
+					//Draw the rows
+					int tile = y * 3 + x;
+					int tileColor = blockModel.GetTile(tile).getColor();
+					Color color = eindopdracht.model.Color.getAwtColor(tileColor);
+					g.setColor(color);
+					g.fillRect(thirdWidth * x, thirdHeight * y, thirdWidth, thirdHeight);
+				}
+			}
+		}
+		
 		
 		//g.setColor(Color.BLACK);
 		//g.drawRect(0, 0, drawingRect.width, drawingRect.height);
