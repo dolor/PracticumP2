@@ -51,7 +51,7 @@ public class ServerGame extends Observable {
 			this.endGame(set.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
-			if (!board.Set(set.getBlock(), set.getTile(), set.getPlayer()
+			if (!board.set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
 				this.endGame(set.getPlayer(), Server.endDueToCheat);
 				return false;
@@ -75,7 +75,7 @@ public class ServerGame extends Observable {
 			this.endGame(turn.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
-			if (!board.Turn(turn.getBlock(), turn.getRotation())) {
+			if (!board.turn(turn.getBlock(), turn.getRotation())) {
 				this.endGame(turn.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {

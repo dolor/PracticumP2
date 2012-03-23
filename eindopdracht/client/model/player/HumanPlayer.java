@@ -13,13 +13,13 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
+		/*if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
 			this.makeSet((Set)arg);
 		}
 		
 		else if (arg.getClass().equals(Turn.class) && ((Turn)arg).getPlayer().equals(this)) {
 			this.makeTurn((Turn)arg);
-		}
+		}*/
 	}
 	
 	/**

@@ -44,7 +44,7 @@ public class TestBoard
 					int block = Integer.parseInt(argumenten[1]);
 					int rotation = Integer.parseInt(argumenten[2]);
 					
-					b.Turn(block, rotation);
+					b.turn(block, rotation);
 				}
 				
 			}

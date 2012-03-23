@@ -18,9 +18,14 @@ public class Board {
 		}
 	}
 	
-	public boolean Set(int block, int tile, int color)
+	/**
+	 * Perform the set on this board
+	 * @return true if succesful, false if invalid
+	 */
+	public boolean set(int block, int tile, int color)
 	{
-		if (block >= 0 && block <= 8 && tile >= 0 && tile <= 8)
+		System.out.printf("Block:%o Tile:%o Color:%o \n", block, tile, color);
+		if (!(block >= 0 && block <= 8 && tile >= 0 && tile <= 8))
 		{
 			return false;
 		}
@@ -30,9 +35,9 @@ public class Board {
 		}
 	}
 	
-	public boolean Turn(int block, int rotation)
+	public boolean turn(int block, int rotation)
 	{
-		if (block >= 0 && block <= 8 && rotation >= 1 && rotation <= 2)
+		if (!(block >= 0 && block <= 8 && rotation >= 1 && rotation <= 2))
 		{
 			return false;
 		}

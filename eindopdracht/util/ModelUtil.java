@@ -16,7 +16,7 @@ public class ModelUtil {
 	 */
 	public static int letterToInt(String letter) {
 		for (int i = 0; i < letters.length; i++) {
-			if (letters[i].equals("letter"))
+			if (letters[i].equals(letter))
 				return i;
 		}
 		System.out.println("[ERROR] Letter " + letter + " could not be found! Returning 0 instead");
@@ -44,12 +44,30 @@ public class ModelUtil {
 	}
 	
 	/**
-	 * @ensure Converts 1 to CW and 2 to CCW
+	 * @ensure direction == 1 -> return "CW"
+	 * @ensure direction != 1 -> return "CCW"
 	 */
 	public static String intToDirection(int direction) {
 		if (direction == Block.CW)
 			return "CW";
 		else
 			return "CCW";
+	}
+	
+	/**
+	 * Test to see if the modelutil performs as it should
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		for (int i = 0; i < letters.length; i++) {
+			String letter = ModelUtil.intToLetter(i);
+			int number = ModelUtil.letterToInt(letter);
+			System.out.println(i + " > " + letter + " > " + number);
+		}
+		for (int i = 0; i < 4; i ++) {
+			String direction = ModelUtil.intToDirection(i);
+			int number = ModelUtil.directionToInt(direction);
+			System.out.println(i + " > " + direction + " > " + number);
+		}
 	}
 }

@@ -45,7 +45,21 @@ public class Game extends Observable{
 		this.board = new Board();	
 	}
 	
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	
+	public Board getBoard() {
+		System.out.println("Returning " + board.toString());
+		board.drawBoard();
+		return this.board;
+	}
+	
 	public void start() {
+		for (Player player:players) {
+			System.out.println("Starting with players " + player.getName());
+		}
+		
 		this.settingPlayer = players.get(0); // eerste speler is aan de beurt
 		System.out.println("Player " + settingPlayer.getName() + " got the turn");
 		this.giveSet();
@@ -64,22 +78,25 @@ public class Game extends Observable{
 	 */
 	public void giveSet()
 	{
+		System.out.println("Gave the set");
 		Set set = new Set(this.getSettingPlayer());
 		this.getSettingPlayer().setState(Player.SETTING);
 		
-		this.setChanged();
-		this.notifyObservers(set);	
+		this.broadcast(set);
+		System.out.println("Broadcasted the set");
 	}
+	
 	/** geeft een turn object naar de observers
 	 *
 	 */
 	public void giveTurn()
 	{
+		System.out.println("Gave a turn");
 		Turn turn = new Turn(this.getSettingPlayer());
 		this.getSettingPlayer().setState(Player.TURNING);
 		
-		this.setChanged();
-		this.notifyObservers(turn);	
+		this.broadcast(turn);
+		System.out.println("Broadcasted the turn");
 	}
 	
 	public Player getSettingPlayer()
@@ -125,7 +142,8 @@ public class Game extends Observable{
 		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING && !set.isExecuted()) // hij is aan de beurt
 		{
 			// de zet uitvoeren
-			set.setValid(this.board.Set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
+			set.setValid(this.board.set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
+			System.out.println("Now actually performing the set! was " + (set.getValid()?"":"NOT ") + "valid :" + set.toString());
 			if (set.getValid())
 			{
 				System.out.println("DEBUG: Set is invalid!");
@@ -147,6 +165,7 @@ public class Game extends Observable{
 	
 	public void broadcast(Object o)
 	{
+		System.out.println("Broadcasting " + o.toString());
 		this.setChanged();
 		this.notifyObservers(o);
 	}
@@ -156,7 +175,7 @@ public class Game extends Observable{
 		if (turn.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.TURNING && !turn.isExecuted()) // hij is aan de beurt
 		{
 			//TODO set verwerken
-			turn.setValid(this.board.Turn(turn.getBlock(), turn.getRotation()));
+			turn.setValid(this.board.turn(turn.getBlock(), turn.getRotation()));
 			if (turn.getValid())
 			{
 				System.out.println("DEBUG: Turn is invalid!");

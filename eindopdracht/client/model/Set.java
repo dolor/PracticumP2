@@ -61,5 +61,8 @@ public class Set {
 		return this.valid;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Player: " + getPlayer().getName() + ", Color:" + getPlayer().getColor() + ", Block: " + getBlock() + ", Tile: " + getTile() + ", Executed: " + isExecuted();
+	}
 }

@@ -1,5 +1,9 @@
 package eindopdracht.client.gui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,6 +18,7 @@ import java.util.Scanner;
 import javax.swing.*;
 
 import eindopdracht.client.Game;
+import eindopdracht.client.gui.gameboard.BordPanel;
 import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.client.model.player.HumanPlayer;
 import eindopdracht.client.model.player.NetworkPlayer;
@@ -21,7 +26,8 @@ import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Command;
 
-public class MainWindow extends javax.swing.JFrame implements WindowListener, ActionListener, Observer{
+public class MainWindow extends javax.swing.JFrame implements WindowListener,
+		ActionListener, Observer {
 
 	/**
 	 * 
@@ -32,59 +38,63 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 	JMenuItem disconnectMenuItem;
 	JFrame connectFrame;
 	JFrame newGameFrame;
-	JLabel connectedLabel;
+	JMenuItem connectedLabel;
 	Network network;
 	private Game game;
 	Player localPlayer;
 	BordPanel bord;
-	
+
 	public MainWindow() {
 		super("Pentago XL");
-        buildGUI();
-        setVisible(true);
+		buildGUI();
+		setVisible(true);
 		addWindowListener(this);
-		//new Connect();
+		// new Connect();
 	}
-	
+
 	public void buildGUI() {
-		setSize(600,400);
-		
+		setSize(700, 400);
+
+		BorderLayout layout = new BorderLayout(15, 15);
+		this.setLayout(layout);
+
 		JMenuBar menuBar;
 		JMenu gameMenu;
-		
+
 		menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
-		
+
 		gameMenu = new JMenu("Game");
 		gameMenu.setMnemonic(KeyEvent.VK_G);
-		gameMenu.getAccessibleContext().setAccessibleDescription("Game Options");
+		gameMenu.getAccessibleContext()
+				.setAccessibleDescription("Game Options");
 		menuBar.add(gameMenu);
-		
+
 		connectMenuItem = new JMenuItem("Connect");
 		connectMenuItem.addActionListener(this);
 		gameMenu.add(connectMenuItem);
-		
+
 		startMenuItem = new JMenuItem("Join");
 		startMenuItem.addActionListener(this);
 		startMenuItem.setEnabled(false);
 		gameMenu.add(startMenuItem);
-		
+
 		disconnectMenuItem = new JMenuItem("Disconnect");
 		disconnectMenuItem.addActionListener(this);
 		disconnectMenuItem.setEnabled(false);
 		gameMenu.add(disconnectMenuItem);
-		
+
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(this);
 		gameMenu.add(exitMenuItem);
 		
-		bord = new BordPanel(this.game);
+		connectedLabel = new JMenuItem("Not Connected");
+		menuBar.add(connectedLabel);
+
+		bord = new BordPanel();
 		this.add(bord);
-		
-		connectedLabel = new JLabel("Not connected");
-		this.add(connectedLabel);
 	}
-	
+
 	public static void main(String[] args) {
 		new MainWindow();
 	}
@@ -92,14 +102,14 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(connectMenuItem)) {
-			if (connectFrame == null) 
+			if (connectFrame == null)
 				connectFrame = new Connect(this);
 		} else if (e.getSource().equals(startMenuItem)) {
-			if (newGameFrame == null) 
+			if (newGameFrame == null)
 				newGameFrame = new NewGame(this);
 		} else if (e.getSource().equals(disconnectMenuItem)) {
 			disconnect();
-		} else if (((JMenuItem)e.getSource()).getText().equals("Exit")) {
+		} else if (((JMenuItem) e.getSource()).getText().equals("Exit")) {
 			if (network != null)
 				network.quit();
 			System.exit(0);
@@ -118,30 +128,31 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 			connectedLabel.setText("Connected!");
 		}
 	}
-	
+
 	public void connectFrameDismissed() {
 		if (connectFrame != null)
 			connectFrame = null;
 	}
-	
+
 	public void newGameFrameDismissed() {
 		if (newGameFrame != null)
 			newGameFrame = null;
 	}
-	
+
 	public void join(String name, int players, boolean humanPlayer) {
-		System.out.println("Joining as " + name + " in a lobby with " + players + " players max");
+		System.out.println("Joining as " + name + " in a lobby with " + players
+				+ " players max");
 		if (humanPlayer)
-			localPlayer =  new HumanPlayer();
+			localPlayer = new HumanPlayer();
 		else
 			localPlayer = new AIPlayer();
 		localPlayer.setName(name);
-		
+
 		if (network != null) {
 			network.join(name, players);
 		}
 	}
-	
+
 	public void disconnect() {
 		if (network != null) {
 			network.quit();
@@ -151,82 +162,83 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener, Ac
 			connectedLabel.setText("Not connected!");
 		}
 	}
-	
+
 	@Override
 	public void update(Observable sender, Object object) {
 		if (object.getClass().equals(Game.class)) {
-			this.game = ((Game)object);
-			bord = new BordPanel(this.game);
+			this.game = ((Game) object);
 			this.add(bord);
-		} else if (object.getClass().equals(Command.class)){
+		} else if (object.getClass().equals(Command.class)) {
 			System.out.println("Received a command in mainwindow!");
-			Command command = (Command)object;
+			Command command = (Command) object;
 			if (command.getCommand().equals("start")) {
 				String[] p = command.getArgs();
 				this.startGame(p);
 			} else if (command.getCommand().equals("connected")) {
 				localPlayer.setName(command.getArg(0));
-				System.out.println("Joined, now has the name " + command.getArg(0));
+				System.out.println("Joined, now has the name "
+						+ command.getArg(0));
 			}
 		}
 	}
-	
+
 	public void startGame(String[] p) {
+		System.out.println("Starting the game!");
 		ArrayList<Player> players = new ArrayList<Player>();
-		for (int i = 0; i<p.length; i++) {
+		for (int i = 0; i < p.length; i++) {
 			if (p[i].equals(localPlayer.getName())) {
-				//was the local player
-				System.out.println("Found the local player");;
-				players.add(players.size(), localPlayer);
+				// was the local player
+				System.out.println("Found the local player");
+				;
+				players.add(localPlayer);
 			} else {
 				NetworkPlayer newPlayer = new NetworkPlayer();
 				System.out.println("Adding a networkplayer");
 				newPlayer.setName(p[i]);
+				players.add(newPlayer);
 			}
 		}
 		this.game = new Game(players);
+		game.setLocalPlayer(localPlayer);
+		this.bord.setGame(this.game);
 		game.addObserver(network);
+		game.addObserver(bord);
 		game.start();
 	}
-	
+
 	@Override
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		System.exit(0);		
+		System.exit(0);
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		e.getWindow().dispose();		
+		e.getWindow().dispose();
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }
