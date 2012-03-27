@@ -21,10 +21,10 @@ public class IntelligentAI extends AI {
 	public static final int INSTANT_WIN = 1000000; // Instant win, over 9000
 	
 	// Scores voor zetten	
-	public static final int CENTER_CENTER = 50; // center van het speelveld
-	public static final int CENTER_OTHER = 25; // center van een ander block
-	public static final int CHAIN_SAME_BLOCK = 10; // reeks op hetzelfde block * aantal (uiteraard max 3)
-	public static final int CHAIN_DIAGONAL = 15; // reeks diagonaal * aantal
+	public static final int CENTER_CENTER = 200; // center van het speelveld
+	public static final int CENTER_OTHER = 100; // center van een ander block
+	public static final int CHAIN_SAME_BLOCK = 15; // reeks op hetzelfde block * aantal (uiteraard max 3)
+	public static final int CHAIN_DIAGONAL = 10; // reeks diagonaal * aantal
 	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
 	public static final int CHAIN_VERTICAL = 5; // reeks verticaal * aantal
 	public static final int SAME_BLOCK = 2; // aantal ballen op hetzelfde block * aantal
@@ -128,7 +128,7 @@ public class IntelligentAI extends AI {
 							break;
 						}
 					}
-					for (int xI = x+1; x <= xR; x++)
+					for (int xI = x; x <= xR; x++)
 					{
 						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							
@@ -157,10 +157,9 @@ public class IntelligentAI extends AI {
 					int xI = x;
 					chainLength = 1;
 					// kijk links
-					for (yI = y-1; y >= yL; y--)
+					for (yI = y; y >= yL; y--)
 					{
 						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -171,7 +170,7 @@ public class IntelligentAI extends AI {
 							break;
 						}
 					}
-					for (yI = y+1; y <= yR; y++)
+					for (yI = y; y <= yR; y++)
 					{
 						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							
@@ -207,9 +206,9 @@ public class IntelligentAI extends AI {
 						yD = 8;
 					
 					// CHECK LEFT_UP
-					for (yI = y-1; yI >= yU; yI--)
+					for (yI = y; yI >= yU; yI--)
 					{
-						for (xI = x-1; xI >= xL; xI--)
+						for (xI = x; xI >= xL; xI--)
 						{
 							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
@@ -225,9 +224,9 @@ public class IntelligentAI extends AI {
 					}
 					
 					// CHECK LEFT_DOWN
-					for (yI = y+1; yI <= yD; yI++)
+					for (yI = y; yI <= yD; yI++)
 					{
-						for (xI = x-1; xI >= xL; xI--)
+						for (xI = x; xI >= xL; xI--)
 						{
 							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
@@ -245,7 +244,7 @@ public class IntelligentAI extends AI {
 					// CHECK RIGHT_UP
 					for (yI = y-1; yI >= yU; yI--)
 					{
-						for (xI = x+1; xI <= xR; xI++)
+						for (xI = x; xI <= xR; xI++)
 						{
 							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
@@ -263,7 +262,7 @@ public class IntelligentAI extends AI {
 					// CHECK RIGHT_DOWN
 					for (yI = y+1; yI <= yD; yI++)
 					{
-						for (xI = x+1; xI <= xR; xI++)
+						for (xI = x; xI <= xR; xI++)
 						{
 							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 								
