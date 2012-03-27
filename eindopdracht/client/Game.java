@@ -82,7 +82,7 @@ public class Game extends Observable{
 		Set set = new Set(this.getSettingPlayer());
 		this.getSettingPlayer().setState(Player.SETTING);
 		
-		this.broadcast(set);
+		this.localBroadcast(set);
 		System.out.println("Broadcasted the set");
 	}
 	
@@ -95,7 +95,7 @@ public class Game extends Observable{
 		Turn turn = new Turn(this.getSettingPlayer());
 		this.getSettingPlayer().setState(Player.TURNING);
 		
-		this.broadcast(turn);
+		this.localBroadcast(turn);
 		System.out.println("Broadcasted the turn");
 	}
 	
@@ -149,10 +149,9 @@ public class Game extends Observable{
 			System.out.println("Now actually performing the set! was " + (set.getValid()?"":"NOT ") + "valid :" + set.toString());
 			if (set.getValid())
 			{
-				System.out.println("DEBUG: Set is invalid!");
 				set.setExecuted(true);
 				
-				this.broadcast(set); // vertel iedereen dat de zet is uitgevoerd
+				this.localBroadcast(set); // vertel iedereen dat de zet is uitgevoerd
 				
 				// deel een nieuwe turn uit
 				this.giveTurn();
@@ -160,13 +159,13 @@ public class Game extends Observable{
 			}
 			else
 			{
-				this.broadcast(set);
+				this.localBroadcast(set);
 			}
 			
 		}
 	}
 	
-	public void broadcast(Object o)
+	public void localBroadcast(Object o)
 	{
 		System.out.println("Broadcasting " + o.toString());
 		this.setChanged();
@@ -184,14 +183,14 @@ public class Game extends Observable{
 				System.out.println("DEBUG: Turn is invalid!");
 				turn.setExecuted(true);
 				
-				this.broadcast(turn); // vertel iedereen dat de zet is uitgevoerd
+				this.localBroadcast(turn); // vertel iedereen dat de zet is uitgevoerd
 				
 				// nieuwe player is aan de beurt
 				this.nextSettingPlayer();
 			}
 			else
 			{
-				this.broadcast(turn);
+				this.localBroadcast(turn);
 			}
 
 		}

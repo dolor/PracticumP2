@@ -63,6 +63,32 @@ public class BordPanel extends JPanel implements Observer {
 		}
 	}
 
+	/**
+	 * Shows a hint at the given tile. Hint disappears when any action has been taken.
+	 * @param set to show as a hint; only requires player, block and tile
+	 */
+	public void showSetHint(Set set) {
+		for (BlockPanel block:blockList) {
+			block.resetHints();
+		}
+		
+		int block = set.getBlock();
+		this.blockList.get(block - 1).showSetHint(set.getTile());
+	}
+	
+	/**
+	 * Shows a hint for a given rotation. Hint disappears when any action has been taken.
+	 * @param turn to show as a hint; only requires player, block and direction
+	 */
+	public void showRotateHint(Turn turn) {
+		for (BlockPanel block:blockList) {
+			block.resetHints();
+		}
+		
+		int block = turn.getBlock();
+		this.blockList.get(block - 1).showRotateHint(turn.getRotation());
+	}
+
 	private void setTiles(Board board) {
 		for (BlockPanel bp : blockList) {
 			Block block = board.getBlocks()[bp.getIndex()];
@@ -145,6 +171,8 @@ public class BordPanel extends JPanel implements Observer {
 			currentSet = null;
 		}
 	}
+	
+	
 
 	private ArrayList<BlockPanel> blocks;
 

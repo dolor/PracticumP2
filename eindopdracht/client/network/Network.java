@@ -230,7 +230,7 @@ public class Network extends Observable implements Observer{
 	 * @param tile 0-8
 	 */
 	public void setTile(int block, int tile) {
-		String msg = String.format("set_tile %s %o", letters[block], tile);
+		String msg = String.format("set_tile "+letters[block]+" "+tile);
 		if (handler != null)
 			handler.sendString(msg);
 		else
