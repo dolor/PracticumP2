@@ -5,7 +5,12 @@ public class Tile {
 	int color;
 	public Tile()
 	{
-		this.color = 0;
+		this(0);
+	}
+	
+	public Tile(int color)
+	{
+		this.color = color;
 	}
 
 	public boolean SetColor(int color)
@@ -51,5 +56,10 @@ public class Tile {
 	public int getColor()
 	{
 		return this.color;
+	}
+	
+	public Tile deepCopy()
+	{
+		return new Tile(this.getColor());
 	}
 }

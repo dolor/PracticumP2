@@ -213,6 +213,16 @@ public class Board {
 		return winners;
 	}
 	
+	public void setBlock(Block b, int block)
+	{
+		this.blocks[block] = b;
+	}
+	
+	public Block getBlock(int block)
+	{
+		return this.blocks[block];
+	}
+	
 	public boolean GameOver()
 	{
 		return !GetWinners().isEmpty(); // als de lijst niet leeg is is er een winner en dus game over
@@ -250,4 +260,14 @@ public class Board {
 		
 	}
 	
+	public Board deepCopy()
+	{
+		Board b = new Board();
+		for (int i = 0; i <= 8; i++)
+		{
+			b.setBlock(this.getBlock(i).deepCopy(), i);
+		}
+		
+		return b;
+	}
 }

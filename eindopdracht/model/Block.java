@@ -69,6 +69,11 @@ public class Block {
 		return tiles[tile];
 	}
 	
+	public void setTile(Tile t, int tile)
+	{
+		tiles[tile] = t;
+	}
+	
 	// for debug purposes
 	public void DrawBlock()
 	{
@@ -76,6 +81,16 @@ public class Block {
 		{
 			System.out.println(tiles[i*3+0].getColor() + "|" + tiles[i*3+1].getColor() + "|" + tiles[i*3+2].getColor());
 		}
+	}
+	
+	public Block deepCopy()
+	{
+		Block b = new Block();
+		for (int i = 0; i <= 8; i++)
+		{
+			b.setTile(this.GetTile(i).deepCopy(), i);
+		}
+		return b;
 	}
 	
 
