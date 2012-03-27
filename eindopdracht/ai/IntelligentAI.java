@@ -10,7 +10,7 @@ import eindopdracht.model.Board;
 
 public class IntelligentAI extends AI {
 
-	public IntelligentAI(int color, Board board) {
+	public IntelligentAI(int color, Board board) { // TODO: ANDERE SPELERS DOORGEVEN
 		super(color, board);
 		
 		// TODO Auto-generated constructor stub
@@ -67,6 +67,8 @@ public class IntelligentAI extends AI {
 		// lijst van alle zetten
 		ArrayList<IntelligentSet> options = new ArrayList<IntelligentSet>();
 		
+		// TODO: CONTROLLEER DE BESTE ZET VAN DE TEGESTANDER DMV DIE OOK MET AI TE BEREKENEN.
+		
 		for (int x = 0; x <= 8; x++)
 		{
 			for (int y = 0; y <= 8; y++)
@@ -74,6 +76,8 @@ public class IntelligentAI extends AI {
 				if (board.getTileXY(x, y).getColor() == 0)
 				{
 					// de zet is legaal
+					
+					
 					
 					// maak een intelligent zet met positie aan
 					Position pos = new Position(x,y);
