@@ -115,9 +115,9 @@ public class IntelligentAI extends AI {
 					int yI = y;
 					int chainLength = 1;
 					// kijk links
-					for (int xI = x-1; x >= xL; x--)
+					for (int xI = x; x >= xL; x--)
 					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -130,7 +130,8 @@ public class IntelligentAI extends AI {
 					}
 					for (int xI = x+1; x <= xR; x++)
 					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+							
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -158,7 +159,8 @@ public class IntelligentAI extends AI {
 					// kijk links
 					for (yI = y-1; y >= yL; y--)
 					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+							
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -171,7 +173,8 @@ public class IntelligentAI extends AI {
 					}
 					for (yI = y+1; y <= yR; y++)
 					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+							
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -208,7 +211,7 @@ public class IntelligentAI extends AI {
 					{
 						for (xI = x-1; xI >= xL; xI--)
 						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
 								chainLength++;
 								if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -226,7 +229,7 @@ public class IntelligentAI extends AI {
 					{
 						for (xI = x-1; xI >= xL; xI--)
 						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
 								chainLength++;
 								if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -244,7 +247,7 @@ public class IntelligentAI extends AI {
 					{
 						for (xI = x+1; xI <= xR; xI++)
 						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 							{
 								chainLength++;
 								if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -262,7 +265,8 @@ public class IntelligentAI extends AI {
 					{
 						for (xI = x+1; xI <= xR; xI++)
 						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor())
+							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+								
 							{
 								chainLength++;
 								if (new Position(xI, yI).getBlock() == pos.getBlock())
