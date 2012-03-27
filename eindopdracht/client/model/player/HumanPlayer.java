@@ -5,14 +5,41 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Observable;
 
+import eindopdracht.ai.AI;
+import eindopdracht.ai.IntelligentAI;
+import eindopdracht.ai.RandomAI;
+import eindopdracht.client.gui.gameboard.BordPanel;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
+import eindopdracht.model.Board;
 import eindopdracht.model.Command;
 
 public class HumanPlayer extends Player{
 	
+	private AI hintAI;
+	private BordPanel bordGUI;
+	
 	public HumanPlayer() {
 		this.setLocal(true);
+	}
+	
+	/**
+	 * Should be called after the game has started, so the human player can create his hint AI
+	 */
+	public void createHintAI() {
+		this.hintAI = new IntelligentAI(this.getColor(), this.getGame().getBoard());
+	}
+	
+	/**
+	 * Give the human player a reference to the bord GUI, to request hints
+	 * @param bordGUI
+	 */
+	public void setBordPanel(BordPanel bordGUI) {
+		this.bordGUI = bordGUI;
+	}
+	
+	public BordPanel getBordPanel() {
+		return this.bordGUI;
 	}
 
 	@Override
@@ -24,6 +51,22 @@ public class HumanPlayer extends Player{
 		else if (arg.getClass().equals(Turn.class) && ((Turn)arg).getPlayer().equals(this)) {
 			this.makeTurn((Turn)arg);
 		}*/
+	}
+	
+	/**
+	 * Ask his hint-AI to tell what he would do
+	 */
+	public void requestHint() {
+		Board bord = this.game.getBoard();
+		if (this.getState() == Player.SETTING) {
+			Set set = new Set(this);
+			hintAI.calculateSet(set);
+			bordGUI.showSetHint(set);
+		} else if (this.getState() == Player.TURNING) {
+			Turn turn = new Turn(this);
+			hintAI.calculateTurn(turn);
+			bordGUI.showRotateHint(turn);
+		}
 	}
 	
 	/**

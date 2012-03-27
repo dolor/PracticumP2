@@ -68,6 +68,9 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 			observer.newGameFrameDismissed();
 		} else if (ev.getSource().equals(okayButton)) {
 			String name = nameTextField.getText();
+			name.replaceAll("\t", "_");
+			name.replaceAll("\r", "_");
+			name.replaceAll("\n", "_");
 			int size = Integer.parseInt((String)lobbySizeBox.getSelectedItem());
 			observer.join(name, size, true);
 			//TODO implement an option to use an AI or not

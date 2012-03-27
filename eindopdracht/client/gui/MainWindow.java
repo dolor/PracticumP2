@@ -17,6 +17,8 @@ import java.util.Scanner;
 
 import javax.swing.*;
 
+import eindopdracht.ai.AI;
+import eindopdracht.ai.RandomAI;
 import eindopdracht.client.Game;
 import eindopdracht.client.gui.gameboard.BordPanel;
 import eindopdracht.client.model.player.AIPlayer;
@@ -29,9 +31,6 @@ import eindopdracht.model.Command;
 public class MainWindow extends javax.swing.JFrame implements WindowListener,
 		ActionListener, Observer {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8729792019935360588L;
 	JMenuItem connectMenuItem;
 	JMenuItem startMenuItem;
@@ -43,6 +42,7 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 	private Game game;
 	Player localPlayer;
 	BordPanel bord;
+	private JMenuItem hintButton;
 
 	public MainWindow() {
 		super("Pentago XL");
@@ -90,9 +90,17 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 		
 		connectedLabel = new JMenuItem("Not Connected");
 		menuBar.add(connectedLabel);
+		
+		hintButton = new JMenuItem("Hint please");
+		hintButton.addActionListener(this);
+		hintButton.setEnabled(false);
+		menuBar.add(hintButton);
 
 		bord = new BordPanel();
 		this.add(bord);
+		
+		/*JButton testButton = new JButton("Test");
+		this.add(testButton, BorderLayout.EAST);*/
 	}
 
 	public static void main(String[] args) {
@@ -113,6 +121,8 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 			if (network != null)
 				network.quit();
 			System.exit(0);
+		} else if (e.getSource().equals(hintButton)) {
+			((HumanPlayer)localPlayer).requestHint();
 		}
 	}
 
@@ -204,6 +214,13 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 		this.bord.setGame(this.game);
 		game.addObserver(network);
 		game.addObserver(bord);
+		
+		//The hint button should only be enabled for a human player
+		if (localPlayer.getClass().equals(HumanPlayer.class)) {
+			hintButton.setEnabled(true);
+			((HumanPlayer)localPlayer).createHintAI();
+			((HumanPlayer)localPlayer).setBordPanel(bord);
+		}
 		game.start();
 	}
 

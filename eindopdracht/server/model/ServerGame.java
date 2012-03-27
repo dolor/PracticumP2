@@ -6,6 +6,7 @@ import java.util.Observable;
 import eindopdracht.server.Server;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.util.ModelUtil;
 
@@ -47,7 +48,7 @@ public class ServerGame extends Observable {
 			msg = msg + " " + p.getName();
 		}
 
-		this.broadcast(msg);
+		this.netBroadcast(msg);
 
 		// TODO write this code
 	}
@@ -64,7 +65,7 @@ public class ServerGame extends Observable {
 		Set set = new Set(settingPlayer);
 		set.setExecuted(false);
 		System.out.println("        Gave SET to " + settingPlayer.getName());
-		this.broadcast(set);
+		this.localBroadcast(set);
 	}
 
 	/**
@@ -75,7 +76,7 @@ public class ServerGame extends Observable {
 		Turn turn = new Turn(settingPlayer);
 		turn.setExecuted(false);
 		System.out.println("        Gave TURN to " + settingPlayer.getName());
-		this.broadcast(turn);
+		this.localBroadcast(turn);
 	}
 
 	/**
@@ -102,11 +103,13 @@ public class ServerGame extends Observable {
 				return false;
 			} else {
 				set.setExecuted(true);
-				this.broadcast(set);
-				this.giveTurn();
-				this.broadcast("set_tile "
-						+ ModelUtil.intToLetter(set.getBlock()) + " "
-						+ set.getTile() + " " + set.getPlayer().getName());
+				this.localBroadcast(set);
+				if (!this.gameEnded()) {
+					this.giveTurn();
+					this.netBroadcast("set_tile "
+							+ ModelUtil.intToLetter(set.getBlock()) + " "
+							+ set.getTile() + " " + set.getPlayer().getName());
+				}
 				return true;
 			}
 		}
@@ -134,15 +137,39 @@ public class ServerGame extends Observable {
 				return false;
 			} else {
 				turn.setExecuted(true);
-				this.broadcast(turn);
-				this.giveSet();
-				this.broadcast("turn_block "
-						+ ModelUtil.intToLetter(turn.getBlock()) + " "
-						+ ModelUtil.intToDirection(turn.getRotation()) + " "
-						+ turn.getPlayer().getName());
+				this.localBroadcast(turn);
+				if (!this.gameEnded()) {
+					this.giveSet();
+					this.netBroadcast("turn_block "
+							+ ModelUtil.intToLetter(turn.getBlock()) + " "
+							+ ModelUtil.intToDirection(turn.getRotation()) + " "
+							+ turn.getPlayer().getName());
+				}
 				return true;
 			}
 		}
+	}
+	
+	/**
+	 * Check if the game ended and if it did, end the game
+	 * @return true if the game ended
+	 */
+	public boolean gameEnded() {
+		if (board.GameOver()) {
+			System.out.println("GAME IS OVER");
+			String gameOverString = new String("end_game 1");
+			for (Integer playerColor:board.GetWinners()) {
+				for (ServerPlayer player:players) {
+					if (player.getColor() == playerColor) {
+						gameOverString = gameOverString + " " + player.getName();
+					}
+				}
+			}
+			System.out.println(gameOverString);
+			this.netBroadcast(gameOverString);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -172,7 +199,7 @@ public class ServerGame extends Observable {
 	 */
 	public void endGame(ServerPlayer player, int reason) {
 		System.out.println("Ending the game due to reason " + reason);
-		this.broadcast("end_game " + player.getName() + " " + reason);
+		this.netBroadcast("end_game " + player.getName() + " " + reason);
 		for (ServerPlayer p : players) {
 			players.remove(p);
 		}
@@ -197,7 +224,7 @@ public class ServerGame extends Observable {
 	 * 
 	 * @param message
 	 */
-	public void broadcast(String message) {
+	public void netBroadcast(String message) {
 		System.out.println("Broadcasting: " + message);
 		for (ServerPlayer player : players)
 			player.sendMessage(message);
@@ -209,7 +236,7 @@ public class ServerGame extends Observable {
 	 * 
 	 * @param object
 	 */
-	public void broadcast(Object object) {
+	public void localBroadcast(Object object) {
 		this.setChanged();
 		this.notifyObservers(object);
 	}

@@ -20,6 +20,8 @@ import eindopdracht.model.Tile;
 import eindopdracht.util.ModelUtil;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 public class BlockPanel extends JPanel implements ActionListener, ComponentListener{
 
@@ -28,6 +30,9 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 	private JPanel rotatePanel;
 	private JButton rotateCCW;
 	private JButton rotateCW;
+	
+	private JButton setHint;
+	private JButton rotateHint;
 	
 	private JPanel setPanel;
 	private ArrayList<JButton> setButtons;
@@ -41,6 +46,9 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 	public static int DISABLED = 0;
 	public static int SETTING = 1;
 	public static int TURNING = 2;
+	
+	private static Border defaultBorder = BorderFactory.createLineBorder(Color.black);
+	private static Border hintBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.magenta, Color.magenta);
 
 	/**
 	 * Used to show the rotation buttons
@@ -73,12 +81,14 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 		rotateCW.addActionListener(this);
 		rotateCW.setOpaque(false);
 		rotateCW.setContentAreaFilled(false);
+		rotateCW.setBorder(defaultBorder);
 		rotatePanel.add(rotateCW);
 
 		rotateCCW = new JButton("L");
 		rotateCCW.addActionListener(this);
 		rotateCCW.setOpaque(false);
 		rotateCCW.setContentAreaFilled(false);
+		rotateCCW.setBorder(defaultBorder);
 		rotatePanel.add(rotateCCW);
 		
 		setPanel = new JPanel();
@@ -92,6 +102,7 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 			tile.setOpaque(false);
 			tile.setContentAreaFilled(false);
 			tile.setRolloverEnabled(false);
+			tile.setBorder(defaultBorder);
 			tile.setFocusPainted(false);
 			
 			tile.addActionListener(this);
@@ -177,7 +188,37 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 	public void setTiles(Block blockModel) {
 		this.blockModel = blockModel;
 	}
+	
+	public void resetHints() {
+		if (rotateHint != null) {
+			rotateHint.setBorder(defaultBorder);
+			rotateHint = null;
+		}
+	}
 
+	/**
+	 * Shows a hint at the given tile. Hint disappears when any action has been taken.
+	 * @param tile
+	 */
+	public void showSetHint(int tile) {
+		setHint = setButtons.get(tile);
+		setHint.setBorder(hintBorder);
+	}
+	
+	/**
+	 * Shows a hint for a given rotation. Hint disappears when any action has been taken.
+	 * @param rotation
+	 */
+	public void showRotateHint(int rotation) {
+		if (rotation == Block.CW) {
+			rotateHint = rotateCW;
+			rotateCW.setBorder(hintBorder);
+		} else if (rotation == Block.CCW){
+			rotateHint = rotateCCW;
+			rotateCCW.setBorder(hintBorder);
+		}
+	}
+	
 	/**
 	 * Called when this component has to draw its contents
 	 */
