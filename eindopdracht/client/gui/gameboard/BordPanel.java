@@ -71,9 +71,10 @@ public class BordPanel extends JPanel implements Observer {
 		for (BlockPanel block:blockList) {
 			block.resetHints();
 		}
+		System.out.println(set.toString());
 		
 		int block = set.getBlock();
-		this.blockList.get(block - 1).showSetHint(set.getTile());
+		this.blockList.get(block).showSetHint(set.getTile());
 	}
 	
 	/**

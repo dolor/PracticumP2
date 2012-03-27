@@ -47,8 +47,8 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 	public static int SETTING = 1;
 	public static int TURNING = 2;
 	
-	private static Border defaultBorder = BorderFactory.createLineBorder(Color.black);
-	private static Border hintBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.magenta, Color.magenta);
+	private static Border defaultBorder = BorderFactory.createLineBorder(Color.black, 1);
+	private static Border hintBorder = BorderFactory.createLineBorder(Color.magenta, 5);
 
 	/**
 	 * Used to show the rotation buttons
