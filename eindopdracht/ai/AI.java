@@ -20,8 +20,17 @@ public abstract class AI {
 	{
 		return this.board;
 	}
+	
+	/**
+	 * Vult de turn in.
+	 * @param turn
+	 */
 	public abstract void calculateTurn(Turn turn);
 
+	/**
+	 * Vult de set in.
+	 * @param set
+	 */
 	public abstract void calculateSet(Set set);
 
 }
