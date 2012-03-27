@@ -194,6 +194,7 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 			} else {
 				NetworkPlayer newPlayer = new NetworkPlayer();
 				System.out.println("Adding a networkplayer");
+				network.addNetworkPlayer(newPlayer);
 				newPlayer.setName(p[i]);
 				players.add(newPlayer);
 			}

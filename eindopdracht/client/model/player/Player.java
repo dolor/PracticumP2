@@ -10,6 +10,7 @@ public class Player implements Observer  {
 	String name;
 	int state;
 	Game game;
+	boolean localPlayer;
 	
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;
@@ -19,6 +20,23 @@ public class Player implements Observer  {
 	{
 		this.state = IDLE;
 		this.game = null;
+	}
+	
+	/**
+	 * Should be called by subclasses so the network knows if its a local player.
+	 * Only sets/turns by local players are broadcasted across the network.
+	 * @require local if this is a player commanded from this client
+	 */
+	public final void setLocal(boolean local) {
+		this.localPlayer = local;
+	}
+	
+	/**
+	 * Called by network to see if this is a locally controlled player
+	 * @return
+	 */
+	public final boolean isLocal() {
+		return localPlayer;
 	}
 	
 	public void setGame(Game game)

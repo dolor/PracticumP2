@@ -1,8 +1,11 @@
 package eindopdracht.server.model;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import eindopdracht.server.network.PlayerHandler;
 
-public class ServerPlayer{
+public class ServerPlayer implements Observer {
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
@@ -42,7 +45,9 @@ public class ServerPlayer{
 	
 	/**
 	 * Player wants to join a lobby
+	 * Not necessary, the playerhandler handles this.
 	 */
+	@Deprecated
 	public void join() {
 		System.out.println("Now trying to join");
 		//TODO write joining code
@@ -54,7 +59,10 @@ public class ServerPlayer{
 	 * @param tile
 	 */
 	public void setTile(int block, int tile) {
-		System.out.println("Trying to set a tile");
+		Set set = new Set(this);
+		set.setBlock(block);
+		set.setTile(tile);
+		game.set(set);
 	}
 	
 	
@@ -64,7 +72,10 @@ public class ServerPlayer{
 	 * @param direction 1=CW, 2=CCW
 	 */
 	public void turnBlock(int block, int direction) {
-		System.out.println("Trying to turn a block");
+		Turn turn = new Turn(this);
+		turn.setBlock(block);
+		turn.setRotation(direction);
+		game.turn(turn);
 	}
 	
 	/**
@@ -149,5 +160,45 @@ public class ServerPlayer{
 	 */
 	public void setColor(int color) {
 		this.color = color;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		/*
+		 * The player listens for sets and turns to determine its own current state.
+		 */
+		if (arg.getClass().equals(Set.class)) {
+			Set set = (Set)arg;
+			System.out.println("    Player " + getName() + " with state " + getState() + " received set: " + set.toString());
+			//Was a set for/by this player
+			if (set.getPlayer().equals(this)) {
+				if (set.getExecuted()) {
+					//Set was executed, set to idle
+					this.setState(IDLE);
+					System.out.println("    Was executed, setting to idle");
+				} else {
+					//Set has to be executed, set to Setting
+					this.setState(SETTING);
+					System.out.println("    Was not executed, setting to setting");
+				}
+			}
+		}
+		
+		else if (arg.getClass().equals(Turn.class)) {
+			Turn turn = (Turn)arg;
+			System.out.println("    Player " + getName() + " with state " + getState() + " received turn: " + turn.toString());
+			//was a turn for/by this player
+			if (turn.getPlayer().equals(this)) {
+				if (turn.getExecuted()) {
+					//turn was executed, setting to idle
+					this.setState(IDLE);
+					System.out.println("    Was executed, setting to idle");
+				} else {
+					//Turn still has to be executed, set to turning
+					this.setState(TURNING);
+					System.out.println("    Was not executed, setting to turning");
+				}
+			}
+		}
 	}
 }

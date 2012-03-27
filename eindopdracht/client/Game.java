@@ -51,7 +51,7 @@ public class Game extends Observable{
 	
 	public Board getBoard() {
 		System.out.println("Returning " + board.toString());
-		board.drawBoard();
+//		board.drawBoard();
 		return this.board;
 	}
 	
@@ -141,6 +141,9 @@ public class Game extends Observable{
 	{
 		if (set.getPlayer() == this.getSettingPlayer() && this.getSettingPlayer().getState() == Player.SETTING && !set.isExecuted()) // hij is aan de beurt
 		{
+			System.out.println("Checking if set should be performed");
+			System.out.println("    Set: " + set.toString() + " tile: " + set.getTile());
+			//System.out.printf("    Set: %o, %o, %o\n", set.getBlock(), set.getTile(), set.getPlayer().getColor());
 			// de zet uitvoeren
 			set.setValid(this.board.set(set.getBlock(), set.getTile(), set.getPlayer().getColor()));
 			System.out.println("Now actually performing the set! was " + (set.getValid()?"":"NOT ") + "valid :" + set.toString());

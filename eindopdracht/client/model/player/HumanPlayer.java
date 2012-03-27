@@ -10,6 +10,10 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.Command;
 
 public class HumanPlayer extends Player{
+	
+	public HumanPlayer() {
+		this.setLocal(true);
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {

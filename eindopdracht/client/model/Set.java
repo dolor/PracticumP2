@@ -3,66 +3,61 @@ package eindopdracht.client.model;
 import eindopdracht.client.model.player.Player;
 
 public class Set {
-	Player player;
-	int block;
-	int tile;
-	boolean executed;
-	
+	private Player player;
+	private int block;
+	private int tile;
+	private boolean executed;
+
 	boolean valid;
-	
-	public Set(Player player)
-	{
+
+	public Set(Player player) {
 		this.player = player;
 		this.block = -1;
 		this.tile = -1;
 		this.valid = false;
 		this.executed = false;
 	}
-	
-	public Player getPlayer()
-	{
+
+	public Player getPlayer() {
 		return this.player;
 	}
-	
-	public int getBlock()
-	{
+
+	public int getBlock() {
 		return this.block;
 	}
-	public void setBlock(int block)
-	{
+
+	public void setBlock(int block) {
 		this.block = block;
 	}
-	
-	public int getTile()
-	{
+
+	public int getTile() {
 		return this.tile;
 	}
-	
-	public void setTile(int tile)
-	{
+
+	public void setTile(int tile) {
 		this.tile = tile;
 	}
-	
-	public void setExecuted(boolean executed)
-	{
+
+	public void setExecuted(boolean executed) {
 		this.executed = executed;
 	}
-	public boolean isExecuted()
-	{
+
+	public boolean isExecuted() {
 		return this.executed;
 	}
-	
-	public void setValid(boolean valid)
-	{
+
+	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
-	public boolean getValid()
-	{
+
+	public boolean getValid() {
 		return this.valid;
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
-		return "Player: " + getPlayer().getName() + ", Color:" + getPlayer().getColor() + ", Block: " + getBlock() + ", Tile: " + getTile() + ", Executed: " + isExecuted();
-	}
+		return "Player: " + getPlayer().getName() + ", Color:"
+				+ getPlayer().getColor() + ", Block: " + getBlock()
+				+ ", Tile: " + getTile() + ", Executed: " + isExecuted();
+	}*/
 }

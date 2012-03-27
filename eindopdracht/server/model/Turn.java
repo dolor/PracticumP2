@@ -47,4 +47,9 @@ public class Turn {
 	{
 		return this.player;
 	}
+
+	@Override
+	public String toString() {
+		return "Player: " + getPlayer().getName() + ", Block: " + getBlock() + ", Direction: " + getRotation() + ", Executed: " + getExecuted();
+	}
 }

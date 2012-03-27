@@ -157,6 +157,7 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 					tile = t;
 				}
 			}
+			System.out.println("Clicked tile " + tile);
 			mainPanel.set(block, tile);
 		}
 		
@@ -168,6 +169,7 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 			} else {
 				direction = ModelUtil.directionToInt("CW");
 			}
+			System.out.println("Clicked turn " + direction);
 			mainPanel.turn(block, direction);
 		}
 	}

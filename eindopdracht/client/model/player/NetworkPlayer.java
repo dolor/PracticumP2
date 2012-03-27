@@ -4,6 +4,10 @@ import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 
 public class NetworkPlayer extends Player {
+	public NetworkPlayer() {
+		this.setLocal(false);
+	}
+	
 	public void performSet(Set set) {
 		this.game.set(set);
 	}

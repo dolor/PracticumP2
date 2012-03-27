@@ -48,7 +48,6 @@ public class Network {
 	 * @param msg
 	 */
 	public void broadcast(String msg) {
-		System.out.println("Broadcasting: " + msg);
 		for (PlayerHandler player:players) {
 			player.sendMessage(msg);
 		}

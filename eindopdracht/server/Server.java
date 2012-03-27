@@ -70,12 +70,16 @@ public class Server {
 	 */
 	public void removePlayer(ServerPlayer player) {
 		for (Lobby l:lobbies) {
-			if (l.containsPlayer(player))
+			if (l.containsPlayer(player)) {
+				System.out.println("Removing player from a lobby");
 				l.removePlayer(player);
+			}
 		}
 		for (ServerGame g:games) {
-			if (g.containsPlayer(player))
+			if (g.containsPlayer(player)) {
+				System.out.println("Removing player from a game, ending game");
 				g.endGame(player, endDueToDisconnect);
+			}
 		}
 		players.remove(player);
 	}

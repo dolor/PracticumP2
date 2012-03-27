@@ -47,5 +47,10 @@ public class Set {
 		return this.executed;
 	}
 
+	@Override
+	public String toString() {
+		return "Player: " + getPlayer().getName() + ", Color:" + getPlayer().getColor() + ", Block: " + getBlock() + ", Tile: " + getTile() + ", Executed: " + getExecuted();
+	}
+
 
 }

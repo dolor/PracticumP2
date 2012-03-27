@@ -81,7 +81,7 @@ public class Network extends Observable implements Observer{
 		//Set the tile
 		else if (command.getCommand().equals("set_tile")) {
 			String playerName = command.getArg(2);
-			System.out.println("Player " + playerName + " turned a block");
+			System.out.println("Player " + playerName + " set a tile");
 			for (NetworkPlayer player:networkPlayers) {
 				if (player.getName().equals(playerName)) {
 					Set set = new Set(player);
@@ -213,13 +213,13 @@ public class Network extends Observable implements Observer{
 	public void update(Observable o, Object arg) {
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
-			if(set.isExecuted())
+			if(set.isExecuted() && set.getPlayer().isLocal())
 				this.setTile(set.getBlock(), set.getTile());
 		}
 		
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn)arg;
-			if (turn.isExecuted())
+			if (turn.isExecuted() && turn.getPlayer().isLocal())
 				this.turnBlock(turn.getBlock(), turn.getRotation());
 		}
 	}

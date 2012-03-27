@@ -51,7 +51,8 @@ public class PlayerHandler implements Runnable {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					System.in));
 			antw = in.readLine();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 
 		return (antw == null) ? "" : antw;
 	}
@@ -63,10 +64,9 @@ public class PlayerHandler implements Runnable {
 			next = in.readLine();
 			while (next != null) {
 				// If null, the connection was terminated
-				System.out.println("[Handler] Sending: " + next);
-				
-				//If a client tries to challenge, handle the denial immediately to 
-				//minimize disappointment. Poor guy.
+				// If a client tries to challenge, handle the denial immediately
+				// to
+				// minimize disappointment. Poor guy.
 				if (next.equals("challenge")) {
 					this.sendMessage("challenge_failed");
 				} else {
@@ -86,8 +86,8 @@ public class PlayerHandler implements Runnable {
 	private void handleInput(String input) {
 		Command command = new Command(input);
 		String c = command.getCommand();
-		System.out.println("[PlayerHandler] Received: "
-				+ command.toString());
+		System.out.println("[Handler_" + player.getName() + "] Received: "
+				+ input + ", command: " + c);
 
 		if (c.equals("join")) {
 			player.setName(command.getArgs()[0]);
@@ -127,7 +127,6 @@ public class PlayerHandler implements Runnable {
 	 */
 	public void sendMessage(String msg) {
 		try {
-			System.out.println("Sending message " + msg + " to player");
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
