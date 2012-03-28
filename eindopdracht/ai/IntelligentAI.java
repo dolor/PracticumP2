@@ -40,7 +40,7 @@ public class IntelligentAI extends AI {
 	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
 	public static final int CHAIN_VERTICAL = 5; // reeks verticaal * aantal
 	public static final int SAME_BLOCK = 2; // aantal ballen op hetzelfde block * aantal
-	public static final int OTHER_PLAYER_MOVE = -10; // aftrek voor een move die berekent is voor de andere spelers
+	public static final int OTHER_PLAYER_MOVE = -15; // aftrek voor een move die berekent is voor de andere spelers
 	
 
 	// voor turns
@@ -344,7 +344,7 @@ public class IntelligentAI extends AI {
 		{
 			if (s.isOtherPlayerMove()) // als het van een andere speler is krijg men punten aftrek
 			{
-				s.setScore(s.getScore() - OTHER_PLAYER_MOVE);
+				s.setScore(s.getScore() + OTHER_PLAYER_MOVE);
 			}
 			if (s.getScore() > pick.getScore())
 			{
