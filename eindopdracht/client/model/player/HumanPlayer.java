@@ -63,7 +63,6 @@ public class HumanPlayer extends Player{
 	 * Ask his hint-AI to tell what he would do
 	 */
 	public void requestHint() {
-		Board bord = this.game.getBoard();
 		if (this.getState() == Player.SETTING) {
 			Set set = new Set(this);
 			hintAI.calculateSet(set);

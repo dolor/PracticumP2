@@ -1,5 +1,7 @@
 package eindopdracht.util;
 
+// Versie 2
+
 
 public interface Protocol {
 	/**
