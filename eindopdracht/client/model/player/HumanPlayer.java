@@ -3,6 +3,7 @@ package eindopdracht.client.model.player;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import eindopdracht.ai.AI;
@@ -27,7 +28,12 @@ public class HumanPlayer extends Player{
 	 * Should be called after the game has started, so the human player can create his hint AI
 	 */
 	public void createHintAI() {
-		this.hintAI = new IntelligentAI(this.getColor(), this.getGame().getBoard());
+		ArrayList<Player> players = this.getGame().getPlayers();
+		ArrayList<Integer> playerColors = new ArrayList<Integer>();
+		for (Player player:players) {
+			playerColors.add(player.getColor());
+		}
+		this.hintAI = new IntelligentAI(this.getColor(), this.getGame().getBoard(), playerColors);
 	}
 	
 	/**
