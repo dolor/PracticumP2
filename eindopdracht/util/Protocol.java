@@ -1,4 +1,4 @@
-// Versie 2
+package eindopdracht.util;
 
 
 public interface Protocol {
