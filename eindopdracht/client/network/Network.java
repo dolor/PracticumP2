@@ -58,12 +58,12 @@ public class Network extends Observable implements Observer{
 	public void processNetworkInput(String input) {
 		System.out.println("Processing input: " + input);
 		Command command = new Command(input);
-		if (command.getCommand().equals("chat")) {
+		if (command.getCommand().equals(Protocol.CHAT)) {
 			System.out.println("[Chat] " + command.getArg(0));
 		} 
 		
 		//Turn the block
-		else if (command.getCommand().equals("turn_block")) {
+		else if (command.getCommand().equals(Protocol.TURN_BLOK)) {
 			String playerName = command.getArg(2);
 			System.out.println("Player " + playerName + " turned a block");
 			for (NetworkPlayer player:networkPlayers) {
@@ -78,7 +78,7 @@ public class Network extends Observable implements Observer{
 		} 
 		
 		//Set the tile
-		else if (command.getCommand().equals("set_tile")) {
+		else if (command.getCommand().equals(Protocol.SET_TILE)) {
 			String playerName = command.getArg(2);
 			System.out.println("Player " + playerName + " set a tile");
 			for (NetworkPlayer player:networkPlayers) {
@@ -93,18 +93,18 @@ public class Network extends Observable implements Observer{
 		} 
 		
 		//Start a new game
-		else if (command.getCommand().equals("start")) {
+		else if (command.getCommand().equals(Protocol.START)) {
 			this.setChanged();
 			this.notifyObservers(command);
 		} 
 		
 		//Give the turn to the localplayer
-		else if (command.getCommand().equals("your_turn")) {
+		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
 			game.setSettingPlayer(game.getLocalPlayer());
 		} 
 		
 		//Connected to the server
-		else if (command.getCommand().equals("connected")) {
+		else if (command.getCommand().equals(Protocol.CONNECTED)) {
 			this.setChanged();
 			this.notifyObservers(command);
 		}
@@ -182,7 +182,7 @@ public class Network extends Observable implements Observer{
 	 */
 	public void sendChat(String chat) {
 		if (handler != null) 
-			handler.sendString("chat " + chat);
+			handler.sendString(Protocol.CHAT + " " + chat);
 		else
 			System.out.println("[Error] not connected to a server!");
 	}
@@ -203,7 +203,7 @@ public class Network extends Observable implements Observer{
 	 */
 	public void join(String name, int size) {
 		if (handler != null)
-			handler.sendString("join " + name + " " + size);
+			handler.sendString(Protocol.JOIN + " " + name + " " + size);
 		else
 			System.out.println("[Error] not connected to a server!");
 	}
@@ -229,7 +229,7 @@ public class Network extends Observable implements Observer{
 	 * @param tile 0-8
 	 */
 	public void setTile(int block, int tile) {
-		String msg = String.format("set_tile "+letters[block]+" "+tile);
+		String msg = String.format(Protocol.SET_TILE + " "+letters[block]+" "+tile);
 		if (handler != null)
 			handler.sendString(msg);
 		else
@@ -242,7 +242,7 @@ public class Network extends Observable implements Observer{
 	 * @param rotation 1=CW, 2=CCW
 	 */
 	public void turnBlock(int block, int rotation) {
-		String msg = String.format(Protocol.TURN_BLOCK + " %s %s", letters[block], rotation==1?"CW":"CCW");
+		String msg = String.format(Protocol.TURN_BLOK + " %s %s", letters[block], rotation==1?"CW":"CCW");
 		if (handler != null)
 			handler.sendString(msg);
 		else

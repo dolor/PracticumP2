@@ -6,11 +6,11 @@ import java.util.Observer;
 import eindopdracht.client.Game;
 
 public class Player implements Observer  {
-	int color;
-	String name;
-	int state;
-	Game game;
-	boolean localPlayer;
+	protected int color;
+	protected String name;
+	protected int state;
+	protected Game game;
+	protected boolean localPlayer;
 	
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;

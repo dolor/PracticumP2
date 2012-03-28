@@ -6,10 +6,20 @@ public class IntelligentSet {
 
 	int score;
 	Position pos;
+	boolean otherplayermove;
 	
 	public IntelligentSet(Position pos)
 	{
 		this.pos = pos;
+	}
+	
+	public void setOtherPlayerMove(boolean otherplayermove)
+	{
+		this.otherplayermove = otherplayermove;
+	}
+	public boolean isOtherPlayerMove()
+	{
+		return this.otherplayermove;
 	}
 	
 	public void setScore(int score)

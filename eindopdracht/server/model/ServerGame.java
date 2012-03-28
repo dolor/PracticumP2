@@ -9,6 +9,7 @@ import eindopdracht.server.model.Turn;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.Protocol;
 
 public class ServerGame extends Observable {
 
@@ -43,7 +44,7 @@ public class ServerGame extends Observable {
 		this.giveSet();
 
 		// Tell the players that the game is starting
-		String msg = "start";
+		String msg = Protocol.START;
 		for (ServerPlayer p : players) {
 			msg = msg + " " + p.getName();
 		}
@@ -106,7 +107,7 @@ public class ServerGame extends Observable {
 				this.localBroadcast(set);
 				if (!this.gameEnded()) {
 					this.giveTurn();
-					this.netBroadcast("set_tile "
+					this.netBroadcast(Protocol.SET_TILE + " "
 							+ ModelUtil.intToLetter(set.getBlock()) + " "
 							+ set.getTile() + " " + set.getPlayer().getName());
 				}
@@ -140,7 +141,7 @@ public class ServerGame extends Observable {
 				this.localBroadcast(turn);
 				if (!this.gameEnded()) {
 					this.giveSet();
-					this.netBroadcast("turn_block "
+					this.netBroadcast(Protocol.TURN_BLOK + " "
 							+ ModelUtil.intToLetter(turn.getBlock()) + " "
 							+ ModelUtil.intToDirection(turn.getRotation()) + " "
 							+ turn.getPlayer().getName());
@@ -157,7 +158,7 @@ public class ServerGame extends Observable {
 	public boolean gameEnded() {
 		if (board.GameOver()) {
 			System.out.println("GAME IS OVER");
-			String gameOverString = new String("end_game 1");
+			String gameOverString = new String(Protocol.END_GAME + " " + Server.endDueToWinner);
 			for (Integer playerColor:board.GetWinners()) {
 				for (ServerPlayer player:players) {
 					if (player.getColor() == playerColor) {
@@ -199,7 +200,7 @@ public class ServerGame extends Observable {
 	 */
 	public void endGame(ServerPlayer player, int reason) {
 		System.out.println("Ending the game due to reason " + reason);
-		this.netBroadcast("end_game " + player.getName() + " " + reason);
+		this.netBroadcast(Protocol.END_GAME + " " + player.getName() + " " + reason);
 		for (ServerPlayer p : players) {
 			players.remove(p);
 		}
