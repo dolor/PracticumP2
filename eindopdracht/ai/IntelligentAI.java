@@ -76,6 +76,11 @@ public class IntelligentAI extends AI {
 		r.calculateTurn(turn);
 	}
 	
+	private void printLine(String line)
+	{
+		System.out.println("AI:\t\t"+line);
+	}
+	
 	public ArrayList<IntelligentSet> getOptions()
 	{
 		// lijst van alle zetten
@@ -107,6 +112,7 @@ public class IntelligentAI extends AI {
 					if (board.GetWinners().contains(this.getColor()))
 					{
 						s.addScore(INSTANT_WIN);
+						printLine("Instant win detected at X: "+x+", Y: "+y);
 					}					
 
 					// CENTER_CENTER
@@ -355,8 +361,8 @@ public class IntelligentAI extends AI {
 			}
 		}
 		Position pos = pick.getPosition();
-		System.out.println("AI score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
-		System.out.println("AI X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
+		this.printLine("Picked score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
+		this.printLine("X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
 		
 		// stel pick in in set
 		set.setBlock(pick.getPosition().getBlock());
