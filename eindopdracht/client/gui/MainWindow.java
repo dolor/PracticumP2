@@ -220,6 +220,10 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 			hintButton.setEnabled(true);
 			((HumanPlayer)localPlayer).createHintAI();
 			((HumanPlayer)localPlayer).setBordPanel(bord);
+		} 
+		//And if it's an AI player, its AI should be initialized
+		else if (localPlayer.getClass().equals(AIPlayer.class)) {
+			((AIPlayer)localPlayer).initializeAI();
 		}
 		game.start();
 	}

@@ -21,6 +21,7 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	private static final long serialVersionUID = -6273897856907897047L;
 	private JTextField nameTextField;
 	private JComboBox lobbySizeBox;
+	private JCheckBox aiButton;
 	private JButton cancelButton;
 	private JButton okayButton;
 	private MainWindow observer;
@@ -52,6 +53,9 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 		lobbySizeBox.addActionListener(this);
 		this.add(lobbySizeBox);
 		
+		aiButton = new JCheckBox("AI");
+		this.add(aiButton);
+		
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		this.add(cancelButton);
@@ -72,7 +76,8 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 			name.replaceAll("\r", "_");
 			name.replaceAll("\n", "_");
 			int size = Integer.parseInt((String)lobbySizeBox.getSelectedItem());
-			observer.join(name, size, true);
+			boolean useAI = aiButton.isSelected();
+			observer.join(name, size, useAI);
 			//TODO implement an option to use an AI or not
 			observer.newGameFrameDismissed();
 			this.dispose();
