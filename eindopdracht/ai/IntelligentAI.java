@@ -33,7 +33,7 @@ public class IntelligentAI extends AI {
 	public static final int INSTANT_WIN = 1000000; // Instant win, over 9000
 	
 	// Scores voor zetten	
-	public static final int CENTER_CENTER = 300; // center van het speelveld
+	public static final int CENTER_CENTER = 600; // center van het speelveld
 	public static final int CENTER_OTHER = 50; // center van een ander block
 	public static final int CHAIN_SAME_BLOCK = 15; // reeks op hetzelfde block * aantal (uiteraard max 3)
 	public static final int CHAIN_DIAGONAL = 10; // reeks diagonaal * aantal
@@ -112,6 +112,7 @@ public class IntelligentAI extends AI {
 					// CENTER_CENTER
 					if (x == 4 && y == 4)
 					{
+						System.out.println("CENTER_CENTER");
 						s.addScore(CENTER_CENTER);
 					}
 					// CENTER_OTHER
@@ -314,6 +315,8 @@ public class IntelligentAI extends AI {
 					}
 					if (sameBlock > 1)
 						s.addScore(sameBlock * SAME_BLOCK);
+					
+					s.setOtherPlayerMove(false);
 
 
 				}
@@ -351,8 +354,9 @@ public class IntelligentAI extends AI {
 				pick = s;
 			}
 		}
-		
+		Position pos = pick.getPosition();
 		System.out.println("AI score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
+		System.out.println("AI X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
 		
 		// stel pick in in set
 		set.setBlock(pick.getPosition().getBlock());
