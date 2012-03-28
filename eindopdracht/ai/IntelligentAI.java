@@ -30,23 +30,226 @@ public class IntelligentAI extends AI {
 	
 	// zetten voor beide
 	// aantal > 1
-	public static final int INSTANT_WIN = 1000000; // Instant win, over 9000
+	public static final int INSTANT_WIN = 10000000; // Instant win, over 9000
 	
 	// Scores voor zetten	
-	public static final int CENTER_CENTER = 600; // center van het speelveld
-	public static final int CENTER_OTHER = 31; // center van een ander block
-	public static final int CHAIN_SAME_BLOCK = 15; // reeks op hetzelfde block * aantal (uiteraard max 3)
-	public static final int CHAIN_DIAGONAL = 10; // reeks diagonaal * aantal
-	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
-	public static final int CHAIN_VERTICAL = 5; // reeks verticaal * aantal
-	public static final int SAME_BLOCK = 2; // aantal ballen op hetzelfde block * aantal
-	public static final int OTHER_PLAYER_MOVE = -15; // aftrek voor een move die berekent is voor de andere spelers
+	public static final int CENTER_CENTER = 100; // center van het speelveld
+	public static final int CENTER_OTHER = 2; // center van een ander block
+	public static final int CHAIN_SAME_BLOCK = 3; // reeks op hetzelfde block * aantal (uiteraard max 3)
+	public static final int CHAIN_DIAGONAL = 45; // reeks diagonaal * aantal
+	public static final int CHAIN_HORIZONTAL = 30; // reeks horizontaal * aantal 
+	public static final int CHAIN_VERTICAL = 30; // reeks verticaal * aantal
+	public static final int SAME_BLOCK = 1; // aantal ballen op hetzelfde block * aantal
+	public static final int OTHER_PLAYER_MOVE = -5; // aftrek voor een move die berekent is voor de andere spelers
 	
 
 	// voor turns
 	public static final int BREAK_OPPONENT_CHAIN = 5; // breekt een reeks van de tegenstander door * aantal
 	public static final int CREATE_CHAIN = 7; // creeer een keten voor jezelf * aantal
 	
+	public int countChain_Diagonal(Board b, Position pos, IntelligentSet set)
+	{
+		int x = pos.getX();
+		int y = pos.getY();
+		
+		// CHAIN_DIAGONAL
+		int chainLength = 1;
+		// check de borders
+		int xL = pos.getX()-4;
+		if (xL < 0)
+			xL = 0;
+		int xR = xL + 4;
+		if (xR > 8)
+			xR = 8;
+
+		int yU = pos.getY()-4;
+		if (yU < 0)
+			yU = 0;
+		int yD = pos.getY()+4;
+		if (yD > 8)
+			yD = 8;
+
+		// CHECK LEFT_UP
+		for (int yI = y; yI >= yU; yI--)
+		{
+			for (int xI = x; xI >= xL; xI--)
+			{
+				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				{
+					chainLength++;
+					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+						set.setSameBlock(set.getChainSameBlock() + 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		// CHECK LEFT_DOWN
+		for (int yI = y; yI <= yD; yI++)
+		{
+			for (int xI = x; xI >= xL; xI--)
+			{
+				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				{
+					chainLength++;
+					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+						set.setSameBlock(set.getChainSameBlock() + 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		// CHECK RIGHT_UP
+		for (int yI = y-1; yI >= yU; yI--)
+		{
+			for (int xI = x; xI <= xR; xI++)
+			{
+				if ( b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				{
+					chainLength++;
+					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+						set.setSameBlock(set.getChainSameBlock() + 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		// CHECK RIGHT_DOWN
+		for (int yI = y+1; yI <= yD; yI++)
+		{
+			for (int xI = x; xI <= xR; xI++)
+			{
+				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+
+				{
+					chainLength++;
+					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+						set.setSameBlock(set.getChainSameBlock() + 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		
+		return chainLength;
+	}
+	
+	public int countChain_Vertical(Board b, Position pos, IntelligentSet set)
+	{
+		int chainLength = 1;
+		int y = pos.getY();
+		int x = pos.getX();
+		
+		// CHAIN_VERTICAL
+		int yL = pos.getY()-4; // maximum x aan de linker kant
+		if (yL < 0)
+			yL = 0;
+		int yR = yL + 4; // maximim x aan de rechterkant
+		if (yR > 8)
+			yR = 8;
+		int xI = x;
+
+		// kijk links
+		for (int yI = y; y >= yL; y--)
+		{
+			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+			{
+				chainLength++;
+				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+					set.setSameBlock(set.getChainSameBlock() + 1);
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (int yI = y; y <= yR; y++)
+		{
+			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+			{
+				chainLength++;
+				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+					set.setSameBlock(set.getChainSameBlock() + 1);
+			}
+			else
+			{
+				break;
+			}
+		}
+		
+		return chainLength;
+	}
+	
+	public int countChain_Horizontal(Board b, Position pos, IntelligentSet set)
+	{
+		int chainLength = 1;
+		int y = pos.getY();
+		int x = pos.getX();
+		
+		int xL = pos.getX()-4; // maximum x aan de linker kant
+		if (xL < 0)
+			xL = 0;
+		int xR = xL + 4; // maximim x aan de rechterkant
+		if (xR > 8)
+			xR = 8;
+		int yI = y;
+		// kijk links
+		for (int xI = x; x >= xL; x--)
+		{
+			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+			{
+				chainLength++;
+				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+					set.setSameBlock(set.getChainSameBlock() + 1);
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (int xI = x; x <= xR; x++)
+		{
+			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+
+			{
+				chainLength++;
+				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
+					set.setSameBlock(set.getChainSameBlock() + 1);
+			}
+			else
+			{
+				break;
+			}
+
+		}
+		
+		return chainLength;
+	}
+	
+	public int countSameBlock(Board b, Position pos, IntelligentSet set)
+	{
+		// SAME_BLOCK
+		Block block = b.getBlock(pos.getBlock());
+		int sameBlock = 0;
+		for (int i = 0; i <= 8 ; i++)
+		{
+			if (block.GetTile(i).getColor() == this.getColor())
+				sameBlock++;
+		}
+		
+		return sameBlock;
+	}
 	/* Eerste instantie:
 	 * Prioriteit voor zetten:
 	 * 		1 Instant Wins
@@ -86,245 +289,61 @@ public class IntelligentAI extends AI {
 		// lijst van alle zetten
 		ArrayList<IntelligentSet> options = new ArrayList<IntelligentSet>();
 
-		// TODO: CONTROLLEER DE BESTE ZET VAN DE TEGESTANDER DMV DIE OOK MET AI TE BEREKENEN.
-
 		for (int x = 0; x <= 8; x++)
 		{
 			for (int y = 0; y <= 8; y++)
 			{
-				if (board.getTileXY(x, y).getColor() == 0)
+				if (board.getTileXY(x, y).getColor() == 0) // kan ik hier nog wel wat zetten?
 				{
 					// de zet is legaal
 
-
-
 					// maak een intelligent zet met positie aan
 					Position pos = new Position(x,y);
-					IntelligentSet s = new IntelligentSet(pos);
-
-					options.add(s);
-
+					
 					// Maak een board om aan te rekenen
 					Board newBoard = board.deepCopy();
+					
+					// maak een zet aan
+					IntelligentSet s = new IntelligentSet(pos, newBoard);
+					
+					// zet op het nieuwe bord
 					newBoard.set(pos.getBlock(), pos.getTile(), this.getColor());
 
 					// INSTANT_WIN
 					if (newBoard.GetWinners().contains(this.getColor()))
 					{
-						s.addScore(INSTANT_WIN);
-						printLine("Instant win detected at X: "+x+", Y: "+y);
+						s.setInstantWin();
+						printLine("Player " + this.getColor() + ", Instant win detected at X: "+x+", Y: "+y);
 					}					
 
 					// CENTER_CENTER
 					if (x == 4 && y == 4)
 					{
-						System.out.println("CENTER_CENTER");
-						s.addScore(CENTER_CENTER);
+						s.setCenterCenter();
 					}
 					// CENTER_OTHER
 					else if (pos.getTile() == 4)
 					{
-						s.addScore(CENTER_OTHER);
+						s.setCenterOther();
 					}
-
-					// CHAIN_SAME_BLOCK
-					int chainSameBlock = 1;
-
-					// CHAIN_HORIZONTAL
-					int xL = pos.getX()-4; // maximum x aan de linker kant
-					if (xL < 0)
-						xL = 0;
-					int xR = xL + 4; // maximim x aan de rechterkant
-					if (xR > 8)
-						xR = 8;
-					int yI = y;
-					int chainLength = 1;
-					// kijk links
-					for (int xI = x; x >= xL; x--)
-					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-						{
-							chainLength++;
-							if (new Position(xI, yI).getBlock() == pos.getBlock())
-								chainSameBlock++;
-						}
-						else
-						{
-							break;
-						}
-					}
-					for (int xI = x; x <= xR; x++)
-					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-
-						{
-							chainLength++;
-							if (new Position(xI, yI).getBlock() == pos.getBlock())
-								chainSameBlock++;
-						}
-						else
-						{
-							break;
-						}
-
-					}
-					if (chainLength > 1)
-						s.addScore(chainLength * CHAIN_HORIZONTAL);
-
-
-					// CHAIN_VERTICAL
-					int yL = pos.getY()-4; // maximum x aan de linker kant
-					if (yL < 0)
-						yL = 0;
-					int yR = yL + 4; // maximim x aan de rechterkant
-					if (yR > 8)
-						yR = 8;
-					int xI = x;
-					chainLength = 1;
-					// kijk links
-					for (yI = y; y >= yL; y--)
-					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-						{
-							chainLength++;
-							if (new Position(xI, yI).getBlock() == pos.getBlock())
-								chainSameBlock++;
-						}
-						else
-						{
-							break;
-						}
-					}
-					for (yI = y; y <= yR; y++)
-					{
-						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-
-						{
-							chainLength++;
-							if (new Position(xI, yI).getBlock() == pos.getBlock())
-								chainSameBlock++;
-						}
-						else
-						{
-							break;
-						}
-
-					}
-					if (chainLength > 1)
-						s.addScore(chainLength * CHAIN_VERTICAL);
-
+					
 					// CHAIN_DIAGONAL
-					chainLength = 1;
-					// check de borders
-					xL = pos.getX()-4;
-					if (xL < 0)
-						xL = 0;
-					xR = xL + 4;
-					if (xR > 8)
-						xR = 8;
-
-					int yU = pos.getY()-4;
-					if (yU < 0)
-						yU = 0;
-					int yD = pos.getY()+4;
-					if (yD > 8)
-						yD = 8;
-
-					// CHECK LEFT_UP
-					for (yI = y; yI >= yU; yI--)
-					{
-						for (xI = x; xI >= xL; xI--)
-						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							{
-								chainLength++;
-								if (new Position(xI, yI).getBlock() == pos.getBlock())
-									chainSameBlock++;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-
-					// CHECK LEFT_DOWN
-					for (yI = y; yI <= yD; yI++)
-					{
-						for (xI = x; xI >= xL; xI--)
-						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							{
-								chainLength++;
-								if (new Position(xI, yI).getBlock() == pos.getBlock())
-									chainSameBlock++;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-
-					// CHECK RIGHT_UP
-					for (yI = y-1; yI >= yU; yI--)
-					{
-						for (xI = x; xI <= xR; xI++)
-						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							{
-								chainLength++;
-								if (new Position(xI, yI).getBlock() == pos.getBlock())
-									chainSameBlock++;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-
-					// CHECK RIGHT_DOWN
-					for (yI = y+1; yI <= yD; yI++)
-					{
-						for (xI = x; xI <= xR; xI++)
-						{
-							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-
-							{
-								chainLength++;
-								if (new Position(xI, yI).getBlock() == pos.getBlock())
-									chainSameBlock++;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-
-					if (chainLength > 1)
-						s.addScore(chainLength * CHAIN_DIAGONAL);
-
-					// CHAIN_SAME_BLOCK
-					if (chainSameBlock > 1)
-						s.addScore(chainSameBlock * CHAIN_SAME_BLOCK);
-
-
+					s.setChainDiagonal(this.countChain_Diagonal(newBoard, pos, s));
+					
+					// CHAIN_VERTICAL
+					s.setChainVertical(this.countChain_Vertical(newBoard, pos, s));
+					
+					// CHAIN_HORIZONTAL
+					s.setChainHorizontal(this.countChain_Horizontal(newBoard, pos, s));
+					
 					// SAME_BLOCK
-					Block b = newBoard.getBlock(pos.getBlock());
-					int sameBlock = 0;
-					for (int i = 0; i <= 8 ; i++)
-					{
-						if (b.GetTile(i).getColor() == this.getColor())
-							sameBlock++;
-					}
-					if (sameBlock > 1)
-						s.addScore(sameBlock * SAME_BLOCK);
+					s.setSameBlock(this.countSameBlock(newBoard, pos, s));
 					
 					s.setOtherPlayerMove(false);
+					
+					s.calculateScore();
 
-
+					options.add(s);
 				}
 			}
 		}
