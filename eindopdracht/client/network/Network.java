@@ -184,7 +184,7 @@ public class Network extends Observable implements Observer{
 	 */
 	public void sendChat(String chat) {
 		if (handler != null) 
-			handler.sendString("chat " + chat);
+			handler.sendString(Protocol.CHAT + " " + chat);
 		else
 			System.out.println("[Error] not connected to a server!");
 	}
