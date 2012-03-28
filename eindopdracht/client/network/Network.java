@@ -18,9 +18,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Command;
-import eindopdracht.util.NetworkUtil;
-import eindopdracht.util.ModelUtil;
-import eindopdracht.util.Protocol;
+import eindopdracht.util.*;
 
 public class Network extends Observable implements Observer{
 	
@@ -205,7 +203,7 @@ public class Network extends Observable implements Observer{
 	 */
 	public void join(String name, int size) {
 		if (handler != null)
-			handler.sendString("join " + name + " " + size);
+			handler.sendString(Protocol.JOIN + " " + name + " " + size);
 		else
 			System.out.println("[Error] not connected to a server!");
 	}
@@ -231,7 +229,7 @@ public class Network extends Observable implements Observer{
 	 * @param tile 0-8
 	 */
 	public void setTile(int block, int tile) {
-		String msg = String.format("set_tile "+letters[block]+" "+tile);
+		String msg = String.format(Protocol.SET_TILE + " "+letters[block]+" "+tile);
 		if (handler != null)
 			handler.sendString(msg);
 		else
@@ -244,7 +242,7 @@ public class Network extends Observable implements Observer{
 	 * @param rotation 1=CW, 2=CCW
 	 */
 	public void turnBlock(int block, int rotation) {
-		String msg = String.format("turn_block %s %s", letters[block], rotation==1?"CW":"CCW");
+		String msg = String.format(Protocol.TURN_BLOK + " %s %s", letters[block], rotation==1?"CW":"CCW");
 		if (handler != null)
 			handler.sendString(msg);
 		else

@@ -11,6 +11,7 @@ import eindopdracht.model.Command;
 import eindopdracht.server.Server;
 import eindopdracht.server.model.ServerPlayer;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.Protocol;
 
 public class PlayerHandler implements Runnable {
 	private ServerPlayer player;
@@ -64,14 +65,8 @@ public class PlayerHandler implements Runnable {
 			next = in.readLine();
 			while (next != null) {
 				// If null, the connection was terminated
-				// If a client tries to challenge, handle the denial immediately
-				// to
-				// minimize disappointment. Poor guy.
-				if (next.equals("challenge")) {
-					this.sendMessage("challenge_failed");
-				} else {
-					this.handleInput(next);
-				}
+				this.handleInput(next);
+
 				next = in.readLine();
 			}
 		} catch (IOException e) {
@@ -89,19 +84,25 @@ public class PlayerHandler implements Runnable {
 		System.out.println("[Handler_" + player.getName() + "] Received: "
 				+ input + ", command: " + c);
 
-		if (c.equals("join")) {
+		if (c.equals(Protocol.JOIN)) {
 			player.setName(command.getArgs()[0]);
 			player.setNumberOfPlayers(Integer.parseInt(command.getArgs()[1]));
 			server.addPlayer(player);
-		} else if (c.equals("set_tile")) {
+		}
+
+		else if (c.equals(Protocol.SET_TILE)) {
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int tile = Integer.parseInt(command.getArg(1));
 			player.setTile(block, tile);
-		} else if (c.equals("turn_block")) {
+		}
+
+		else if (c.equals(Protocol.TURN_BLOK)) {
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
-		} else if (c.equals("quit")) {
+		}
+
+		else if (c.equals(Protocol.QUIT)) {
 			server.removePlayer(player);
 			try {
 				socket.close();
@@ -109,12 +110,20 @@ public class PlayerHandler implements Runnable {
 				System.out.println("Error thrown while quitting: "
 						+ e.getMessage());
 			}
-		} else if (c.equals("chat")) {
+		}
+
+		else if (c.equals(Protocol.CHAT)) {
 			player.chat(command.getArg(0));
-		} else if (c.equals("challenge")) {
-			// TODO think of what to do when the player is challenged
+		}
+
+		else if (c.equals(Protocol.CHALLENGE)) {
+			// If a client tries to challenge, handle the denial immediately to
+			// minimize disappointment. Poor guy.
 			System.out.println("Player was challenged. Not doing anything!");
-		} else {
+			this.sendMessage(Protocol.CHALLENGE_FAILED);
+		}
+
+		else {
 			System.out.println("Unrecognized command received!");
 		}
 	}
