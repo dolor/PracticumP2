@@ -24,7 +24,7 @@ public class Board {
 	 */
 	public boolean set(int block, int tile, int color)
 	{
-		System.out.printf("Block:"+block+" Tile:"+tile+" Color:"+color+" \n");
+		//System.out.printf("Block:"+block+" Tile:"+tile+" Color:"+color+" \n");
 		if (!(block >= 0 && block <= 8 && tile >= 0 && tile <= 8))
 		{
 			System.out.println("yea, immediately buggered out");
