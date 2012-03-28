@@ -352,6 +352,8 @@ public class IntelligentAI extends AI {
 			}
 		}
 		
+		System.out.println("AI score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
+		
 		// stel pick in in set
 		set.setBlock(pick.getPosition().getBlock());
 		set.setTile(pick.getPosition().getTile());
