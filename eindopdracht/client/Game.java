@@ -74,6 +74,14 @@ public class Game extends Observable{
 	}
 	
 	/**
+	 * 
+	 * @return an arraylist with all the Player objects representing the players currently in the game
+	 */
+	public ArrayList<Player> getPlayers() {
+		return this.players;
+	}
+	
+	/**
 	 * maakt een set object aan en stuurt dat naar observers
 	 */
 	public void giveSet()
