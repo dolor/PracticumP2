@@ -9,8 +9,8 @@ import eindopdracht.model.Board;
 
 public class RandomAI extends AI{
 
-	public RandomAI(int color, Board board) {
-		super(color, board);
+	public RandomAI(int color, Board board, ArrayList<Integer> players) {
+		super(color, board, players);
 	}
 
 	@Override

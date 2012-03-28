@@ -9,11 +9,23 @@ import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 
 public class IntelligentAI extends AI {
+	
+	IntelligentAI otherplayersAI;
 
-	public IntelligentAI(int color, Board board) { // TODO: ANDERE SPELERS DOORGEVEN
-		super(color, board);
+	public IntelligentAI(int color, Board board, ArrayList<Integer> players) { // TODO: ANDERE SPELERS DOORGEVEN
+		super(color, board, players);
 		
-		// TODO Auto-generated constructor stub
+		
+		// maak een AI aan voor de andere spelers
+		if (otherplayers.size() > 0)
+			otherplayersAI = new IntelligentAI(getOtherPlayers().get(0), this.getBoard(), this.getOtherPlayers());
+		else
+			otherplayersAI = null;
+	}
+	
+	protected IntelligentAI getOtherPlayersAI()
+	{
+		return this.otherplayersAI;
 	}
 	
 	// zetten voor beide
@@ -58,7 +70,7 @@ public class IntelligentAI extends AI {
 	@Override
 	public void calculateTurn(Turn turn) {
 		// TODO Auto-generated method stub
-		RandomAI r = new RandomAI(this.getColor(), this.getBoard());
+		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
 		r.calculateTurn(turn);
 	}
 
