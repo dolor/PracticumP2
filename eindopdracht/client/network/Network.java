@@ -18,8 +18,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Command;
-import eindopdracht.util.NetworkUtil;
-import eindopdracht.util.ModelUtil;
+import eindopdracht.util.*;
 
 public class Network extends Observable implements Observer{
 	
@@ -243,7 +242,7 @@ public class Network extends Observable implements Observer{
 	 * @param rotation 1=CW, 2=CCW
 	 */
 	public void turnBlock(int block, int rotation) {
-		String msg = String.format("turn_block %s %s", letters[block], rotation==1?"CW":"CCW");
+		String msg = String.format(Protocol.TURN_BLOCK + " %s %s", letters[block], rotation==1?"CW":"CCW");
 		if (handler != null)
 			handler.sendString(msg);
 		else

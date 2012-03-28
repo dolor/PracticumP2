@@ -27,7 +27,7 @@ public class HumanPlayer extends Player{
 	 * Should be called after the game has started, so the human player can create his hint AI
 	 */
 	public void createHintAI() {
-		this.hintAI = new RandomAI(this.getColor(), this.getGame().getBoard());
+		this.hintAI = new IntelligentAI(this.getColor(), this.getGame().getBoard());
 	}
 	
 	/**

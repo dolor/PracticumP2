@@ -194,6 +194,10 @@ public class BlockPanel extends JPanel implements ActionListener, ComponentListe
 			rotateHint.setBorder(defaultBorder);
 			rotateHint = null;
 		}
+		if (setHint != null) {
+			setHint.setBorder(defaultBorder);
+			setHint = null;
+		}
 	}
 
 	/**

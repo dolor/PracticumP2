@@ -71,7 +71,6 @@ public class BordPanel extends JPanel implements Observer {
 		for (BlockPanel block:blockList) {
 			block.resetHints();
 		}
-		System.out.println(set.toString());
 		
 		int block = set.getBlock();
 		this.blockList.get(block).showSetHint(set.getTile());
@@ -82,12 +81,16 @@ public class BordPanel extends JPanel implements Observer {
 	 * @param turn to show as a hint; only requires player, block and direction
 	 */
 	public void showRotateHint(Turn turn) {
-		for (BlockPanel block:blockList) {
-			block.resetHints();
-		}
+		this.resetHints();
 		
 		int block = turn.getBlock();
 		this.blockList.get(block - 1).showRotateHint(turn.getRotation());
+	}
+	
+	public void resetHints() {
+		for (BlockPanel block:blockList) {
+			block.resetHints();
+		}
 	}
 
 	private void setTiles(Board board) {
@@ -148,6 +151,7 @@ public class BordPanel extends JPanel implements Observer {
 	 * @param direction
 	 */
 	public void turn(int block, int direction) {
+		this.resetHints();
 		if (this.currentTurn != null) {
 			currentTurn.setBlock(block);
 			currentTurn.setRotation(direction);
@@ -164,6 +168,7 @@ public class BordPanel extends JPanel implements Observer {
 	 * @param tile
 	 */
 	public void set(int block, int tile) {
+		this.resetHints();
 		if (this.currentSet != null) {
 			currentSet.setBlock(block);
 			currentSet.setTile(tile);
