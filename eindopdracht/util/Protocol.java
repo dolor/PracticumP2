@@ -1,3 +1,5 @@
+package eindopdracht.util;
+
 // Versie 2
 
 

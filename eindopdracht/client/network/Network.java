@@ -20,6 +20,7 @@ import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Command;
 import eindopdracht.util.NetworkUtil;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.Protocol;
 
 public class Network extends Observable implements Observer{
 	
@@ -59,12 +60,12 @@ public class Network extends Observable implements Observer{
 	public void processNetworkInput(String input) {
 		System.out.println("Processing input: " + input);
 		Command command = new Command(input);
-		if (command.getCommand().equals("chat")) {
+		if (command.getCommand().equals(Protocol.CHAT)) {
 			System.out.println("[Chat] " + command.getArg(0));
 		} 
 		
 		//Turn the block
-		else if (command.getCommand().equals("turn_block")) {
+		else if (command.getCommand().equals(Protocol.TURN_BLOK)) {
 			String playerName = command.getArg(2);
 			System.out.println("Player " + playerName + " turned a block");
 			for (NetworkPlayer player:networkPlayers) {
@@ -79,7 +80,7 @@ public class Network extends Observable implements Observer{
 		} 
 		
 		//Set the tile
-		else if (command.getCommand().equals("set_tile")) {
+		else if (command.getCommand().equals(Protocol.SET_TILE)) {
 			String playerName = command.getArg(2);
 			System.out.println("Player " + playerName + " set a tile");
 			for (NetworkPlayer player:networkPlayers) {
@@ -94,18 +95,18 @@ public class Network extends Observable implements Observer{
 		} 
 		
 		//Start a new game
-		else if (command.getCommand().equals("start")) {
+		else if (command.getCommand().equals(Protocol.START)) {
 			this.setChanged();
 			this.notifyObservers(command);
 		} 
 		
 		//Give the turn to the localplayer
-		else if (command.getCommand().equals("your_turn")) {
+		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
 			game.setSettingPlayer(game.getLocalPlayer());
 		} 
 		
 		//Connected to the server
-		else if (command.getCommand().equals("connected")) {
+		else if (command.getCommand().equals(Protocol.CONNECTED)) {
 			this.setChanged();
 			this.notifyObservers(command);
 		}
