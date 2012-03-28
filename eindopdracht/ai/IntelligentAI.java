@@ -34,7 +34,7 @@ public class IntelligentAI extends AI {
 	
 	// Scores voor zetten	
 	public static final int CENTER_CENTER = 600; // center van het speelveld
-	public static final int CENTER_OTHER = 50; // center van een ander block
+	public static final int CENTER_OTHER = 31; // center van een ander block
 	public static final int CHAIN_SAME_BLOCK = 15; // reeks op hetzelfde block * aantal (uiteraard max 3)
 	public static final int CHAIN_DIAGONAL = 10; // reeks diagonaal * aantal
 	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
@@ -76,6 +76,11 @@ public class IntelligentAI extends AI {
 		r.calculateTurn(turn);
 	}
 	
+	private void printLine(String line)
+	{
+		System.out.println("AI:\t\t"+line);
+	}
+	
 	public ArrayList<IntelligentSet> getOptions()
 	{
 		// lijst van alle zetten
@@ -104,9 +109,10 @@ public class IntelligentAI extends AI {
 					newBoard.set(pos.getBlock(), pos.getTile(), this.getColor());
 
 					// INSTANT_WIN
-					if (board.GetWinners().contains(this.getColor()))
+					if (newBoard.GetWinners().contains(this.getColor()))
 					{
 						s.addScore(INSTANT_WIN);
+						printLine("Instant win detected at X: "+x+", Y: "+y);
 					}					
 
 					// CENTER_CENTER
@@ -355,9 +361,9 @@ public class IntelligentAI extends AI {
 			}
 		}
 		Position pos = pick.getPosition();
-		System.out.println("AI score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
-		System.out.println("AI X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
-		
+		this.printLine("Picked score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
+		this.printLine("X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
+		 
 		// stel pick in in set
 		set.setBlock(pick.getPosition().getBlock());
 		set.setTile(pick.getPosition().getTile());
