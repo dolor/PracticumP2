@@ -169,34 +169,34 @@ public class ServerPlayer implements Observer {
 		 */
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
-			System.out.println("    Player " + getName() + " with state " + getState() + " received set: " + set.toString());
+//			System.out.println("    Player " + getName() + " with state " + getState() + " received set: " + set.toString());
 			//Was a set for/by this player
 			if (set.getPlayer().equals(this)) {
 				if (set.getExecuted()) {
 					//Set was executed, set to idle
 					this.setState(IDLE);
-					System.out.println("    Was executed, setting to idle");
+//					System.out.println("    Was executed, setting to idle");
 				} else {
 					//Set has to be executed, set to Setting
 					this.setState(SETTING);
-					System.out.println("    Was not executed, setting to setting");
+//					System.out.println("    Was not executed, setting to setting");
 				}
 			}
 		}
 		
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn)arg;
-			System.out.println("    Player " + getName() + " with state " + getState() + " received turn: " + turn.toString());
+//			System.out.println("    Player " + getName() + " with state " + getState() + " received turn: " + turn.toString());
 			//was a turn for/by this player
 			if (turn.getPlayer().equals(this)) {
 				if (turn.getExecuted()) {
 					//turn was executed, setting to idle
 					this.setState(IDLE);
-					System.out.println("    Was executed, setting to idle");
+//					System.out.println("    Was executed, setting to idle");
 				} else {
 					//Turn still has to be executed, set to turning
 					this.setState(TURNING);
-					System.out.println("    Was not executed, setting to turning");
+//					System.out.println("    Was not executed, setting to turning");
 				}
 			}
 		}
