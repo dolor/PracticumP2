@@ -19,13 +19,13 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 	private JTextField portTextField;
 	private JButton cancelButton;
 	private JButton okayButton;
-	private MainWindow observer;
+	private PentagoXLWindow observer;
 
-	public Connect(MainWindow observer) {
+	public Connect(PentagoXLWindow pentagoXLWindow) {
 		super("Connect");
-		this.observer = observer;
+		this.observer = pentagoXLWindow;
 		buildGUI();
-		this.setLocation(observer.getLocationOnScreen().x + 15, observer.getLocationOnScreen().y + 15);
+		this.setLocation(pentagoXLWindow.getLocationOnScreen().x + 15, pentagoXLWindow.getLocationOnScreen().y + 15);
 		setVisible(true);
 		hostnameTextField.setText("localhost");
 		portTextField.setText("8888");

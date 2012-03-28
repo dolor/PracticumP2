@@ -1,8 +1,10 @@
-package eindopdracht.server.model;
+package eindopdracht.server;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import eindopdracht.server.model.Set;
+import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
 
 public class ServerPlayer implements Observer {
@@ -91,7 +93,7 @@ public class ServerPlayer implements Observer {
 	 * @param message
 	 */
 	public void chat(String message) {
-		System.out.println("Player chatting: " + message);
+		game.chat(message, this);
 	}
 
 	/**

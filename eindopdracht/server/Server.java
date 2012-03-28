@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import eindopdracht.server.model.ServerGame;
-import eindopdracht.server.model.Lobby;
-import eindopdracht.server.model.ServerPlayer;
 import eindopdracht.server.network.Network;
 
 public class Server {

@@ -58,8 +58,10 @@ public class Network extends Observable implements Observer{
 	public void processNetworkInput(String input) {
 		System.out.println("Processing input: " + input);
 		Command command = new Command(input);
-		if (command.getCommand().equals(Protocol.CHAT)) {
-			System.out.println("[Chat] " + command.getArg(0));
+		if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
+			System.out.println("Received chat!");
+			this.setChanged();
+			this.notifyObservers(command);
 		} 
 		
 		//Turn the block

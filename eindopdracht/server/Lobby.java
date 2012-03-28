@@ -1,8 +1,7 @@
-package eindopdracht.server.model;
+package eindopdracht.server;
 
 import java.util.ArrayList;
 
-import eindopdracht.server.Server;
 
 public class Lobby {
 	int maxNumberOfPlayers;

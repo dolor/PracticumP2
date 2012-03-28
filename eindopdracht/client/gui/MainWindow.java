@@ -21,6 +21,7 @@ import eindopdracht.ai.AI;
 import eindopdracht.ai.RandomAI;
 import eindopdracht.client.Game;
 import eindopdracht.client.gui.gameboard.BordPanel;
+import eindopdracht.client.gui.gameboard.FancyBordPanel;
 import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.client.model.player.HumanPlayer;
 import eindopdracht.client.model.player.NetworkPlayer;
@@ -55,7 +56,7 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 	public void buildGUI() {
 		setSize(700, 400);
 
-		BorderLayout layout = new BorderLayout(15, 15);
+		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
 
 		JMenuBar menuBar;
@@ -96,8 +97,9 @@ public class MainWindow extends javax.swing.JFrame implements WindowListener,
 		hintButton.setEnabled(false);
 		menuBar.add(hintButton);
 
-		bord = new BordPanel();
-		this.add(bord);
+		/*bord = new BordPanel();
+		this.add(bord);*/
+		this.add(new FancyBordPanel());
 		
 		/*JButton testButton = new JButton("Test");
 		this.add(testButton, BorderLayout.EAST);*/

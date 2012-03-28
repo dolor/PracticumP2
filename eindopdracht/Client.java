@@ -1,9 +1,20 @@
 package eindopdracht;
 
-import eindopdracht.client.gui.MainWindow;
+import java.awt.EventQueue;
+
+import eindopdracht.client.gui.PentagoXLWindow;
 
 public class Client {
 	public static void main(String[] args) {
-		new MainWindow();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PentagoXLWindow frame = new PentagoXLWindow();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

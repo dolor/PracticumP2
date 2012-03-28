@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 
 import eindopdracht.model.Command;
 import eindopdracht.server.Server;
-import eindopdracht.server.model.ServerPlayer;
+import eindopdracht.server.ServerPlayer;
 import eindopdracht.util.ModelUtil;
 import eindopdracht.util.Protocol;
 

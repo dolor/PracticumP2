@@ -178,7 +178,12 @@ public class BordPanel extends JPanel implements Observer {
 		}
 	}
 	
-	
+	/**
+	 * Called when this component has to draw its contents
+	 */
+	public void paintComponent(Graphics g) {
+		
+	}
 
 	private ArrayList<BlockPanel> blocks;
 

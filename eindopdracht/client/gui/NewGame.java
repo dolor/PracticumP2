@@ -24,15 +24,15 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	private JCheckBox aiButton;
 	private JButton cancelButton;
 	private JButton okayButton;
-	private MainWindow observer;
+	private PentagoXLWindow observer;
 	
 	public static String[] lobbySizes = {"2", "3", "4"};
 	
-	public NewGame(MainWindow observer) {
+	public NewGame(PentagoXLWindow pentagoXLWindow) {
 	    super("New Game");
-	    this.observer = observer;
+	    this.observer = pentagoXLWindow;
 	    buildGUI();
-		this.setLocation(observer.getLocationOnScreen().x + 15, observer.getLocationOnScreen().y + 15);
+		this.setLocation(pentagoXLWindow.getLocationOnScreen().x + 15, pentagoXLWindow.getLocationOnScreen().y + 15);
 	    setVisible(true);
 	    this.addWindowListener(this);
 	}
@@ -76,7 +76,7 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 			name.replaceAll("\r", "_");
 			name.replaceAll("\n", "_");
 			int size = Integer.parseInt((String)lobbySizeBox.getSelectedItem());
-			boolean useAI = aiButton.isSelected();
+			boolean useAI = !aiButton.isSelected();
 			observer.join(name, size, useAI);
 			//TODO implement an option to use an AI or not
 			observer.newGameFrameDismissed();

@@ -1,5 +1,7 @@
 package eindopdracht.server.model;
 
+import eindopdracht.server.ServerPlayer;
+
 
 public class Turn {
 

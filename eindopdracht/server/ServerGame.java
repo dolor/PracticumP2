@@ -1,9 +1,8 @@
-package eindopdracht.server.model;
+package eindopdracht.server;
 
 import java.util.ArrayList;
 import java.util.Observable;
 
-import eindopdracht.server.Server;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.client.model.player.Player;
@@ -52,6 +51,17 @@ public class ServerGame extends Observable {
 		this.netBroadcast(msg);
 
 		// TODO write this code
+	}
+	
+	/**
+	 * Called if the server receives chat from a player
+	 * @param chat
+	 * @param player
+	 */
+	public void chat(String chat, ServerPlayer player) {
+		String fullChatString = Protocol.CHAT_SERVER + " [" + player.getName() + "] " + chat;
+		System.out.println("Protocol says " + Protocol.CHAT_SERVER + " , sending " + fullChatString);
+		this.netBroadcast(fullChatString);
 	}
 
 	/**
@@ -127,13 +137,14 @@ public class ServerGame extends Observable {
 		System.out.println(turn.toString() + " turned, player state was "
 				+ turn.getPlayer().getState());
 		if (turn.getPlayer().getState() != ServerPlayer.TURNING) {
-			System.out.println("Invalid player state: " + turn.getPlayer().getState());
+			System.out.println("Invalid player state: "
+					+ turn.getPlayer().getState());
 			this.endGame(turn.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
 			if (!board.turn(turn.getBlock(), turn.getRotation())) {
 				System.out
-				.println("Ending game because an invalid turn was made");
+						.println("Ending game because an invalid turn was made");
 				this.endGame(turn.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {
@@ -143,26 +154,29 @@ public class ServerGame extends Observable {
 					this.giveSet();
 					this.netBroadcast(Protocol.TURN_BLOK + " "
 							+ ModelUtil.intToLetter(turn.getBlock()) + " "
-							+ ModelUtil.intToDirection(turn.getRotation()) + " "
-							+ turn.getPlayer().getName());
+							+ ModelUtil.intToDirection(turn.getRotation())
+							+ " " + turn.getPlayer().getName());
 				}
 				return true;
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if the game ended and if it did, end the game
+	 * 
 	 * @return true if the game ended
 	 */
 	public boolean gameEnded() {
 		if (board.GameOver()) {
 			System.out.println("GAME IS OVER");
-			String gameOverString = new String(Protocol.END_GAME + " " + Server.endDueToWinner);
-			for (Integer playerColor:board.GetWinners()) {
-				for (ServerPlayer player:players) {
+			String gameOverString = new String(Protocol.END_GAME + " "
+					+ Server.endDueToWinner);
+			for (Integer playerColor : board.GetWinners()) {
+				for (ServerPlayer player : players) {
 					if (player.getColor() == playerColor) {
-						gameOverString = gameOverString + " " + player.getName();
+						gameOverString = gameOverString + " "
+								+ player.getName();
 					}
 				}
 			}
@@ -188,7 +202,7 @@ public class ServerGame extends Observable {
 		// player was the last in the list.
 		for (int i = 0; i < players.size() - 1; i++) {
 			if (players.get(i).equals(currentPlayer)) {
-				nextPlayer = players.get(i+1);
+				nextPlayer = players.get(i + 1);
 			}
 		}
 		return nextPlayer;
@@ -200,7 +214,8 @@ public class ServerGame extends Observable {
 	 */
 	public void endGame(ServerPlayer player, int reason) {
 		System.out.println("Ending the game due to reason " + reason);
-		this.netBroadcast(Protocol.END_GAME + " " + player.getName() + " " + reason);
+		this.netBroadcast(Protocol.END_GAME + " " + player.getName() + " "
+				+ reason);
 		for (ServerPlayer p : players) {
 			players.remove(p);
 		}
