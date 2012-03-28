@@ -40,6 +40,8 @@ public class IntelligentAI extends AI {
 	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
 	public static final int CHAIN_VERTICAL = 5; // reeks verticaal * aantal
 	public static final int SAME_BLOCK = 2; // aantal ballen op hetzelfde block * aantal
+	public static final int OTHER_PLAYER_MOVE = -15; // aftrek voor een move die berekent is voor de andere spelers
+	
 
 	// voor turns
 	public static final int BREAK_OPPONENT_CHAIN = 5; // breekt een reeks van de tegenstander door * aantal
@@ -73,14 +75,14 @@ public class IntelligentAI extends AI {
 		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
 		r.calculateTurn(turn);
 	}
-
-	@Override
-	public void calculateSet(Set set) {
+	
+	public ArrayList<IntelligentSet> getOptions()
+	{
 		// lijst van alle zetten
 		ArrayList<IntelligentSet> options = new ArrayList<IntelligentSet>();
-		
+
 		// TODO: CONTROLLEER DE BESTE ZET VAN DE TEGESTANDER DMV DIE OOK MET AI TE BEREKENEN.
-		
+
 		for (int x = 0; x <= 8; x++)
 		{
 			for (int y = 0; y <= 8; y++)
@@ -88,25 +90,25 @@ public class IntelligentAI extends AI {
 				if (board.getTileXY(x, y).getColor() == 0)
 				{
 					// de zet is legaal
-					
-					
-					
+
+
+
 					// maak een intelligent zet met positie aan
 					Position pos = new Position(x,y);
 					IntelligentSet s = new IntelligentSet(pos);
-					
+
 					options.add(s);
-					
+
 					// Maak een board om aan te rekenen
 					Board newBoard = board.deepCopy();
 					newBoard.set(pos.getBlock(), pos.getTile(), this.getColor());
-					
+
 					// INSTANT_WIN
 					if (board.GetWinners().contains(this.getColor()))
 					{
 						s.addScore(INSTANT_WIN);
 					}					
-					
+
 					// CENTER_CENTER
 					if (x == 4 && y == 4)
 					{
@@ -117,10 +119,10 @@ public class IntelligentAI extends AI {
 					{
 						s.addScore(CENTER_OTHER);
 					}
-					
+
 					// CHAIN_SAME_BLOCK
 					int chainSameBlock = 1;
-					
+
 					// CHAIN_HORIZONTAL
 					int xL = pos.getX()-4; // maximum x aan de linker kant
 					if (xL < 0)
@@ -147,7 +149,7 @@ public class IntelligentAI extends AI {
 					for (int xI = x; x <= xR; x++)
 					{
 						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							
+
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -157,12 +159,12 @@ public class IntelligentAI extends AI {
 						{
 							break;
 						}
-						
+
 					}
 					if (chainLength > 1)
 						s.addScore(chainLength * CHAIN_HORIZONTAL);
-					
-					
+
+
 					// CHAIN_VERTICAL
 					int yL = pos.getY()-4; // maximum x aan de linker kant
 					if (yL < 0)
@@ -189,7 +191,7 @@ public class IntelligentAI extends AI {
 					for (yI = y; y <= yR; y++)
 					{
 						if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-							
+
 						{
 							chainLength++;
 							if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -199,11 +201,11 @@ public class IntelligentAI extends AI {
 						{
 							break;
 						}
-						
+
 					}
 					if (chainLength > 1)
 						s.addScore(chainLength * CHAIN_VERTICAL);
-					
+
 					// CHAIN_DIAGONAL
 					chainLength = 1;
 					// check de borders
@@ -213,14 +215,14 @@ public class IntelligentAI extends AI {
 					xR = xL + 4;
 					if (xR > 8)
 						xR = 8;
-					
+
 					int yU = pos.getY()-4;
 					if (yU < 0)
 						yU = 0;
 					int yD = pos.getY()+4;
 					if (yD > 8)
 						yD = 8;
-					
+
 					// CHECK LEFT_UP
 					for (yI = y; yI >= yU; yI--)
 					{
@@ -238,7 +240,7 @@ public class IntelligentAI extends AI {
 							}
 						}
 					}
-					
+
 					// CHECK LEFT_DOWN
 					for (yI = y; yI <= yD; yI++)
 					{
@@ -256,7 +258,7 @@ public class IntelligentAI extends AI {
 							}
 						}
 					}
-					
+
 					// CHECK RIGHT_UP
 					for (yI = y-1; yI >= yU; yI--)
 					{
@@ -274,14 +276,14 @@ public class IntelligentAI extends AI {
 							}
 						}
 					}
-					
+
 					// CHECK RIGHT_DOWN
 					for (yI = y+1; yI <= yD; yI++)
 					{
 						for (xI = x; xI <= xR; xI++)
 						{
 							if (newBoard.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
-								
+
 							{
 								chainLength++;
 								if (new Position(xI, yI).getBlock() == pos.getBlock())
@@ -293,15 +295,15 @@ public class IntelligentAI extends AI {
 							}
 						}
 					}
-					
+
 					if (chainLength > 1)
 						s.addScore(chainLength * CHAIN_DIAGONAL);
-					
+
 					// CHAIN_SAME_BLOCK
 					if (chainSameBlock > 1)
 						s.addScore(chainSameBlock * CHAIN_SAME_BLOCK);
-						
-					
+
+
 					// SAME_BLOCK
 					Block b = newBoard.getBlock(pos.getBlock());
 					int sameBlock = 0;
@@ -312,16 +314,38 @@ public class IntelligentAI extends AI {
 					}
 					if (sameBlock > 1)
 						s.addScore(sameBlock * SAME_BLOCK);
-					
-					
+
+
 				}
 			}
 		}
 		
+		// options van de andere speler AI
+		
+		if (getOtherPlayersAI() != null) // de AI bestaat
+		{
+			for (IntelligentSet s : getOtherPlayersAI().getOptions())
+			{
+				s.setOtherPlayerMove(true); // move is gemaakt voor een andere speler
+				options.add(s);
+			}
+		}
+		
+		return options;
+	}
+
+	@Override
+	public void calculateSet(Set set) {
+		
+		ArrayList<IntelligentSet> options = getOptions();
 		// neem de hoogste en return die
 		IntelligentSet pick = options.get(0);
 		for (IntelligentSet s : options)
 		{
+			if (s.isOtherPlayerMove()) // als het van een andere speler is krijg men punten aftrek
+			{
+				s.setScore(s.getScore() + OTHER_PLAYER_MOVE);
+			}
 			if (s.getScore() > pick.getScore())
 			{
 				pick = s;
