@@ -33,8 +33,8 @@ public class IntelligentAI extends AI {
 	public static final int INSTANT_WIN = 1000000; // Instant win, over 9000
 	
 	// Scores voor zetten	
-	public static final int CENTER_CENTER = 200; // center van het speelveld
-	public static final int CENTER_OTHER = 100; // center van een ander block
+	public static final int CENTER_CENTER = 300; // center van het speelveld
+	public static final int CENTER_OTHER = 50; // center van een ander block
 	public static final int CHAIN_SAME_BLOCK = 15; // reeks op hetzelfde block * aantal (uiteraard max 3)
 	public static final int CHAIN_DIAGONAL = 10; // reeks diagonaal * aantal
 	public static final int CHAIN_HORIZONTAL = 5; // reeks horizontaal * aantal 
