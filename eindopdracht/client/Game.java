@@ -141,8 +141,25 @@ public class Game extends Observable{
 		this.setSettingPlayer(players.get(index));
 		
 		this.giveSet();
-		
-		
+	}
+	
+	/**
+	 * Determines which color would be player after the given color
+	 * @param color current player
+	 * @return next player
+	 */
+	public int nextPlayerForColor(int color) {
+		for (Player player:players) {
+			if (player.getColor() == color) {
+				if (players.indexOf(player) == players.size()-1) {
+					//was the last player
+					return players.get(0).getColor();
+				} else {
+					return players.get(players.indexOf(player) + 1).getColor();
+				}
+			}
+		}
+		return players.get(0).getColor();
 	}
 	
 	public void set(Set set)
