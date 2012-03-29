@@ -86,7 +86,7 @@ public class Board {
 		// ga alle rijen af
 		ArrayList<Integer> winners = new ArrayList<Integer>();
 		
-		/*
+		/*  TODO: Als we klaar zijn weghalen:
 		// check cols
 		for (int y = 0; y <= 8; y++)
 		{
