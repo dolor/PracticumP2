@@ -19,7 +19,7 @@ public class Command {
 	 */
 	public Command(String fullCommand) {
 		Scanner scanner = new Scanner(fullCommand); 
-		
+		System.out.println("Creating command from " + fullCommand);
 		if (!scanner.hasNext())
 		{
 			System.out.println("Empty command received!");
@@ -39,11 +39,12 @@ public class Command {
 			this.argString = this.argString + args[i] + " ";
 			i++;
 		}
-		
-		argString.trim();
+		if (argString != null)
+			argString.trim();
 				
 		this.command = comm;
 		this.args = args;
+		System.out.println("Command created");
 	}
 	
 	/**
@@ -78,6 +79,8 @@ public class Command {
 	 * @return
 	 */
 	public String getArgString() {
+		System.out.println("Asked for argstring");
+		System.out.println("returning " + argString);
 		return argString;
 	}
 	

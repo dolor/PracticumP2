@@ -142,6 +142,7 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 	public void setTiles(ArrayList<Integer> balls) {
 		System.out.println("Tiles set");
 		this.balls = balls;
+		this.repaint();
 	}
 
 	public ArrayList<Integer> getTiles() {
@@ -209,7 +210,7 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 		// Het balletje linksboven zal nu op positie (27+(52/2)) * positie
 		// zitten, en alle andere balletjes steeds (52+13) * proportion er
 		// vanaf.
-		int first = (int) (53 * proportion);
+		int first = (int) (54 * proportion);
 		Point point = new Point(first, first);
 		int ballCol = ball % 3;
 		int ballRow = (int) Math.floor(ball / 3);
@@ -338,7 +339,6 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 			int height = ((FancyBordPanel)e.getSource()).getHeight();
 			int x = (int)Math.floor(blockIndex / 3);
 			int y = blockIndex % 3;
-			System.out.println("x:" + x + " y:" + y);
 			this.setBounds(width/3 * x, height/3 * y, width/3, height/3);
 		}
 	}

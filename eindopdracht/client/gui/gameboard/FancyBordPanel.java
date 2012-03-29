@@ -178,6 +178,7 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 		for (FancyBlock block:blocks) {
 			block.setState(state);
 		}
+		this.repaint();
 	}
 	
 	/**
@@ -189,6 +190,7 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 			Block block = board.getBlock(i);
 			blocks.get(i).updateTiles(block);
 		}
+		this.repaint();
 	}
 
 	/*public Dimension getPreferredSize() {
@@ -229,7 +231,6 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 		JPanel parent = (JPanel) e.getSource();
 		int size = Math.min(parent.getWidth(), parent.getHeight());
 		size = Math.max(size, minimumSize);
-		System.out.println("Setting to size " + size);
 		int x = parent.getSize().width / 2 - size / 2;
 		int y = parent.getSize().height / 2 - size / 2;
 		this.setBounds(x, y, size, size);

@@ -212,6 +212,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		} else if (e.getSource().getClass().equals(JMenuItem.class) && ((JMenuItem) e.getSource()).getText().equals("Exit")) {
 			if (network != null)
 				network.quit();
+			System.out.println("QUITTING");
 			System.exit(0);
 		} else if (e.getSource().equals(hintButton)) {
 			((HumanPlayer)localPlayer).requestHint();
@@ -289,10 +290,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			getContentPane().add(bord);
 		} else if (object.getClass().equals(Command.class)) {
 			Command command = (Command) object;
-			System.out.println("Received command was " + command.getCommand());
 			
 			if (command.getCommand().equals(Protocol.START)) {
-				this.playerList.setText("");
+//				this.playerList.setText("");
 				String[] p = command.getArgs();
 				this.startGame(p);
 			} 
@@ -365,6 +365,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 
 	@Override
 	public void windowClosed(WindowEvent e) {
+		System.out.println("CLOSING");
 		System.exit(0);
 	}
 
