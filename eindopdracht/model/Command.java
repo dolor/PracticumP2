@@ -6,6 +6,7 @@ public class Command {
 	
 	private String command;
 	private String[] args;
+	private String argString;
 	
 	public Command(String command, String[] args) {
 		this.command = command;
@@ -18,7 +19,7 @@ public class Command {
 	 */
 	public Command(String fullCommand) {
 		Scanner scanner = new Scanner(fullCommand); 
-		
+		System.out.println("Creating command from " + fullCommand);
 		if (!scanner.hasNext())
 		{
 			System.out.println("Empty command received!");
@@ -35,11 +36,15 @@ public class Command {
 				System.arraycopy(this.args, 0, args, 0, this.args.length);
 			args[i] = scanner.next();
 			this.args = args;
+			this.argString = this.argString + args[i] + " ";
 			i++;
 		}
+		if (argString != null)
+			argString.trim();
 				
 		this.command = comm;
 		this.args = args;
+		System.out.println("Command created");
 	}
 	
 	/**
@@ -67,6 +72,16 @@ public class Command {
 			return args[arg];
 		else
 			return null;
+	}
+	
+	/**
+	 * Returns all arguments as a string
+	 * @return
+	 */
+	public String getArgString() {
+		System.out.println("Asked for argstring");
+		System.out.println("returning " + argString);
+		return argString;
 	}
 	
 	/**

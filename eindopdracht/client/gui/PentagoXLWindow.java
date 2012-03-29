@@ -88,7 +88,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 	 */
 	public PentagoXLWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 639, 483);
+		setBounds(100, 100, 700, 483);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -131,8 +131,8 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{7, 0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{293, 20, 0};
-		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 0.5, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 0.1, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		panel = new JPanel();
@@ -145,9 +145,11 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		contentPane.add(panel, gbc_panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		//panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(null);
 		
 		bord = new FancyBordPanel();
+		panel.addComponentListener(bord);
 		GridLayout gridLayout = (GridLayout) bord.getLayout();
 		gridLayout.setVgap(8);
 		gridLayout.setHgap(8);
@@ -175,12 +177,14 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		gbc_playerList.fill = GridBagConstraints.BOTH;
 		gbc_playerList.gridx = 0;
 		gbc_playerList.gridy = 1;
+		gbc_playerList.weighty = 0.1;
 		contentPane.add(playerList, gbc_playerList);
 		GridBagConstraints gbc_chatField = new GridBagConstraints();
 		gbc_chatField.insets = new Insets(0, 0, 0, 5);
 		gbc_chatField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chatField.gridx = 1;
 		gbc_chatField.gridy = 1;
+		gbc_chatField.weighty = 0.1;
 		contentPane.add(chatField, gbc_chatField);
 		chatField.setColumns(10);
 		
@@ -191,6 +195,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		gbc_chatButton.anchor = GridBagConstraints.WEST;
 		gbc_chatButton.gridx = 2;
 		gbc_chatButton.gridy = 1;
+		gbc_chatButton.weighty = 0.1;
 		contentPane.add(chatButton, gbc_chatButton);
 	}
 
@@ -207,6 +212,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		} else if (e.getSource().getClass().equals(JMenuItem.class) && ((JMenuItem) e.getSource()).getText().equals("Exit")) {
 			if (network != null)
 				network.quit();
+			System.out.println("QUITTING");
 			System.exit(0);
 		} else if (e.getSource().equals(hintButton)) {
 			((HumanPlayer)localPlayer).requestHint();
@@ -250,7 +256,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		else
 			localPlayer = new AIPlayer();
 		localPlayer.setName(name);
-
+		
 		if (network != null) {
 			network.join(name, players);
 		}
@@ -284,9 +290,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			getContentPane().add(bord);
 		} else if (object.getClass().equals(Command.class)) {
 			Command command = (Command) object;
-			System.out.println("Received command was " + command.getCommand());
 			
 			if (command.getCommand().equals(Protocol.START)) {
+//				this.playerList.setText("");
 				String[] p = command.getArgs();
 				this.startGame(p);
 			} 
@@ -295,11 +301,12 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 				localPlayer.setName(command.getArg(0));
 				System.out.println("Joined, now has the name "
 						+ command.getArg(0));
+//				this.playerList.setText(localPlayer.getName());
 			}
 			
 			else if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
-				System.out.println("Displaying chat: " + command.toString());
-				this.receiveChat(command.getArg(0));
+				System.out.println("Displaying chat: " + command.getArgString());
+				this.receiveChat(command.getArgString());
 			}
 		}
 	}
@@ -358,6 +365,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 
 	@Override
 	public void windowClosed(WindowEvent e) {
+		System.out.println("CLOSING");
 		System.exit(0);
 	}
 

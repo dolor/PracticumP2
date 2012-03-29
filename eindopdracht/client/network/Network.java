@@ -107,11 +107,11 @@ public class Network extends Observable implements Observer{
 		
 		//Connected to the server
 		else if (command.getCommand().equals(Protocol.CONNECTED)) {
+			System.out.println("Notifying observers");
 			this.setChanged();
 			this.notifyObservers(command);
+			System.out.println("All observers notified!");
 		}
-		
-		
 	}
 	
 	/**

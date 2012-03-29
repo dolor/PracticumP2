@@ -51,6 +51,10 @@ public class ConnectionHandler implements Runnable{
 	 */
 	private void listen() {
 		try {
+    		if (network == null)
+    			System.out.println("NETWORK WAS NULL");
+    		else if (in == null) 
+    			System.out.println("IN WAS NULL");
         	String next;
         	in.ready();
         	next = in.readLine();
@@ -61,10 +65,10 @@ public class ConnectionHandler implements Runnable{
         	}
         } catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");
-		} catch (NullPointerException e) {
-			//TODO Check if this is really necessary
+		} /*catch (NullPointerException e) {
+			System.out.println("NULLPOINTER, QUITTING");
 			System.exit(0);
-		}
+		}*/
 	}
 	
 	/*

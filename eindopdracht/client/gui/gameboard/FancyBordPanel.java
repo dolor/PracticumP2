@@ -3,6 +3,8 @@ package eindopdracht.client.gui.gameboard;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +22,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 
-public class FancyBordPanel extends JPanel implements Observer{
+public class FancyBordPanel extends JPanel implements Observer, ComponentListener{
 	private BufferedImage backgroundImg;
 	private ArrayList<FancyBlock> blocks;
 	private Game game;
@@ -33,6 +35,7 @@ public class FancyBordPanel extends JPanel implements Observer{
 	public FancyBordPanel() {
 		this.loadImages();
 		this.buildGUI();
+		this.setBackground(java.awt.Color.red);
 	}
 	
 	public void loadImages() {
@@ -54,6 +57,7 @@ public class FancyBordPanel extends JPanel implements Observer{
 			for (int y = 0; y < dimension; y++) {
 				FancyBlock block = new FancyBlock(this, x*dimension + y);
 				block.setBounds(width/3 * x, height/3 * y, width/3, height/3);
+				this.addComponentListener(block);
 				this.add(block);
 				blocks.add(block);
 			}
@@ -174,6 +178,7 @@ public class FancyBordPanel extends JPanel implements Observer{
 		for (FancyBlock block:blocks) {
 			block.setState(state);
 		}
+		this.repaint();
 	}
 	
 	/**
@@ -185,11 +190,12 @@ public class FancyBordPanel extends JPanel implements Observer{
 			Block block = board.getBlock(i);
 			blocks.get(i).updateTiles(block);
 		}
+		this.repaint();
 	}
 
-	public Dimension getPreferredSize() {
+	/*public Dimension getPreferredSize() {
 	    return new Dimension(minimumSize, minimumSize);
-	}
+	}*/
 
 	public Dimension getMinimumSize() {
 	    return new Dimension(minimumSize, minimumSize);
@@ -198,7 +204,7 @@ public class FancyBordPanel extends JPanel implements Observer{
 	/**
 	 * Implemented to force this component to always be square
 	 */
-	@Override
+	/*@Override
 	public void setBounds(int x, int y, int width, int height) {
 		   int currentWidth = getWidth();
 		   int currentHeight = getHeight();
@@ -210,7 +216,7 @@ public class FancyBordPanel extends JPanel implements Observer{
 		     // System.out.println("Setting to size " + width);
 		   }
 		   super.setBounds(x, y, width, height);
-		}
+		}*/
 	
 	public void showSetHint(Set set) {
 		
@@ -219,4 +225,24 @@ public class FancyBordPanel extends JPanel implements Observer{
 	public void showRotateHint(Turn turn) {
 		
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		JPanel parent = (JPanel) e.getSource();
+		int size = Math.min(parent.getWidth(), parent.getHeight());
+		size = Math.max(size, minimumSize);
+		int x = parent.getSize().width / 2 - size / 2;
+		int y = parent.getSize().height / 2 - size / 2;
+		this.setBounds(x, y, size, size);
+		
+		GridLayout layout = new GridLayout(dimension, dimension);
+		layout.setHgap(8);
+		layout.setVgap(8);
+		this.setLayout(layout);
+		this.updateUI();
+	}
+
+	public void componentMoved(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {}
 }
