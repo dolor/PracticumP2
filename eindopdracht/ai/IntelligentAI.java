@@ -245,7 +245,7 @@ public class IntelligentAI extends AI {
 		int sameBlock = 0;
 		for (int i = 0; i <= 8 ; i++)
 		{
-			if (block.GetTile(i).getColor() == this.getColor())
+			if (block.getTile(i).getColor() == this.getColor())
 				sameBlock++;
 		}
 		

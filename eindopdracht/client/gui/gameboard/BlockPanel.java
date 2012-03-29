@@ -272,7 +272,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public void updateTiles(Block block) {
 		ArrayList<Integer> newTiles = new ArrayList<Integer>();
 		for (int t = 0; t < 9; t++) {
-			newTiles.add(block.GetTile(t).getColor());
+			newTiles.add(block.getTile(t).getColor());
 		}
 		this.setTiles(newTiles);
 	}
