@@ -1,7 +1,7 @@
 package eindopdracht.model;
 
 import java.util.ArrayList;
-
+import eindopdracht.model.Tile;
 
 
 public class Board {
