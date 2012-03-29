@@ -1,5 +1,10 @@
 package eindopdracht.model;
 
+/**
+ * Container class for a position in the game. Supports both X/Y and Block/Tile
+ * @author mickvdv
+ *
+ */
 public class Position {
 
 	int x;
@@ -12,6 +17,17 @@ public class Position {
 		this(x, y, -1);
 	}
 	
+	/**
+	 * @require x >= 0 && x <= 8
+	 * 			y >= 0 && y <= 8
+	 * 			color >= 0 && color <= 4
+	 * @ensure 	this.getX() == x
+	 * 			this.getY() == y
+	 * 			this.getColor() == color
+	 * @param x the x position
+	 * @param y the y position
+	 * @param color the color
+	 */
 	public Position(int x, int y, int color)
 	{
 		this.x = x;
@@ -20,10 +36,18 @@ public class Position {
 		this.score = 0;
 	}
 	
+	/**
+	 * @ensure getScore() >= 0 && getScore() <= 4
+	 * @return the score of a certain position (Only used in AI)
+	 */
 	public int getScore()
 	{
 		return this.score;
 	}
+	/**
+	 * @ensure this.getScore() == score
+	 * @param score the score of a certain position (Only used in AI)
+	 */
 	public void setScore(int score)
 	{
 		this.score = score;

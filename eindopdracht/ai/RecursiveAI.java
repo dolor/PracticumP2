@@ -22,9 +22,9 @@ public class RecursiveAI extends AI{
 	public static final int SCORE_GROUND = 2;
 	public static final int ROWS_SCORE = 5;
 	public static final int WINNING_MOVE = 1000000000;
-	public static final int LOSING_MOVE = 10000000;
+	//public static final int LOSING_MOVE = 10000000;
 	
-	public static final int RECUSION_DEPTH = 3;
+	public static final int RECUSION_DEPTH = 2;
 	
 	/**
 	 * Gives the board a score. The higher the score the better the current player is "doing".
@@ -58,14 +58,14 @@ public class RecursiveAI extends AI{
 			
 				
 			}
-			else // opponent
+			/*else // opponent
 			{
 				if (r.getLength() >= 4)
 				{
 					score -= LOSING_MOVE;
 				}
 				score -= ROWS_SCORE * Math.pow(SCORE_GROUND, r.getLength());
-			}
+			}*/
 		}
 					
 		return score;

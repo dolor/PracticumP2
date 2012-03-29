@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Command {
 	
+	//TODO: Pre-Post conditions
 	private String command;
 	private String[] args;
 	private String argString;
