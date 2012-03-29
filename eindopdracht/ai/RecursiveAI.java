@@ -130,18 +130,20 @@ public class RecursiveAI extends AI{
 	
 	@Override
 	public void calculateTurn(Turn turn) {
-		// TODO Auto-generated method stub
-		Board nB = this.board.deepCopy();
-		
-		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
+				RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
+				r.calculateTurn(turn)
+
 		
 		
 	}
 
 	@Override
 	public void calculateSet(Set set) {
-		// TODO Auto-generated method stub
+		Board nB = this.board.deepCopy();
 		
+		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
+		set.setBlock(pos.getBlock());
+		set.setTile(pos.getTile());
 	}
 
 }
