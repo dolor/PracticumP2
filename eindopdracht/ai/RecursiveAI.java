@@ -25,6 +25,13 @@ public class RecursiveAI extends AI{
 	
 	public static final int RECUSION_DEPTH = 3;
 	
+	/**
+	 * Gives the board a score. The higher the score the better the current player is "doing".
+	 * @param b the board
+	 * @param color color of the player
+	 * @require color > 0 && color <= 4
+	 * @return the score of the board
+	 */
 	private int getBoardScore(Board b, int color)
 	{
 		int score = 0; // score van de rijen op het bord
@@ -63,6 +70,13 @@ public class RecursiveAI extends AI{
 		return score;
 		
 	}
+	/**
+	 * Calculates the best next move according to the AI.
+	 * @param color the color of the player who is has the next move.
+	 * @param depth the current depth of the recursion
+	 * @param board the board
+	 * @return the best move
+	 */
 	
 	private Position getRecusiveSet(int color, int depth, Board board)
 	{

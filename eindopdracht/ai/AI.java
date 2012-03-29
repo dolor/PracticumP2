@@ -10,6 +10,17 @@ public abstract class AI {
 	int color;
 	Board board;
 	ArrayList<Integer> otherplayers;
+	/**
+	 * 
+	 * @param color the color of the AIPlayer
+	 * @param board the board of the game
+	 * @param players all the players in the game (sorted)
+	 * @require color > 0 && color <= 4
+	 * 			board != null
+	 * 			players.size() > 1
+	 * @ensure 	this.getColor = color
+	 * 			this.getBoard() = board
+	 */
 	public AI(int color, Board board, ArrayList<Integer> players)
 	{
 		this.color = color;
@@ -17,28 +28,41 @@ public abstract class AI {
 		this.otherplayers = players;
 		this.otherplayers.remove(Integer.valueOf(color));
 	}
+	
+	/**
+	 * @ensure getColor() > 0 && getColor() <= 4
+	 * @return the color of the AI player.
+	 */
 	public int getColor()
 	{
 		return this.color;
 	}
+	/**
+	 * @ensure getBoard() != null
+	 * @return the board
+	 */
 	public Board getBoard()
 	{
 		return this.board;
 	}
+	/**
+	 * @ensure getOtherPlayers.size() > 0
+	 * @return the other players in the game.
+	 */
 	public ArrayList<Integer> getOtherPlayers()
 	{
 		return this.otherplayers;
 	}
 	
 	/**
-	 * Vult de turn in.
-	 * @param turn
+	 * Calculates the best turn according to the AI
+	 * @param turn the turn which has to be filled in
 	 */
 	public abstract void calculateTurn(Turn turn);
 
 	/**
-	 * Vult de set in.
-	 * @param set
+	 * Calculates the best set according to the AI
+	 * @param turn the set which has to be filled in
 	 */
 	public abstract void calculateSet(Set set);
 
