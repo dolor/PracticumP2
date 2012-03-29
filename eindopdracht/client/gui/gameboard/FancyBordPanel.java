@@ -105,7 +105,7 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 				// settable
 				this.currentSet = set;
 				this.setBlockStates(BlockPanel.SETTING);
-			} else {
+			} else if (set.getBlock() >= 0 && set.getTile() >= 0){
 				int updatedBlock = set.getBlock();
 				System.out.println("Updating block " + updatedBlock);
 				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
@@ -129,7 +129,7 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 				// player
 				this.currentTurn = turn;
 				this.setBlockStates(BlockPanel.TURNING);
-			} else {
+			} else if (turn.getBlock() >= 0 && turn.getRotation() >= 1 && turn.getRotation() <= 2){
 				int updatedBlock = turn.getBlock();
 				System.out.println("Updating block " + updatedBlock);
 				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
