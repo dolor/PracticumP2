@@ -6,6 +6,7 @@ public class Command {
 	
 	private String command;
 	private String[] args;
+	private String argString;
 	
 	public Command(String command, String[] args) {
 		this.command = command;
@@ -35,8 +36,11 @@ public class Command {
 				System.arraycopy(this.args, 0, args, 0, this.args.length);
 			args[i] = scanner.next();
 			this.args = args;
+			this.argString = this.argString + args[i] + " ";
 			i++;
 		}
+		
+		argString.trim();
 				
 		this.command = comm;
 		this.args = args;
@@ -67,6 +71,14 @@ public class Command {
 			return args[arg];
 		else
 			return null;
+	}
+	
+	/**
+	 * Returns all arguments as a string
+	 * @return
+	 */
+	public String getArgString() {
+		return argString;
 	}
 	
 	/**

@@ -1,8 +1,11 @@
 package eindopdracht.client.gui.gameboard;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -21,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
 
@@ -38,10 +42,10 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 	private BufferedImage yellowBall;
 	private BufferedImage yellowBallHighlight;
 	
-	private ImageIcon cwImage;
-	private ImageIcon cwImageHighlight;
-	private ImageIcon ccwImage;
-	private ImageIcon ccwImageHighlight;
+	private Image cwImage;
+	private Image cwImageHighlight;
+	private Image ccwImage;
+	private Image ccwImageHighlight;
 	
 	private JButton cwButton;
 	private JButton ccwButton;
@@ -72,8 +76,9 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 
 		balls = new ArrayList<Integer>();
 		for (int i = 0; i < 9; i++) {
-			balls.add(i);
+			balls.add(0);
 		}
+		
 	}
 
 	public void loadImages() {
@@ -100,10 +105,11 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 			yellowBallHighlight = ImageIO.read(new File(
 					"eindopdracht/resources/Black Ball Highlight.png"));
 			
-			cwImage = new ImageIcon("eindopdracht/resources/Turn Right.png");
-			cwImageHighlight = new ImageIcon("eindopdracht/resources/Turn Right Highlight.png");
-			ccwImage = new ImageIcon("eindopdracht/resources/Turn Left.png");
-			ccwImageHighlight = new ImageIcon("eindopdracht/resources/Turn Left Highlight.png");
+			cwImage = ImageIO.read(new File("eindopdracht/resources/Turn Right.png"));
+			cwImageHighlight = ImageIO.read(new File("eindopdracht/resources/Turn Right Highlight.png"));
+			
+			ccwImage = ImageIO.read(new File("eindopdracht/resources/Turn Left.png"));
+			ccwImageHighlight = ImageIO.read(new File("eindopdracht/resources/Turn Left Highlight.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -113,27 +119,28 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 		this.setLayout(null);
 		
 		cwButton = new JButton();
-		cwButton.setIcon(cwImage);
+		cwButton.setIcon(new ImageIcon(cwImage));
 		cwButton.setOpaque(false);
 		cwButton.setBorderPainted(false);
 		cwButton.setContentAreaFilled(false);
 		cwButton.addActionListener(this);
 		cwButton.setRolloverEnabled(true);
-		cwButton.setRolloverIcon(cwImageHighlight);
+		cwButton.setRolloverIcon(new ImageIcon(cwImageHighlight));
 		
 		ccwButton = new JButton();
-		ccwButton.setIcon(ccwImage);
+		ccwButton.setIcon(new ImageIcon(ccwImage));
 		ccwButton.setOpaque(false);
 		ccwButton.setBorderPainted(false);
 		ccwButton.setContentAreaFilled(false);
 		ccwButton.addActionListener(this);
 		ccwButton.setRolloverEnabled(true);
-		ccwButton.setRolloverIcon(ccwImageHighlight);	
+		ccwButton.setRolloverIcon(new ImageIcon(ccwImageHighlight));	
 		
 		this.repaint();
 	}
 
 	public void setTiles(ArrayList<Integer> balls) {
+		System.out.println("Tiles set");
 		this.balls = balls;
 	}
 
@@ -156,8 +163,26 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 	}
 	
 	public void showRotateButtons() {
-		cwButton.setBounds(this.getWidth()/2, 0, this.getWidth()/2, this.getHeight());
-		ccwButton.setBounds(0, 0, this.getWidth()/2, this.getHeight());
+		Rectangle cwBounds = new Rectangle(this.getWidth()/2, 0, this.getWidth()/2, this.getHeight());
+		cwButton.setBounds(cwBounds);
+		Image newImage = cwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+		ImageIcon newIcon = new ImageIcon(newImage);
+		cwButton.setIcon(newIcon);
+		newImage = cwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+		newIcon = new ImageIcon(newImage);
+		cwButton.setRolloverIcon(newIcon);
+		
+		Rectangle ccwBounds = new Rectangle(0, 0, this.getWidth()/2, this.getHeight());
+		ccwButton.setBounds(ccwBounds);
+		
+		newImage = ccwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+		newIcon = new ImageIcon(newImage);
+		ccwButton.setIcon(newIcon);
+		
+		newImage = ccwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+		newIcon = new ImageIcon(newImage);
+		ccwButton.setRolloverIcon(newIcon);
+		
 		this.add(cwButton);
 		this.add(ccwButton);	
 	}
@@ -237,25 +262,25 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 				BufferedImage ballImage;
 				switch (balls.get(i)) {
 				case Color.RED:
-					if (highlightedBall == i)
+					if (highlightedBall != i)
 						ballImage = redBall;
 					else
 						ballImage = redBallHighlight;
 					break;
 				case Color.BLUE:
-					if (highlightedBall == i)
+					if (highlightedBall != i)
 						ballImage = blueBall;
 					else
 						ballImage = blueBallHighlight;
 					break;
 				case Color.GREEN:
-					if (highlightedBall == i)
+					if (highlightedBall != i)
 						ballImage = greenBall;
 					else
 						ballImage = greenBallHighlight;
 					break;
 				case Color.YELLOW:
-					if (highlightedBall == i)
+					if (highlightedBall != i)
 						ballImage = yellowBall;
 					else
 						ballImage = yellowBallHighlight;
@@ -300,9 +325,21 @@ public class FancyBlock extends JPanel implements MouseMotionListener,
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		ballPositions = new ArrayList<Point>();
-		for (int i = 0; i <= 8; i++) {
-			ballPositions.add(this.positionForBall(i));
+		if (e.getSource().equals(this)) {
+			ballPositions = new ArrayList<Point>();
+			for (int i = 0; i <= 8; i++) {
+				ballPositions.add(this.positionForBall(i));
+			}
+		}
+		
+		else {
+			//Was its parent, should resize to fit nicely
+			int width = ((FancyBordPanel)e.getSource()).getWidth();
+			int height = ((FancyBordPanel)e.getSource()).getHeight();
+			int x = (int)Math.floor(blockIndex / 3);
+			int y = blockIndex % 3;
+			System.out.println("x:" + x + " y:" + y);
+			this.setBounds(width/3 * x, height/3 * y, width/3, height/3);
 		}
 	}
 
