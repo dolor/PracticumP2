@@ -4,14 +4,17 @@ import java.util.ArrayList;
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
 import eindopdracht.model.Row;
 
 public class RecursiveAI extends AI{
-
+	ArrayList<Integer> players;
+	
 	public RecursiveAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
+		this.players = players;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -88,7 +91,7 @@ public class RecursiveAI extends AI{
 						{
 							bestpos = pos;
 	
-							pos.setScore(getRecusiveSet(color, depth, board).getScore() + score);
+							pos.setScore(getRecusiveSet(nextPlayerForColor(color), depth, board).getScore() + score);
 						}
 						
 						// maak de zet ongedaan
@@ -106,6 +109,24 @@ public class RecursiveAI extends AI{
 		
 	}
 	
+	/**
+	 * Determines which color would be player after the given color
+	 * @param color current player
+	 * @return next player
+	 */
+	public int nextPlayerForColor(int color) {
+		for (int player :this.players) {
+			if (player == color) {
+				if (players.indexOf(player) == players.size()-1) {
+					//was the last player
+					return players.get(0);
+				} else {
+					return players.get(players.indexOf(player) + 1);
+				}
+			}
+		}
+		return players.get(0);
+	}
 	
 	@Override
 	public void calculateTurn(Turn turn) {
