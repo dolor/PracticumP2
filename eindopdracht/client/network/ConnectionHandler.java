@@ -15,6 +15,12 @@ public class ConnectionHandler implements Runnable{
 	Boolean stop;
 	Network network;
 	
+	/**
+	 * Create a new connection handler for the client
+	 * @param socket the socket to listen to
+	 * @param network network class to report to
+	 * @throws IOException thrown if the socket could not be opened
+	 */
 	public ConnectionHandler(Socket socket, Network network) throws IOException{
 		this.socket = socket;
 		this.network = network;
@@ -65,13 +71,10 @@ public class ConnectionHandler implements Runnable{
         	}
         } catch (IOException e) {
 			System.out.println("Error occured while reading inputstream");
-		} /*catch (NullPointerException e) {
-			System.out.println("NULLPOINTER, QUITTING");
-			System.exit(0);
-		}*/
+		}
 	}
 	
-	/*
+	/**
 	 * Can be called to stop listening
 	 */
 	public void stop() {
