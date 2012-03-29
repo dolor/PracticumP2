@@ -98,7 +98,6 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 			Set set = (Set) object;
 			Board board = game.getBoard();
 			//Update the tiles
-			this.updateTiles(board);
 
 			if (!set.isExecuted()
 					&& set.getPlayer().equals(game.getLocalPlayer())) {
@@ -106,6 +105,11 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 				// settable
 				this.currentSet = set;
 				this.setBlockStates(BlockPanel.SETTING);
+			} else if (set.getBlock() >= 0 && set.getTile() >= 0){
+				int updatedBlock = set.getBlock();
+				System.out.println("Updating block " + updatedBlock);
+				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
+				this.updateTiles(board);
 			}
 		}
 
@@ -114,7 +118,7 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 			this.setBlockStates(BlockPanel.DISABLED);
 			
 			Turn turn = (Turn) object;
-			this.updateTiles(game.getBoard());
+			Board board = game.getBoard();
 			//update the tiles
 			
 			// Turn was executed, so disable the tiles if it was set by the
@@ -125,6 +129,11 @@ public class FancyBordPanel extends JPanel implements Observer, ComponentListene
 				// player
 				this.currentTurn = turn;
 				this.setBlockStates(BlockPanel.TURNING);
+			} else if (turn.getBlock() >= 0 && turn.getRotation() >= 1 && turn.getRotation() <= 2){
+				int updatedBlock = turn.getBlock();
+				System.out.println("Updating block " + updatedBlock);
+				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
+				this.updateTiles(board);
 			}
 		}
 	}

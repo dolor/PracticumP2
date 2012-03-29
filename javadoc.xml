@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="lib" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="eindopdracht.server.model,eindopdracht.server,eindopdracht.client.model.player,eindopdracht.ai.intelligent,eindopdracht.client.model,eindopdracht.ai,eindopdracht.server.network,eindopdracht.util,eindopdracht.model,eindopdracht.client.gui,eindopdracht.client,eindopdracht.tests,eindopdracht.client.network,eindopdracht,eindopdracht.client.gui.gameboard" source="1.6" sourcepath="." splitindex="true" use="true" version="true"/>
+    </target>
+</project>

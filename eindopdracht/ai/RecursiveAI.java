@@ -130,11 +130,10 @@ public class RecursiveAI extends AI{
 	
 	@Override
 	public void calculateTurn(Turn turn) {
-				RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
-				r.calculateTurn(turn);
 
-		
-		
+		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
+		r.calculateTurn(turn);
+
 	}
 
 	@Override

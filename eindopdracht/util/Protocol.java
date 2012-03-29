@@ -29,7 +29,7 @@ public interface Protocol {
 	 */
 	public static final String TURN_BLOK = "turn_blok";
 	/**
-	 * Wanneer de speler een spel voortijdig wil beëindigen.
+	 * Wanneer de speler een spel voortijdig wil beeindigen.
 	 * 
 	 */
 	public static final String QUIT = "quit";
@@ -99,7 +99,7 @@ public interface Protocol {
 	public static final String BROADCAST_TURN_BLOK = "turn_blok";
 	/**
 	 * Wanneer een potje afgelopen is, stuurt de server een bericht met daarin 
-	 * de reden voor het beëindigen van het potje en de verantwoordelijke persoon. 
+	 * de reden voor het beï¿½indigen van het potje en de verantwoordelijke persoon. 
 	 * De code kan de volgende dingen aangeven:
 	 *	1: Winnaar		Naam geeft winnaar of winnaars, als het 2 spelers tegelijk winnen, aan.
 	 *	2: Remise		Geen naam
