@@ -53,7 +53,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	private ArrayList<Point> ballPositions;
 	private ArrayList<Integer> balls;
 	private int highlightedBall; // -1 for none, 0-8 for ball
-	private BordPanel bord;
+	private BoardPanel bord;
 
 	private int blockIndex;
 	private int state;
@@ -67,7 +67,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * @param bord the bord on which this blockview is
 	 * @param blockIndex the index on the board of this block
 	 */
-	public BlockPanel(BordPanel bord, int blockIndex) {
+	public BlockPanel(BoardPanel bord, int blockIndex) {
 		System.out.println("Created block with index " + blockIndex);
 		
 		this.loadImages();
@@ -377,8 +377,8 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		
 		else {
 			//Was its parent, should resize to fit nicely
-			int width = ((BordPanel)e.getSource()).getWidth();
-			int height = ((BordPanel)e.getSource()).getHeight();
+			int width = ((BoardPanel)e.getSource()).getWidth();
+			int height = ((BoardPanel)e.getSource()).getHeight();
 			int x = (int)Math.floor(blockIndex / 3);
 			int y = blockIndex % 3;
 			this.setBounds(width/3 * x, height/3 * y, width/3, height/3);

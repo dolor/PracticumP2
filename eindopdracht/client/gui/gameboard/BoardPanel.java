@@ -22,7 +22,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 
-public class BordPanel extends JPanel implements Observer, ComponentListener{
+public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	private BufferedImage backgroundImg;
 	private ArrayList<BlockPanel> blocks;
 	private Game game;
@@ -35,7 +35,7 @@ public class BordPanel extends JPanel implements Observer, ComponentListener{
 	/**
 	 * Create a new bord view
 	 */
-	public BordPanel() {
+	public BoardPanel() {
 		this.loadImages();
 		this.buildGUI();
 		this.setBackground(java.awt.Color.red);

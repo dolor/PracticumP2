@@ -2,6 +2,10 @@ package eindopdracht.model;
 
 import java.util.Scanner;
 
+/**
+ * @author Dolor
+ * Used to store Commands
+ */
 public class Command {
 	
 	//TODO: Pre-Post conditions
@@ -9,6 +13,13 @@ public class Command {
 	private String[] args;
 	private String argString;
 	
+	/**
+	 * Creates a new Command with the given command and arguments
+	 * @require command != null
+	 * @param command
+	 * @param args
+	 * @ensure Command contains the command and all the args
+	 */
 	public Command(String command, String[] args) {
 		this.command = command;
 		this.args = args;
@@ -17,6 +28,8 @@ public class Command {
 	/**
 	 * Parses a string into a command
 	 * @param fullCommand
+	 * @require string != null
+	 * @ensure Command contains the command and all following words as args
 	 */
 	public Command(String fullCommand) {
 		Scanner scanner = new Scanner(fullCommand); 
@@ -50,7 +63,7 @@ public class Command {
 	
 	/**
 	 * @return the command without the arguments
-	 * 
+	 * @ensure return != null
 	 */
 	public String getCommand() {
 		return this.command;
@@ -67,6 +80,7 @@ public class Command {
 	 * Returns the argument at position arg. Returns null if out of bounds.
 	 * @param arg
 	 * @return
+	 * @ensure return = null if out of bounds
 	 */
 	public String getArg(int arg) {
 		if (arg < args.length)
@@ -77,7 +91,8 @@ public class Command {
 	
 	/**
 	 * Returns all arguments as a string
-	 * @return
+	 * @return all arguments as a string
+	 * @ensure return != null
 	 */
 	public String getArgString() {
 		System.out.println("Asked for argstring");
@@ -87,7 +102,8 @@ public class Command {
 	
 	/**
 	 * Checks if the command is valid; A command is valid if it has a command string.
-	 * @return
+	 * @return if the command is valid
+	 * @ensure true if this.getCommand()!=null && !this.getCommand().isEmpty()
 	 */
 	public boolean isValid() {
 		return (this.command != null && !this.command.isEmpty());

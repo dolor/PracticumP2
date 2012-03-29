@@ -34,7 +34,7 @@ import eindopdracht.model.Command;
 import eindopdracht.util.Protocol;
 
 import javax.swing.JButton;
-import eindopdracht.client.gui.gameboard.BordPanel;
+import eindopdracht.client.gui.gameboard.BoardPanel;
 import java.awt.Insets;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
@@ -78,7 +78,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 	private JMenuItem statusLabel;
 	private Game game;
 	private JPanel panel;
-	private BordPanel bord;
+	private BoardPanel bord;
 	private JTextField chatField;
 	private JButton chatButton;
 	private PlayerList playerList;
@@ -150,7 +150,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		//panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.setLayout(null);
 		
-		bord = new BordPanel();
+		bord = new BoardPanel();
 		panel.addComponentListener(bord);
 		GridLayout gridLayout = (GridLayout) bord.getLayout();
 		gridLayout.setVgap(8);
