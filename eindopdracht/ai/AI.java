@@ -10,6 +10,8 @@ public abstract class AI {
 	int color;
 	Board board;
 	ArrayList<Integer> otherplayers;
+	private String[] chatLines = {""};
+	
 	/**
 	 * 
 	 * @param color the color of the AIPlayer
@@ -66,4 +68,15 @@ public abstract class AI {
 	 */
 	public abstract void calculateSet(Set set);
 
+	/**
+	 * Returns a random chatline for this AI
+	 * @ensure null if not implemented in AI
+	 * @return
+	 */
+	public String chat() {
+		if (chatLines.length > 0)
+			return chatLines[(int)Math.random()*chatLines.length];
+		else
+			return null;
+	}
 }

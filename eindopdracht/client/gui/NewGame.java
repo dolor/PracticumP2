@@ -73,6 +73,7 @@ public class NewGame extends JFrame implements DocumentListener,
 		aiType = new JComboBox(aiTypes);
 		aiType.addActionListener(this);
 		aiType.setEnabled(false);
+		aiType.setSelectedIndex(2);
 		this.add(aiType);
 
 		cancelButton = new JButton("Cancel");

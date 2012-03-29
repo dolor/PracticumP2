@@ -9,6 +9,8 @@ import eindopdracht.model.Position;
 
 
 public class RandomAI extends AI{
+	
+	private String[] chatLines = {"Hurr", "Durr", "Hmprf?"};
 
 	public RandomAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
@@ -49,7 +51,8 @@ public class RandomAI extends AI{
 		// vul de set
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
+		
+		if (Math.random() > 0.8)
+			this.chat();
 	}
-	
-
 }
