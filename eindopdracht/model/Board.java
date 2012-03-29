@@ -62,14 +62,18 @@ public class Board {
 	
 	public Tile getTileXY (int x, int y)
 	{
-		// kijk welk block het is
+		/*// kijk welk block het is
 		int BlockCol = (int) Math.floor(x / 3);
 		int BlockRow = (int) Math.floor(y / 3);
 		
 		int TileCol = x % 3;
 		int TileRow = y % 3;
 		//TODO: Testen of dit klopt
-		return blocks[BlockRow * 3 + BlockCol].getTile(TileRow*3 + TileCol);
+		return blocks[BlockRow * 3 + BlockCol].getTile(TileRow*3 + TileCol);*/
+		
+		Position pos = new Position(x, y);
+		
+		return blocks[pos.getBlock()].getTile(pos.getTile());
 
 	}
 	
