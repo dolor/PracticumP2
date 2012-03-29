@@ -267,14 +267,16 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 	 * @param name preferred name
 	 * @param players amount of players you want to play with
 	 * @param humanPlayer start as a player if true, starts an AI if false
+	 * @require aiType: 0->random, 1->intelligent, 2-> recursive
 	 */
-	public void join(String name, int players, boolean humanPlayer) {
+	public void join(String name, int players, boolean humanPlayer, int aiType) {
 		System.out.println("Joining as " + name + " in a lobby with " + players
 				+ " players max");
+		System.out.println("Starting with AI type " + aiType);
 		if (humanPlayer)
 			localPlayer = new HumanPlayer();
 		else
-			localPlayer = new AIPlayer();
+			localPlayer = new AIPlayer(aiType);
 		localPlayer.setName(name);
 		
 		if (network != null) {

@@ -5,14 +5,22 @@ import java.util.Observable;
 
 import eindopdracht.ai.AI;
 import eindopdracht.ai.IntelligentAI;
+import eindopdracht.ai.RandomAI;
+import eindopdracht.ai.RecursiveAI;
 import eindopdracht.client.model.*;
 
 public class AIPlayer extends Player{
 	
 	private AI ai;
+	private int aiType;
 	
-	public AIPlayer() {
+	public static int randomAI = 0;
+	public static int intelligentAI = 1;
+	public static int recursiveAI = 2;
+	
+	public AIPlayer(int aiType) {
 		this.setLocal(true);
+		this.aiType = aiType;
 	}
 	
 	public void initializeAI() {
@@ -21,7 +29,13 @@ public class AIPlayer extends Player{
 		for (Player player:players) {
 			playerColors.add(player.getColor());
 		}
-		this.ai = new IntelligentAI(this.getColor(), this.getGame().getBoard(), playerColors);
+		if (aiType == randomAI)
+			this.ai = new RandomAI(this.getColor(), this.getGame().getBoard(), playerColors);
+		else if (aiType == intelligentAI)
+			this.ai = new IntelligentAI(this.getColor(), this.getGame().getBoard(), playerColors);
+		else
+			this.ai = new RecursiveAI(this.getColor(), this.getGame().getBoard(), playerColors);
+		
 	}
 	
 	@Override
