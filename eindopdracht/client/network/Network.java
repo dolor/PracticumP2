@@ -12,7 +12,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-import eindopdracht.client.Game;
+import eindopdracht.client.GameController;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.NetworkPlayer;
@@ -25,7 +25,7 @@ public class Network extends Observable implements Observer{
 	private ConnectionHandler handler;
 	private ArrayList<NetworkPlayer> networkPlayers;
 	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-	private Game game;
+	private GameController game;
 	private String localPlayerName;
 	
 	/**
@@ -78,7 +78,7 @@ public class Network extends Observable implements Observer{
 		} 
 		
 		//Turn the block
-		else if (command.getCommand().equals(Protocol.TURN_BLOK)) {
+		else if (command.getCommand().equals(Protocol.TURN_BLOCK)) {
 			String playerName = command.getArg(2);
 			System.out.println("Player " + playerName + " turned a block");
 			for (NetworkPlayer player:networkPlayers) {
@@ -257,7 +257,7 @@ public class Network extends Observable implements Observer{
 	 * @param rotation 1=CW, 2=CCW
 	 */
 	public void turnBlock(int block, int rotation) {
-		String msg = String.format(Protocol.TURN_BLOK + " %s %s", letters[block], rotation==1?"CW":"CCW");
+		String msg = String.format(Protocol.TURN_BLOCK + " %s %s", letters[block], rotation==1?"CW":"CCW");
 		if (handler != null)
 			handler.sendString(msg);
 		else
@@ -275,5 +275,13 @@ public class Network extends Observable implements Observer{
 		else {
 			System.out.println("[Error] Not connected to a server!");
 		}
+	}
+	
+	/**
+	 * The Network was disconnected
+	 */
+	public void disconnected() {
+		this.setChanged();
+		this.notifyObservers("disconnect");
 	}
 }

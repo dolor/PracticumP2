@@ -112,7 +112,7 @@ public class PlayerHandler implements Runnable {
 			player.setTile(block, tile);
 		}
 
-		else if (c.equals(Protocol.TURN_BLOK)) {
+		else if (c.equals(Protocol.TURN_BLOCK)) {
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);

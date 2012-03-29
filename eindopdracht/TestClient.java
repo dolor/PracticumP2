@@ -1,5 +1,6 @@
 package eindopdracht;
 
+import eindopdracht.client.MainController;
 import eindopdracht.client.gui.PentagoXLWindow;
 
 public class TestClient {
@@ -25,9 +26,8 @@ public class TestClient {
 				System.exit(0);
 			}
 		}
-		PentagoXLWindow window = new PentagoXLWindow();
-		window.setVisible(true);
-		window.connect("localhost", 8888);
-		window.join(name, players, humanPlayer, aiType);
+		MainController mc = new MainController();
+		mc.connect("localhost", 8888);
+		mc.join(name, players, humanPlayer, aiType);
 	}
 }

@@ -68,8 +68,6 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * @param blockIndex the index on the board of this block
 	 */
 	public BlockPanel(BoardPanel bord, int blockIndex) {
-		System.out.println("Created block with index " + blockIndex);
-		
 		this.loadImages();
 		this.buildGUI();
 		this.addMouseMotionListener(this);
@@ -156,7 +154,6 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * @param balls ArrayList with the colors of each tile as an integer
 	 */
 	public void setTiles(ArrayList<Integer> balls) {
-		System.out.println("Tiles set");
 		this.balls = balls;
 		this.repaint();
 	}

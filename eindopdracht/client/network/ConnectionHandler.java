@@ -70,6 +70,7 @@ public class ConnectionHandler implements Runnable{
         		next = in.readLine();
         	}
         } catch (IOException e) {
+        	network.disconnected();
 			System.out.println("Error occured while reading inputstream");
 		}
 	}

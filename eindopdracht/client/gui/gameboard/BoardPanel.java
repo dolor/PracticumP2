@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import eindopdracht.client.Game;
+import eindopdracht.client.GameController;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
@@ -25,7 +25,7 @@ import eindopdracht.model.Board;
 public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	private BufferedImage backgroundImg;
 	private ArrayList<BlockPanel> blocks;
-	private Game game;
+	private GameController game;
 	private Turn currentTurn;
 	private Set currentSet;
 	
@@ -86,7 +86,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * @param game the game that this view represents
 	 * @require game != null
 	 */
-	public void setGame(Game game) {
+	public void setGame(GameController game) {
 		this.game = game;
 	}
 	
@@ -97,6 +97,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		// enabled for setting/turning or update what it looks like
 
 		if (object.getClass().equals(Set.class)) {
+			
 			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);
 

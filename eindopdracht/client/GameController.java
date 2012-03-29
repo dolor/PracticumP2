@@ -8,7 +8,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 
-public class Game extends Observable {
+public class GameController extends Observable {
 
 	ArrayList<Player> players;
 	Board board;
@@ -21,7 +21,7 @@ public class Game extends Observable {
 	 * @param players
 	 *            De spelers die mee doen. Lijst staat op volgorde.
 	 */
-	public Game(ArrayList<Player> players) {
+	public GameController(ArrayList<Player> players) {
 		System.out.println("Starting a new game!");
 		this.players = players;
 

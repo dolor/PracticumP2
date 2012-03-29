@@ -99,8 +99,8 @@ public class NewGame extends JFrame implements DocumentListener,
 			name.replaceAll("\n", "_");
 			int size = Integer
 					.parseInt((String) lobbySizeBox.getSelectedItem());
-			boolean useAI = !aiButton.isSelected();
-			observer.join(name, size, useAI, aiType.getSelectedIndex());
+			boolean human = !aiButton.isSelected();
+			observer.join(name, size, human, aiType.getSelectedIndex());
 			// TODO implement an option to use an AI or not
 			observer.newGameFrameDismissed();
 			this.dispose();

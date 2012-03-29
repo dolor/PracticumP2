@@ -157,7 +157,7 @@ public class ServerGame extends Observable {
 				this.localBroadcast(turn);
 				if (!this.gameEnded()) {
 					this.giveSet();
-					this.netBroadcast(Protocol.TURN_BLOK + " "
+					this.netBroadcast(Protocol.TURN_BLOCK + " "
 							+ ModelUtil.intToLetter(turn.getBlock()) + " "
 							+ ModelUtil.intToDirection(turn.getRotation())
 							+ " " + turn.getPlayer().getName());
