@@ -2,6 +2,8 @@ package eindopdracht.model;
 
 import java.util.ArrayList;
 
+import eindopdracht.ai.Position;
+
 
 public class Board {
 	public static final int DIM = 3;
@@ -215,6 +217,136 @@ public class Board {
 		winners.remove(0);
 		
 		return winners;
+	}
+	
+	public ArrayList<Row> getRows()
+	{
+		ArrayList<Row> rows = new ArrayList<Row>();
+		
+		// horizontaal
+		for (int y = 0; y <= 8; y++)
+		{
+			int lastcolor = -1;
+			Row r = new Row();
+
+			for (int x = 0; x <= 8; x++)
+			{
+				int color = this.getTileXY(x, y).getColor();
+				if (color != lastcolor && color != 0)
+				{
+					// niet de laaste kleur dus nieuwe rij
+					r = new Row();
+					rows.add(r);
+
+					// voeg het toe aan de rij
+					r.addPosition(new Position(x, y));
+					r.setColor(color);
+					lastcolor = color;
+				}
+				else if (lastcolor == color)
+				{
+					// zelfde kleur dus rij wordt een langer
+					r.addPosition(new Position(x, y));
+				}
+			}
+		}
+
+		// verticaal
+		for (int x = 0; x <= 8; x++)
+		{
+			int lastcolor = -1;
+			Row r = new Row();
+
+			for (int y = 0; y <= 8; y++)
+			{
+				int color = this.getTileXY(x, y).getColor();
+				if (color != lastcolor && color != 0)
+				{
+					// niet de laaste kleur dus nieuwe rij
+					r = new Row();
+					rows.add(r);
+
+					// voeg het toe aan de rij
+					r.addPosition(new Position(x, y));
+					r.setColor(color);
+					lastcolor = color;
+				}
+				else if (lastcolor == color)
+				{
+					// zelfde kleur dus rij wordt een langer
+					r.addPosition(new Position(x, y));
+				}
+			}
+		}
+
+		// check diagonal
+		// ga alle diagonalen af
+		// voor links boven naar rechts onder
+		for (int dY = -7; dY <= 8; dY++)
+		{
+			int lastcolor = -1;
+			Row r = new Row();
+			for (int x = 0; x <= 8; x++)
+			{
+				int y = dY - x;
+
+				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
+				{
+					int color = this.getTileXY(x, y).getColor();
+					if (color != lastcolor && color != 0)
+					{
+						// niet de laaste kleur dus nieuwe rij
+						r = new Row();
+						rows.add(r);
+
+						// voeg het toe aan de rij
+						r.addPosition(new Position(x, y));
+						r.setColor(color);
+						lastcolor = color;
+					}
+					else if (lastcolor == color)
+					{
+						// zelfde kleur dus rij wordt een langer
+						r.addPosition(new Position(x, y));
+					}
+				}
+
+			}
+		}
+
+		// voor rechts boven naar links onder
+		for (int dY = 0; dY <= 16; dY++)
+		{
+			int lastcolor = -1;
+			Row r = new Row();
+			for (int x = 0; x <= 8; x++)
+			{
+				int y = dY + x; // bereken de y behorend bij de x
+
+				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
+				{
+					int color = this.getTileXY(x, y).getColor();
+					if (color != lastcolor && color != 0)
+					{
+						// niet de laaste kleur dus nieuwe rij
+						r = new Row();
+						rows.add(r);
+
+						// voeg het toe aan de rij
+						r.addPosition(new Position(x, y));
+						r.setColor(color);
+						lastcolor = color;
+					}
+					else if (lastcolor == color)
+					{
+						// zelfde kleur dus rij wordt een langer
+						r.addPosition(new Position(x, y));
+					}
+				}
+			}
+		}
+		
+		return rows;
 	}
 	
 	public void setBlock(Block b, int block)

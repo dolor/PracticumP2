@@ -4,11 +4,29 @@ public class Position {
 
 	int x;
 	int y;
+	int color;
 	
 	public Position(int x, int y)
 	{
+		this(x, y, -1);
+	}
+	
+	public Position(int x, int y, int color)
+	{
 		this.x = x;
 		this.y = y;
+		this.color = color;
+	}
+	
+	
+	public int getColor()
+	{
+		return this.color;
+	}
+	
+	public void setColor(int color)
+	{
+		this.color = color;
 	}
 
 	public int getX()
