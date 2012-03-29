@@ -33,7 +33,7 @@ public class Board {
 		}
 		else
 		{
-			return blocks[block].GetTile(tile).SetColor(color);
+			return blocks[block].getTile(tile).SetColor(color);
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class Board {
 		int TileCol = x % 3;
 		int TileRow = y % 3;
 		//TODO: Testen of dit klopt
-		return blocks[BlockRow * 3 + BlockCol].GetTile(TileRow*3 + TileCol);
+		return blocks[BlockRow * 3 + BlockCol].getTile(TileRow*3 + TileCol);
 
 	}
 	
@@ -224,7 +224,11 @@ public class Board {
 		
 		// 0 is uiteraard geen winnaar
 		// TODO: Kijken of dit nodig is
-		winners.remove(0);
+		if (winners.size() > 0)
+		{
+			winners.remove(0);
+		}
+		
 		
 		return winners;
 	}

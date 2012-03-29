@@ -64,11 +64,23 @@ public class Block {
 		}
 	}
 	
-	public Tile GetTile(int tile)
+	/**
+	 * @require tile >= 0 && tile <= 8
+	 * @ensure getTile(tile) != null
+	 * @param tile the tile which has to be returned
+	 * @return the wanted tile
+	 */
+	public Tile getTile(int tile)
 	{
 		return tiles[tile];
 	}
 	
+	/**
+	 * Put a tile on a given spot.
+	 * @ensure this.getTile(tile) == t
+	 * @param t tile who has to be set there
+	 * @param tile the position where the tile is located
+	 */
 	public void setTile(Tile t, int tile)
 	{
 		tiles[tile] = t;
@@ -83,12 +95,17 @@ public class Block {
 		}
 	}
 	
+	/**
+	 * Gives a deep copy of the board. Every object is copied.
+	 * @ensure every deepCopy().getTileXY(x,y).getColor() == this.getTileXY(x,y).getColor()
+	 * @return Deep copy of this board
+	 */
 	public Block deepCopy()
 	{
 		Block b = new Block();
 		for (int i = 0; i <= 8; i++)
 		{
-			b.setTile(this.GetTile(i).deepCopy(), i);
+			b.setTile(this.getTile(i).deepCopy(), i);
 		}
 		return b;
 	}

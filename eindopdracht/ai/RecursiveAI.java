@@ -17,7 +17,8 @@ public class RecursiveAI extends AI{
 		this.players = players;
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
 	public static final int SCORE_GROUND = 2;
 	public static final int ROWS_SCORE = 5;
 	public static final int WINNING_MOVE = 1000000000;
@@ -25,6 +26,13 @@ public class RecursiveAI extends AI{
 	
 	public static final int RECUSION_DEPTH = 3;
 	
+	/**
+	 * Gives the board a score. The higher the score the better the current player is "doing".
+	 * @param b the board
+	 * @param color color of the player
+	 * @require color > 0 && color <= 4
+	 * @return the score of the board
+	 */
 	private int getBoardScore(Board b, int color)
 	{
 		int score = 0; // score van de rijen op het bord
@@ -63,6 +71,13 @@ public class RecursiveAI extends AI{
 		return score;
 		
 	}
+	/**
+	 * Calculates the best next move according to the AI.
+	 * @param color the color of the player who is has the next move.
+	 * @param depth the current depth of the recursion
+	 * @param board the board
+	 * @return the best move
+	 */
 	
 	private Position getRecusiveSet(int color, int depth, Board board)
 	{
@@ -131,7 +146,7 @@ public class RecursiveAI extends AI{
 	@Override
 	public void calculateTurn(Turn turn) {
 		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
-		r.calculateTurn(turn);		
+		r.calculateTurn(turn);	
 	}
 
 	@Override
@@ -139,6 +154,7 @@ public class RecursiveAI extends AI{
 		Board nB = this.board.deepCopy();
 		
 		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
+		System.out.println("AI Set calculator "+pos.getX()+", "+pos.getY());
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
 	}
