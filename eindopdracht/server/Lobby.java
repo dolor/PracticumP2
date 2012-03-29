@@ -41,7 +41,7 @@ public class Lobby {
 	 */
 	public boolean addPlayer(ServerPlayer player) {
 		if (players.size() < maxNumberOfPlayers)
-			players.add(players.size(), player);
+			players.add(player);
 		
 		/*
 		 * Repeats the loop until it finds a valid name

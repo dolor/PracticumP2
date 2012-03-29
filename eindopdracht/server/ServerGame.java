@@ -47,8 +47,6 @@ public class ServerGame extends Observable {
 	public void start() {
 		System.out.println("Game started with " + players.size() + " players!");
 
-		this.giveSet();
-
 		// Tell the players that the game is starting
 		String msg = Protocol.START;
 		for (ServerPlayer p : players) {
@@ -57,7 +55,7 @@ public class ServerGame extends Observable {
 
 		this.netBroadcast(msg);
 
-		// TODO write this code
+		this.giveSet();
 	}
 	
 	/**
