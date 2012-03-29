@@ -1,14 +1,43 @@
-package eindopdracht.ai;
+package eindopdracht.model;
 
 public class Position {
 
 	int x;
 	int y;
+	int color;
+	int score;
 	
 	public Position(int x, int y)
 	{
+		this(x, y, -1);
+	}
+	
+	public Position(int x, int y, int color)
+	{
 		this.x = x;
 		this.y = y;
+		this.color = color;
+		this.score = 0;
+	}
+	
+	public int getScore()
+	{
+		return this.score;
+	}
+	public void setScore(int score)
+	{
+		this.score = score;
+	}
+	
+	
+	public int getColor()
+	{
+		return this.color;
+	}
+	
+	public void setColor(int color)
+	{
+		this.color = color;
 	}
 
 	public int getX()

@@ -3,13 +3,24 @@ package eindopdracht.ai.intelligent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+import eindopdracht.ai.RecursiveAI;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
+import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
+import eindopdracht.model.Position;
 import eindopdracht.util.ModelUtil;
 
 public class RecursiveAITest {
 	public static void main(String[] args) {
 		boolean again = true;
+		
+		ArrayList<Integer> testPlayers = new ArrayList<Integer>();
+		for (int i = 2; i <= 4; i++) {
+			testPlayers.add(i);
+		}
 		
 		while (again) {
 			Board testBoard = new Board();
@@ -24,6 +35,12 @@ public class RecursiveAITest {
 			}
 			
 			testBoard.drawBoard();
+			
+			
+			RecursiveAI ai = new RecursiveAI(1, testBoard, testPlayers);
+			Set testSet = new Set(new Player());
+			ai.calculateSet(testSet);
+			System.out.println("Best move would be: " + testSet.getBlock() + "," + testSet.getTile());
 			
 			//Let the AI calculate
 			if (RecursiveAITest.readString("Again?").equals("EXIT")) {

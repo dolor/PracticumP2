@@ -1,8 +1,8 @@
 package eindopdracht.ai.intelligent;
 
 import eindopdracht.ai.IntelligentAI;
-import eindopdracht.ai.Position;
 import eindopdracht.model.Board;
+import eindopdracht.model.Position;
 
 public class IntelligentSet {
 
@@ -29,6 +29,8 @@ public class IntelligentSet {
 	}
 	public int getChainSameBlock()
 	{
+		if (this.chainSameBlock > 4)
+			this.chainSameBlock = 4;
 		return this.chainSameBlock;
 	}
 	
@@ -38,6 +40,8 @@ public class IntelligentSet {
 	}
 	public int getSameBlock()
 	{
+		if (this.chainDiagonal > 8)
+			this.chainDiagonal = 8;
 		return this.sameBlock;
 	}
 	
@@ -47,6 +51,8 @@ public class IntelligentSet {
 	}
 	public int getChainDiagonal()
 	{
+		if (this.chainDiagonal > 4)
+			this.chainDiagonal = 4;
 		return this.chainDiagonal;
 	}
 	
@@ -56,6 +62,8 @@ public class IntelligentSet {
 	}
 	public int getChainHorizontal()
 	{
+		if (this.chainHorizontal > 4)
+			this.chainHorizontal = 4;
 		return this.chainHorizontal;
 	}
 	
@@ -65,6 +73,8 @@ public class IntelligentSet {
 	}
 	public int getChainVertical()
 	{
+		if (this.chainVertical > 4)
+			this.chainVertical = 4;
 		return this.chainVertical;
 	}
 	

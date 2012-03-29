@@ -7,6 +7,7 @@ import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
+import eindopdracht.model.Position;
 
 public class IntelligentAI extends AI {
 	
@@ -33,14 +34,14 @@ public class IntelligentAI extends AI {
 	public static final int INSTANT_WIN = 10000000; // Instant win, over 9000
 	
 	// Scores voor zetten	
-	public static final int CENTER_CENTER = 100; // center van het speelveld
+	public static final int CENTER_CENTER = 50; // center van het speelveld
 	public static final int CENTER_OTHER = 2; // center van een ander block
-	public static final int CHAIN_SAME_BLOCK = 3; // reeks op hetzelfde block * aantal (uiteraard max 3)
-	public static final int CHAIN_DIAGONAL = 45; // reeks diagonaal * aantal
+	public static final int CHAIN_SAME_BLOCK = 0; // reeks op hetzelfde block * aantal (uiteraard max 3)
+	public static final int CHAIN_DIAGONAL = 30; // reeks diagonaal * aantal
 	public static final int CHAIN_HORIZONTAL = 30; // reeks horizontaal * aantal 
 	public static final int CHAIN_VERTICAL = 30; // reeks verticaal * aantal
-	public static final int SAME_BLOCK = 1; // aantal ballen op hetzelfde block * aantal
-	public static final int OTHER_PLAYER_MOVE = -5; // aftrek voor een move die berekent is voor de andere spelers
+	public static final int SAME_BLOCK = 0; // aantal ballen op hetzelfde block * aantal
+	public static final int OTHER_PLAYER_MOVE = -1; // aftrek voor een move die berekent is voor de andere spelers
 	
 
 	// voor turns
