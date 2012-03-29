@@ -28,6 +28,10 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	
 	public static String[] lobbySizes = {"2", "3", "4"};
 	
+	/**
+	 * creates a window to start a new game
+	 * @param pentagoXLWindow the main window
+	 */
 	public NewGame(PentagoXLWindow pentagoXLWindow) {
 	    super("New Game");
 	    this.observer = pentagoXLWindow;
@@ -37,6 +41,9 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	    this.addWindowListener(this);
 	}
 	
+	/**
+	 * Set up the GUI of this window
+	 */
 	public void buildGUI() {
 		setSize(200, 200);
 		this.setResizable(false);
@@ -88,10 +95,6 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	}
 
 	@Override
-	public void changedUpdate(DocumentEvent arg0) {
-	}
-
-	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		if (!nameTextField.getText().isEmpty()) {
 			okayButton.setEnabled(true);
@@ -110,45 +113,26 @@ public class NewGame extends JFrame implements DocumentListener, ActionListener,
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void windowClosing(WindowEvent e) {
         e.getWindow().dispose();
         observer.newGameFrameDismissed();
 	}
-
+	
+	//Methods that have to be implemented for the interface but are not used
+	
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void windowActivated(WindowEvent e) {}
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void windowClosed(WindowEvent e) {}
 	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void windowDeactivated(WindowEvent e) {}
 	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeiconified(WindowEvent e) {}
+	@Override
+	public void windowIconified(WindowEvent e) {}
+	@Override
+	public void windowOpened(WindowEvent e) {}
+	@Override
+	public void changedUpdate(DocumentEvent arg0) {}
 	
 }

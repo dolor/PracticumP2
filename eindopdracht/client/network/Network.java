@@ -36,6 +36,10 @@ public class Network extends Observable implements Observer{
 		this.networkPlayers = players;
 	}
 	
+	/**
+	 * 
+	 * @param player add a single non-local player
+	 */
 	public void addNetworkPlayer(NetworkPlayer player) {
 		if (this.networkPlayers == null) {
 			networkPlayers = new ArrayList<NetworkPlayer>();
@@ -43,10 +47,18 @@ public class Network extends Observable implements Observer{
 		networkPlayers.add(player);
 	}
 	
+	/**
+	 * 
+	 * @param name the name of the local player
+	 */
 	public void setLocalPlayerName(String name) {
 		this.localPlayerName = name;
 	}
 	
+	/**
+	 * 
+	 * @return the name of the local player
+	 */
 	public String getLocalPlayerName() {
 		return this.localPlayerName;
 	}
@@ -54,6 +66,7 @@ public class Network extends Observable implements Observer{
 	/**
 	 * Takes a string of input from a connectionHandler and acts appropriately.
 	 * Creates a Command object and passes it through notifyObservers.
+	 * @require input the string received from the network
 	 */
 	public void processNetworkInput(String input) {
 		System.out.println("Processing input: " + input);

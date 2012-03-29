@@ -1,4 +1,4 @@
-package eindopdracht.ai.intelligent;
+package eindopdracht.tests;
 
 import java.io.BufferedReader;
 import java.io.IOException;

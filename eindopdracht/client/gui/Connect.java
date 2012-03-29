@@ -13,7 +13,8 @@ import javax.swing.event.DocumentListener;
 
 import eindopdracht.util.NetworkUtil;
 
-public class Connect extends JFrame implements ActionListener, DocumentListener, WindowListener {
+public class Connect extends JFrame implements ActionListener,
+		DocumentListener, WindowListener {
 
 	private JTextField hostnameTextField;
 	private JTextField portTextField;
@@ -21,34 +22,44 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 	private JButton okayButton;
 	private PentagoXLWindow observer;
 
+	/**
+	 * Creates a new window to connect to a server
+	 * 
+	 * @param pentagoXLWindow
+	 *            the main window
+	 */
 	public Connect(PentagoXLWindow pentagoXLWindow) {
 		super("Connect");
 		this.observer = pentagoXLWindow;
 		buildGUI();
-		this.setLocation(pentagoXLWindow.getLocationOnScreen().x + 15, pentagoXLWindow.getLocationOnScreen().y + 15);
+		this.setLocation(pentagoXLWindow.getLocationOnScreen().x + 15,
+				pentagoXLWindow.getLocationOnScreen().y + 15);
 		setVisible(true);
 		hostnameTextField.setText("localhost");
 		portTextField.setText("8888");
 		addWindowListener(this);
 	}
 
+	/**
+	 * Set up the GUI
+	 */
 	public void buildGUI() {
 		setSize(200, 200);
 		this.setResizable(false);
 		this.setLayout(new FlowLayout());
-		
+
 		this.add(new JLabel("Host"));
 		hostnameTextField = new JTextField(15);
 		hostnameTextField.getDocument().addDocumentListener(this);
 		hostnameTextField.addActionListener(this);
 		this.add(hostnameTextField);
-		
+
 		this.add(new JLabel("Port"));
 		portTextField = new JTextField(15);
 		portTextField.getDocument().addDocumentListener(this);
 		portTextField.addActionListener(this);
 		this.add(portTextField);
-		
+
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		this.add(cancelButton);
@@ -57,9 +68,13 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 		okayButton.setEnabled(false);
 		this.add(okayButton);
 	}
-	
+
+	/**
+	 * Sends the filled in variables to the main window
+	 */
 	public void sendForm() {
-		observer.connect(hostnameTextField.getText(), Integer.parseInt(portTextField.getText()));
+		observer.connect(hostnameTextField.getText(),
+				Integer.parseInt(portTextField.getText()));
 		observer.connectFrameDismissed();
 		this.dispose();
 	}
@@ -80,22 +95,17 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 					sendForm();
 			}
 			System.out.println("Connecting to " + hostnameTextField.getText());
-		} else if (ev.getSource().equals(hostnameTextField) || ev.getSource().equals(portTextField)) {
+		} else if (ev.getSource().equals(hostnameTextField)
+				|| ev.getSource().equals(portTextField)) {
 			if (okayButton.isEnabled())
 				okayButton.doClick();
 		}
 	}
 
 	@Override
-	public void changedUpdate(DocumentEvent sender) {
-		//if (sender.getDocument().equals(hostnameTextField.getDocument())) {
-			
-		//}
-	}
-
-	@Override
 	public void insertUpdate(DocumentEvent sender) {
-		if (NetworkUtil.isValidHost(hostnameTextField.getText()) && NetworkUtil.isValidPort(portTextField.getText())) {
+		if (NetworkUtil.isValidHost(hostnameTextField.getText())
+				&& NetworkUtil.isValidPort(portTextField.getText())) {
 			okayButton.setEnabled(true);
 		} else {
 			okayButton.setEnabled(false);
@@ -104,23 +114,12 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 
 	@Override
 	public void removeUpdate(DocumentEvent sender) {
-		if (NetworkUtil.isValidHost(hostnameTextField.getText()) && NetworkUtil.isValidPort(portTextField.getText())) {
+		if (NetworkUtil.isValidHost(hostnameTextField.getText())
+				&& NetworkUtil.isValidPort(portTextField.getText())) {
 			okayButton.setEnabled(true);
 		} else {
 			okayButton.setEnabled(false);
 		}
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -129,27 +128,33 @@ public class Connect extends JFrame implements ActionListener, DocumentListener,
 		observer.connectFrameDismissed();
 	}
 
+	// Not used but required methods
+
+	@Override
+	public void changedUpdate(DocumentEvent sender) {
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

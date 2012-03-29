@@ -1,6 +1,6 @@
 package eindopdracht.util;
 
-import eindopdracht.ai.Position;
+import eindopdracht.model.Position;
 import eindopdracht.model.Block;
 
 public class ModelUtil {

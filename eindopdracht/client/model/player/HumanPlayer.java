@@ -10,7 +10,6 @@ import eindopdracht.ai.AI;
 import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
 import eindopdracht.client.gui.gameboard.BordPanel;
-import eindopdracht.client.gui.gameboard.FancyBordPanel;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
@@ -19,7 +18,7 @@ import eindopdracht.model.Command;
 public class HumanPlayer extends Player{
 	
 	private AI hintAI;
-	private FancyBordPanel bordGUI;
+	private BordPanel bordGUI;
 	
 	public HumanPlayer() {
 		this.setLocal(true);
@@ -41,11 +40,11 @@ public class HumanPlayer extends Player{
 	 * Give the human player a reference to the bord GUI, to request hints
 	 * @param bord
 	 */
-	public void setBordPanel(FancyBordPanel bord) {
+	public void setBordPanel(BordPanel bord) {
 		this.bordGUI = bord;
 	}
 	
-	public FancyBordPanel getBordPanel() {
+	public BordPanel getBordPanel() {
 		return this.bordGUI;
 	}
 

@@ -1,111 +1,95 @@
 package eindopdracht.client.gui.gameboard;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import eindopdracht.client.Game;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
-import eindopdracht.model.Color;
-import eindopdracht.model.Tile;
 
-/**
- * Contains 9 BlockPanels and renders them when necessary
- * 
- * @author Dolor
- * 
- */
-
-public class BordPanel extends JPanel implements Observer {
-
-	Game game;
-	ArrayList<BlockPanel> blockList;
-	// ArrayList<JButton> tileList;
-
-	private static int blockGap = 12;
-	private static int tileGap = 2;
-
-	private Set currentSet;
+public class BordPanel extends JPanel implements Observer, ComponentListener{
+	private BufferedImage backgroundImg;
+	private ArrayList<BlockPanel> blocks;
+	private Game game;
 	private Turn currentTurn;
-
+	private Set currentSet;
+	
+	public static int dimension = 3;
+	private static int minimumSize = 300;
+	
+	/**
+	 * Create a new bord view
+	 */
 	public BordPanel() {
-		blockList = new ArrayList<BlockPanel>();
+		this.loadImages();
 		this.buildGUI();
+		this.setBackground(java.awt.Color.red);
+	}
+	
+	/**
+	 * load all necessary images in memory
+	 */
+	private void loadImages() {
+		try {
+			backgroundImg = ImageIO.read(new File("eindopdracht/resources/Texture.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Set up the GUI
+	 */
+	public void buildGUI() {
+		this.setLayout(new GridLayout(dimension, dimension));
+		this.setBounds(0, 0, this.getPreferredSize().width, this.getPreferredSize().height);
+		
+		blocks = new ArrayList<BlockPanel>();
+		int width = this.getSize().width;
+		int height = this.getSize().height;
+		for (int x = 0; x < dimension; x++) {
+			for (int y = 0; y < dimension; y++) {
+				BlockPanel block = new BlockPanel(this, x*dimension + y);
+				block.setBounds(width/3 * x, height/3 * y, width/3, height/3);
+				this.addComponentListener(block);
+				this.add(block);
+				blocks.add(block);
+			}
+		}
+		this.repaint();
+	}
+	
+	/**
+	 * Called when this component has to draw its contents
+	 */
+	public void paintComponent(Graphics g) {
+		g.drawImage(backgroundImg, 0, 0, this.getSize().width, this.getSize().height,null);
 	}
 
+	/**
+	 * 
+	 * @param game the game that this view represents
+	 * @require game != null
+	 */
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
-	private void buildGUI() {
-		GridLayout blockLayout = new GridLayout(Board.DIM, Board.DIM);
-		blockLayout.setHgap(blockGap);
-		blockLayout.setVgap(blockGap);
-		this.setLayout(blockLayout);
-
-		this.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-		for (int b = 0; b < Board.DIM * Board.DIM; b++) {
-			BlockPanel bp = new BlockPanel(this, b);
-			blockList.add(bp);
-			this.add(bp);
-		}
-	}
-
-	/**
-	 * Shows a hint at the given tile. Hint disappears when any action has been taken.
-	 * @param set to show as a hint; only requires player, block and tile
-	 */
-	public void showSetHint(Set set) {
-		for (BlockPanel block:blockList) {
-			block.resetHints();
-		}
-		
-		int block = set.getBlock();
-		this.blockList.get(block).showSetHint(set.getTile());
-	}
 	
-	/**
-	 * Shows a hint for a given rotation. Hint disappears when any action has been taken.
-	 * @param turn to show as a hint; only requires player, block and direction
-	 */
-	public void showRotateHint(Turn turn) {
-		this.resetHints();
-		
-		int block = turn.getBlock();
-		this.blockList.get(block - 1).showRotateHint(turn.getRotation());
-	}
-	
-	public void resetHints() {
-		for (BlockPanel block:blockList) {
-			block.resetHints();
-		}
-	}
-
-	private void setTiles(Board board) {
-		for (BlockPanel bp : blockList) {
-			Block block = board.getBlocks()[bp.getIndex()];
-			bp.setTiles(block);
-		}
-	}
-
-	private void setBlockStates(int state) {
-		for (BlockPanel block : blockList) {
-			block.setState(state);
-		}
-	}
-
 	@Override
 	public void update(Observable sender, Object object) {
 		// Should only be updated by the broadcasted sets and turns. Bordpanel
@@ -113,11 +97,12 @@ public class BordPanel extends JPanel implements Observer {
 		// enabled for setting/turning or update what it looks like
 
 		if (object.getClass().equals(Set.class)) {
+			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);
 
 			Set set = (Set) object;
 			Board board = game.getBoard();
-			this.setTiles(board);
+			//Update the tiles
 
 			if (!set.isExecuted()
 					&& set.getPlayer().equals(game.getLocalPlayer())) {
@@ -125,13 +110,22 @@ public class BordPanel extends JPanel implements Observer {
 				// settable
 				this.currentSet = set;
 				this.setBlockStates(BlockPanel.SETTING);
+			} else if (set.getBlock() >= 0 && set.getTile() >= 0){
+				int updatedBlock = set.getBlock();
+				System.out.println("Updating block " + updatedBlock);
+				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
+				this.updateTiles(board);
 			}
 		}
 
 		else if (object.getClass().equals(Turn.class)) {
+			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);
+			
 			Turn turn = (Turn) object;
-			this.setTiles(game.getBoard());
+			Board board = game.getBoard();
+			//update the tiles
+			
 			// Turn was executed, so disable the tiles if it was set by the
 			// player
 			if (!turn.isExecuted()
@@ -140,15 +134,21 @@ public class BordPanel extends JPanel implements Observer {
 				// player
 				this.currentTurn = turn;
 				this.setBlockStates(BlockPanel.TURNING);
+			} else if (turn.getBlock() >= 0 && turn.getRotation() >= 1 && turn.getRotation() <= 2){
+				int updatedBlock = turn.getBlock();
+				System.out.println("Updating block " + updatedBlock);
+				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
+				this.updateTiles(board);
 			}
 		}
 	}
-
+	
 	/**
 	 * Called by a block when a turn has been ordered.
 	 * 
 	 * @param block
 	 * @param direction
+	 * @require block 0<=block<=8, direction == 1|2
 	 */
 	public void turn(int block, int direction) {
 		this.resetHints();
@@ -166,6 +166,7 @@ public class BordPanel extends JPanel implements Observer {
 	 * 
 	 * @param block
 	 * @param tile
+	 * @require 0<=block<=8, 0<=tile<=8
 	 */
 	public void set(int block, int tile) {
 		this.resetHints();
@@ -179,16 +180,79 @@ public class BordPanel extends JPanel implements Observer {
 	}
 	
 	/**
-	 * Called when this component has to draw its contents
+	 * Resets all shown hints
 	 */
-	public void paintComponent(Graphics g) {
+	public void resetHints() {
+		
+	}
+	
+	/**
+	 * Sets the designated state to all blocks
+	 * @param state
+	 * @require 0 <= state <= 2
+	 */
+	public void setBlockStates(int state) {
+		for (BlockPanel block:blocks) {
+			block.setState(state);
+		}
+		this.repaint();
+	}
+	
+	/**
+	 * Updates all blocks so it shows the correct tiles
+	 * @param board
+	 * @require board != null
+	 */
+	public void updateTiles(Board board) {
+		for (int i = 0; i < blocks.size(); i++) {
+			Block block = board.getBlock(i);
+			blocks.get(i).updateTiles(block);
+		}
+		this.repaint();
+	}
+
+	@Override
+	public Dimension getMinimumSize() {
+	    return new Dimension(minimumSize, minimumSize);
+	}
+	
+	/**
+	 * Shows the given set as a hint
+	 * @param set to display as a hint
+	 * @require set != null and valid
+	 * @ensure will be shown on the view
+	 */
+	public void showSetHint(Set set) {
 		
 	}
 
-	private ArrayList<BlockPanel> blocks;
-
 	/**
-	 * 
+	 * Shows the given turn as a hint
+	 * @param turn to display as a hint
+	 * @require turn != null and valid
+	 * @ensure will be shown on the view
 	 */
-	private static final long serialVersionUID = 2232170303403827378L;
+	public void showRotateHint(Turn turn) {
+		
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		JPanel parent = (JPanel) e.getSource();
+		int size = Math.min(parent.getWidth(), parent.getHeight());
+		size = Math.max(size, minimumSize);
+		int x = parent.getSize().width / 2 - size / 2;
+		int y = parent.getSize().height / 2 - size / 2;
+		this.setBounds(x, y, size, size);
+		
+		GridLayout layout = new GridLayout(dimension, dimension);
+		layout.setHgap(8);
+		layout.setVgap(8);
+		this.setLayout(layout);
+		this.updateUI();
+	}
+
+	public void componentMoved(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {}
 }
