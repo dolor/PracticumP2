@@ -2,7 +2,6 @@ package eindopdracht.model;
 
 import java.util.ArrayList;
 
-import eindopdracht.ai.Position;
 
 public class Row {
 
@@ -30,6 +29,11 @@ public class Row {
 	public ArrayList<Position> getPositions()
 	{
 		return posities;
+	}
+	
+	public int getLength()
+	{
+		return this.posities.size();
 	}
 	
 }

@@ -1,10 +1,11 @@
-package eindopdracht.ai;
+package eindopdracht.model;
 
 public class Position {
 
 	int x;
 	int y;
 	int color;
+	int score;
 	
 	public Position(int x, int y)
 	{
@@ -16,6 +17,16 @@ public class Position {
 		this.x = x;
 		this.y = y;
 		this.color = color;
+		this.score = 0;
+	}
+	
+	public int getScore()
+	{
+		return this.score;
+	}
+	public void setScore(int score)
+	{
+		this.score = score;
 	}
 	
 	

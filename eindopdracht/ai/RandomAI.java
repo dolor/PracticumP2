@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
+import eindopdracht.model.Position;
 
 
 public class RandomAI extends AI{

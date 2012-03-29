@@ -2,7 +2,6 @@ package eindopdracht.model;
 
 import java.util.ArrayList;
 
-import eindopdracht.ai.Position;
 
 
 public class Board {
@@ -83,6 +82,7 @@ public class Board {
 		// ga alle rijen af
 		ArrayList<Integer> winners = new ArrayList<Integer>();
 		
+		/*
 		// check cols
 		for (int y = 0; y <= 8; y++)
 		{
@@ -212,8 +212,18 @@ public class Board {
 
 			}
 		}
+		*/
+		
+		for (Row r : getRows())
+		{
+			if (r.getLength() >= 5)
+			{
+				winners.add(r.getColor());
+			}
+		}
 		
 		// 0 is uiteraard geen winnaar
+		// TODO: Kijken of dit nodig is
 		winners.remove(0);
 		
 		return winners;

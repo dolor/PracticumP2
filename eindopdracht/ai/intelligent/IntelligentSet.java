@@ -1,8 +1,8 @@
 package eindopdracht.ai.intelligent;
 
 import eindopdracht.ai.IntelligentAI;
-import eindopdracht.ai.Position;
 import eindopdracht.model.Board;
+import eindopdracht.model.Position;
 
 public class IntelligentSet {
 
