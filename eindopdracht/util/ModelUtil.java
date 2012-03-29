@@ -1,5 +1,6 @@
 package eindopdracht.util;
 
+import eindopdracht.ai.Position;
 import eindopdracht.model.Block;
 
 public class ModelUtil {
@@ -52,6 +53,22 @@ public class ModelUtil {
 			return "CW";
 		else
 			return "CCW";
+	}
+	
+	/**
+	 * Get the block for the designated position
+	 * @param column
+	 * @return
+	 */
+	public static int getBlockForPosition(int row, int column) {
+		//TODO move Position to model
+		Position pos = new Position(row, column);
+		return pos.getBlock();
+	}
+	
+	public static int getTileForPosition(int row, int column) {
+		Position pos = new Position(row, column);
+		return pos.getTile();
 	}
 	
 	/**

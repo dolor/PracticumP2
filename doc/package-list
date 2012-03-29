@@ -1,1 +1,15 @@
-week1.getallen
+eindopdracht
+eindopdracht.ai
+eindopdracht.ai.intelligent
+eindopdracht.client
+eindopdracht.client.gui
+eindopdracht.client.gui.gameboard
+eindopdracht.client.model
+eindopdracht.client.model.player
+eindopdracht.client.network
+eindopdracht.model
+eindopdracht.server
+eindopdracht.server.model
+eindopdracht.server.network
+eindopdracht.tests
+eindopdracht.util
