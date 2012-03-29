@@ -20,6 +20,9 @@ public class Network {
 	/**
 	 * Starts listening for connecting players
 	 * @param port to listen to
+	 * @require valid port
+	 * @ensure all incoming connections through the given port will be handled
+	 * @throws IOException if the port could not be opened
 	 */
 	private void listen(int port) throws IOException{
 		ServerSocket socket = null;
@@ -45,7 +48,8 @@ public class Network {
 	
 	/**
 	 * Sends the passed message to all connected clients
-	 * @param msg
+	 * @param msg message to send
+	 * @ensure message will be sent to all connected network players
 	 */
 	public void broadcast(String msg) {
 		for (PlayerHandler player:players) {

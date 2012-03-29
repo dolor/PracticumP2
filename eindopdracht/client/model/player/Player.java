@@ -12,6 +12,8 @@ public class Player implements Observer  {
 	protected Game game;
 	protected boolean localPlayer;
 	
+	private int numberOfTiles;
+	
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;
 	public static final int IDLE = 0;
@@ -82,6 +84,22 @@ public class Player implements Observer  {
 	
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * 
+	 * @return the number of tiles this player has left
+	 */
+	public int getNumberOfTiles() {
+		return numberOfTiles;
+	}
+
+	/**
+	 * 
+	 * @param numberOfTiles the maximum number of tiles for this player
+	 */
+	public void setNumberOfTiles(int numberOfTiles) {
+		this.numberOfTiles = numberOfTiles;
 	}
 
 	@Override

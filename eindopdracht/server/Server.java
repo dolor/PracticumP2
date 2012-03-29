@@ -19,6 +19,10 @@ public class Server {
 	public static int endDueToCheat = 3;
 	public static int endDueToDisconnect = 4;
 	
+	/**
+	 * Creates a server with port 8888
+	 * @ensure exits with an exception if 8888 can not be opened
+	 */
 	public Server() {
 		this.lobbies = new ArrayList<Lobby>();
 		this.games = new ArrayList<ServerGame>();
@@ -31,6 +35,12 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Creates a server
+	 * @param port the port this server should be listening on
+	 * @ensure starts listening on the given port if valid
+	 * @ensure asks for a different value if invalid
+	 */
 	public Server(int port) {
 		this.lobbies = new ArrayList<Lobby>();
 		this.games = new ArrayList<ServerGame>();
@@ -87,11 +97,15 @@ public class Server {
 	 * @param lobby
 	 */
 	public void startGame(Lobby lobby) {
-		ServerGame newGame = new ServerGame(lobby.getPlayers());
+		ServerGame newGame = new ServerGame(lobby.getPlayers(), this);
 		newGame.start();
 		lobbies.remove(lobby);
 	}
 	
+	/**
+	 * Stops the given game
+	 * @param game
+	 */
 	public void stopGame(ServerGame game) {
 		games.remove(game);
 	}

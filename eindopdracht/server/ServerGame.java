@@ -14,10 +14,16 @@ public class ServerGame extends Observable {
 
 	ArrayList<ServerPlayer> players;
 	ServerPlayer settingPlayer; // Player die aan de beurt is
+	Server server;
 
 	Board board;
 
-	public ServerGame(ArrayList<ServerPlayer> players) {
+	/**
+	 * Create a new game with the given players that will be managed by the server
+	 * @param players that are in the game
+	 * @require players are valid, at least 2 and max 4
+	 */
+	public ServerGame(ArrayList<ServerPlayer> players, Server server) {
 		this.players = players;
 		this.board = new Board();
 
@@ -36,6 +42,7 @@ public class ServerGame extends Observable {
 
 	/**
 	 * Start the game
+	 * @ensure players will be notified
 	 */
 	public void start() {
 		System.out.println("Game started with " + players.size() + " players!");
@@ -66,8 +73,10 @@ public class ServerGame extends Observable {
 
 	/**
 	 * Creates a set for the next player and broadcasts it
+	 * @ensure next player will get the set
 	 */
 	public void giveSet() {
+		//TODO implement checking for the number of tiles
 		if (settingPlayer != null) {
 			this.settingPlayer = getNextPlayer(settingPlayer);
 		} else {
@@ -81,7 +90,7 @@ public class ServerGame extends Observable {
 
 	/**
 	 * Creates a turn for the next player and broadcasts it
-	 * 
+	 * @ensure next player will get the turn
 	 */
 	public void giveTurn() {
 		Turn turn = new Turn(settingPlayer);
@@ -91,11 +100,10 @@ public class ServerGame extends Observable {
 	}
 
 	/**
-	 * Tries to set. If invalid move, returns FALSE and broadcasts to all
-	 * clients.
-	 * 
-	 * @param turn
-	 * @return
+	 * Tries to set. 
+	 * @ensure false if invalid move
+	 * @ensure true and will be performed if valid
+	 * @param set to set
 	 */
 	public boolean set(Set set) {
 		System.out.println(set.toString() + " set, player state was "
@@ -127,11 +135,10 @@ public class ServerGame extends Observable {
 	}
 
 	/**
-	 * Tries to turn. If invalid move, returns FALSE and broadcasts to all
-	 * clients.
-	 * 
-	 * @param turn
-	 * @return
+	 * Tries to turn. 
+	 * @ensure false if invalid move
+	 * @ensure true and will be performed if valid
+	 * @param turn to perform
 	 */
 	public boolean turn(Turn turn) {
 		System.out.println(turn.toString() + " turned, player state was "
@@ -165,7 +172,7 @@ public class ServerGame extends Observable {
 	/**
 	 * Check if the game ended and if it did, end the game
 	 * 
-	 * @return true if the game ended
+	 * @ensure true if the game ended
 	 */
 	public boolean gameEnded() {
 		if (board.GameOver()) {
@@ -182,6 +189,11 @@ public class ServerGame extends Observable {
 			}
 			System.out.println(gameOverString);
 			this.netBroadcast(gameOverString);
+			
+			for (ServerPlayer p : players) {
+				players.remove(p);
+			}
+			server.stopGame(this);
 			return true;
 		}
 		return false;
@@ -207,6 +219,16 @@ public class ServerGame extends Observable {
 		}
 		return nextPlayer;
 	}
+	
+	/**
+	 * Removes the players from the game and tells them the game ended
+	 * @require player != null
+	 * @ensure all hooked players will receive the message that this game is OVER
+	 * @param player
+	 */
+	public void playerLeft(Player player) {
+		//TODO implement
+	}
 
 	/**
 	 * Quit the server. Tell all players that the game is over, and the reason
@@ -224,8 +246,9 @@ public class ServerGame extends Observable {
 	/**
 	 * Checks if this lobby contains the given player
 	 * 
+	 * @require player != null
 	 * @param player
-	 * @return
+	 * @ensure if game.contains(player) -> true, else false
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p : players) {
@@ -238,7 +261,9 @@ public class ServerGame extends Observable {
 	/**
 	 * Broadcast a message to all connected players
 	 * 
-	 * @param message
+	 * @param message to broadcast
+	 * @ensure all hooked players will receive the message
+	 * 
 	 */
 	public void netBroadcast(String message) {
 		System.out.println("Broadcasting: " + message);

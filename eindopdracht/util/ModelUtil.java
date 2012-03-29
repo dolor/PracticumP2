@@ -13,7 +13,8 @@ public class ModelUtil {
 	/**
 	 * Converts a letter to an integer index
 	 * @param letter
-	 * @return
+	 * @return integer
+	 * @require letter A-I
 	 */
 	public static int letterToInt(String letter) {
 		for (int i = 0; i < letters.length; i++) {
@@ -26,6 +27,7 @@ public class ModelUtil {
 	
 	/**
 	 * Converts an integer index to a letter
+	 * @require 0 <= i <= 8
 	 * @ensure converts 0-8 to a letter A-I for blocks
 	 */
 	public static String intToLetter(int i) {
@@ -33,7 +35,7 @@ public class ModelUtil {
 	}
 	
 	/**
-	 * Converts CW to 1 and CCW to 2.
+	 * @ensure CW -> 1, CCW -> 2.
 	 * @param direction
 	 * @return
 	 */
@@ -57,23 +59,29 @@ public class ModelUtil {
 	
 	/**
 	 * Get the block for the designated position
-	 * @param column
-	 * @return
+	 * 
+	 * @require 0 <= row&column <= 8
+	 * @return int block
 	 */
 	public static int getBlockForPosition(int row, int column) {
-		//TODO move Position to model
 		Position pos = new Position(row, column);
 		return pos.getBlock();
 	}
 	
+	/**
+	 * Get the tile for the designated position
+	 *  
+	 * @require 0 <= row&column <= 8
+	 * @return int tile
+	 */
 	public static int getTileForPosition(int row, int column) {
 		Position pos = new Position(row, column);
 		return pos.getTile();
 	}
 	
 	/**
-	 * Test to see if the modelutil performs as it should
-	 * @param args
+	 * Unit test to see if the modelutil performs as it should
+	 * 
 	 */
 	public static void main(String[] args) {
 		for (int i = 0; i < letters.length; i++) {

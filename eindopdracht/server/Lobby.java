@@ -8,6 +8,11 @@ public class Lobby {
 	ArrayList<ServerPlayer> players;
 	Server server;
 	
+	/**
+	 * Creates a new lobby
+	 * @param maxPlayers the maximum amount of players before this lobby starts
+	 * @param server the server this lobby runs on
+	 */
 	public Lobby(int maxPlayers, Server server) {
 		this.server = server;
 		this.maxNumberOfPlayers = maxPlayers;
@@ -78,6 +83,10 @@ public class Lobby {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @return the players in this lobby
+	 */
 	public ArrayList<ServerPlayer> getPlayers() {
 		return this.players;
 	}
@@ -85,7 +94,8 @@ public class Lobby {
 	/**
 	 * Checks if this lobby contains the given player
 	 * @param player
-	 * @return
+	 * @ensure true if this lobby contains the player
+	 * @ensure false if this server does not contain the player
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p:players) {

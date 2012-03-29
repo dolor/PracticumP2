@@ -21,13 +21,15 @@ public class PlayerHandler implements Runnable {
 	private Server server;
 
 	/**
-	 * 
 	 * @param socket
 	 *            Socket to listen to
 	 * @param numberOfPlayers
 	 *            Number of players this player wants to play with
 	 * @throws IOException
-	 *             if the socket's in and out can't be accessed
+	 *             if the socket's in and/or out can't be accessed
+	 * @require socket != null, server != null
+	 * @ensure creates a valid playerhandler that handles everything regarding
+	 *         the player it is hooked up to across the network
 	 */
 	public PlayerHandler(Socket socket, Server server) throws IOException {
 		this.server = server;
@@ -44,7 +46,7 @@ public class PlayerHandler implements Runnable {
 		this.listen();
 	}
 
-	/** Leest een regel tekst van standaardinvoer. */
+	/** Reads a line from the default input. */
 	public String readString(String tekst) {
 		System.out.print(tekst);
 		String antw = null;
@@ -58,6 +60,11 @@ public class PlayerHandler implements Runnable {
 		return (antw == null) ? "" : antw;
 	}
 
+	/**
+	 * Start listening for input from the socket
+	 * 
+	 * @ensure all input from the networkplayer will be dealt with
+	 */
 	public void listen() {
 		try {
 			String next;
@@ -78,6 +85,15 @@ public class PlayerHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Handle the input from the network
+	 * 
+	 * @param input
+	 *            string received from the network
+	 * @require input != null
+	 * @ensure converts the input to a command and handles appropriately, log
+	 *         message if it is an invalid command
+	 */
 	private void handleInput(String input) {
 		Command command = new Command(input);
 		String c = command.getCommand();

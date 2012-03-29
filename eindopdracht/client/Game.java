@@ -103,6 +103,7 @@ public class Game extends Observable {
 	 * maakt een set object aan en stuurt dat naar observers
 	 */
 	public void giveSet() {
+		//TODO implement checking for the number of tiles
 		System.out.println("Gave the set");
 		Set set = new Set(this.getSettingPlayer());
 		this.getSettingPlayer().setState(Player.SETTING);

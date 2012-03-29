@@ -82,9 +82,9 @@ public class Board {
 		// ga alle rijen af
 		ArrayList<Integer> winners = new ArrayList<Integer>();
 		
-		/*
+		
 		// check cols
-		for (int y = 0; y <= 8; y++)
+		/*for (int y = 0; y <= 8; y++)
 		{
 			int count = 0;
 			int lastcolor = 0;
@@ -211,8 +211,8 @@ public class Board {
 				}
 
 			}
-		}
-		*/
+		}*/
+		
 		
 		for (Row r : getRows())
 		{

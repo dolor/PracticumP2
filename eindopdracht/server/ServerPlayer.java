@@ -15,27 +15,43 @@ public class ServerPlayer implements Observer {
 	int state;
     private int color;
     private PlayerHandler handler;
+    
+    private int numberOfTiles;
 	
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;
 	public static final int IDLE = 0;
     
+	/**
+	 * Create a network player with the given handler
+	 * 
+	 * @param handler
+	 */
     public ServerPlayer(PlayerHandler handler) {
     	this.handler = handler;
     }
-
-	public void processNetworkInput(String input) {
-		System.out.println(input);
-	}
 	
+    /**
+     * Set the preferred lobby type this player wants to join
+     * @param number the amount of players in the game
+     */
 	public void setNumberOfPlayers(int number) {
 		this.preferredNumberOfPlayers = number;
 	}
 	
+	/**
+     * The preferred lobby type this player wants to join
+     * @return number the amount of players in the preferred game
+     */
 	public int preferredNumberOfPlayers() {
 		return this.preferredNumberOfPlayers;
 	}
 	
+	/**
+	 * Send the given message to the player this ServerPlayer represents
+	 * @param message to send
+	 * @ensure the message is sent to the hooked player
+	 */
 	public void sendMessage(String message) {
 		handler.sendMessage(message);
 	}
@@ -59,6 +75,8 @@ public class ServerPlayer implements Observer {
 	 * Player wants to set a tile
 	 * @param block
 	 * @param tile
+	 * @require 0 <= (block, tile) <= 8
+	 * @ensure the game is notified of the desired set
 	 */
 	public void setTile(int block, int tile) {
 		Set set = new Set(this);
@@ -72,6 +90,8 @@ public class ServerPlayer implements Observer {
 	 * Players wants to rotate a block.
 	 * @param block block to turn
 	 * @param direction 1=CW, 2=CCW
+	 * @require 0 <= block <= 8, direction == (1||2)
+	 * @ensure the game is notified of the desired turn
 	 */
 	public void turnBlock(int block, int direction) {
 		Turn turn = new Turn(this);
@@ -82,15 +102,17 @@ public class ServerPlayer implements Observer {
 	
 	/**
 	 * Called if the player wants to quit the server
+	 * @ensure the player is gracefully removed from the server
 	 */
 	public void quit() {
 		System.out.println("Trying to quit. Could not escape!");
-		
+		//TODO implement graceful quitting
 	}
 	
 	/**
 	 * Player is chatting
-	 * @param message
+	 * @param message the hooked player said
+	 * @ensure the message will be passed on to game and broadcasted to all players in the game
 	 */
 	public void chat(String message) {
 		game.chat(message, this);
@@ -138,10 +160,25 @@ public class ServerPlayer implements Observer {
 		this.name = name;
 	}
 	
+	/**
+	 * 
+	 * @return the state of this current player
+	 * @ensure 0 if idle
+	 * @ensure 1 if setting
+	 * @ensure 2 if turning
+	 */
 	public int getState()
 	{
 		return this.state;
 	}
+	
+	/**
+	 * 
+	 * @param state the state of this current player
+	 * @require 0 if idle
+	 * @require 1 if setting
+	 * @require 2 if turning
+	 */
 	public void setState(int state)
 	{
 		if (state >= 0 && state <= 2)
@@ -159,9 +196,26 @@ public class ServerPlayer implements Observer {
 
 	/**
 	 * @param color the color to set
+	 * @require 1 <= color <= 4
 	 */
 	public void setColor(int color) {
 		this.color = color;
+	}
+
+	/**
+	 * 
+	 * @return The number of balls this player has left
+	 */
+	public int getNumberOfTiles() {
+		return numberOfTiles;
+	}
+
+	/**
+	 * 
+	 * @param numberOfTiles the maximum number of balls this player can have
+	 */
+	public void setNumberOfTiles(int numberOfTiles) {
+		this.numberOfTiles = numberOfTiles;
 	}
 
 	@Override
