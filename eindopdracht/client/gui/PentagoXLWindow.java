@@ -32,6 +32,7 @@ import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Board;
 import eindopdracht.model.Command;
+import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 import javax.swing.JButton;
@@ -67,6 +68,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 	private PlayerList playerList;
 	private MainController mc;
 	private BoardPanel bord;
+	private JLabel statusLabel;
 	
 	/**
 	 * Create the frame.
@@ -124,13 +126,22 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{7, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{293, 20, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 293, 20, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 0.5, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 0.1, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.1, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
+		
+		statusLabel = new JLabel("");
+		GridBagConstraints gbc_statusLabel = new GridBagConstraints();
+		gbc_statusLabel.gridwidth = 2;
+		gbc_statusLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_statusLabel.gridx = 1;
+		gbc_statusLabel.gridy = 0;
+		contentPane.add(statusLabel, gbc_statusLabel);
 		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.gridheight = 2;
 		gbc_panel.ipady = 5;
 		gbc_panel.ipadx = 5;
 		gbc_panel.weightx = 0.8;
@@ -158,7 +169,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		gbc_chatWindow.insets = new Insets(0, 0, 5, 0);
 		gbc_chatWindow.fill = GridBagConstraints.BOTH;
 		gbc_chatWindow.gridx = 1;
-		gbc_chatWindow.gridy = 0;
+		gbc_chatWindow.gridy = 1;
 		contentPane.add(chatWindow, gbc_chatWindow);
 		
 		chatField = new JTextField();
@@ -170,14 +181,14 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		gbc_playerList.insets = new Insets(0, 0, 0, 5);
 		gbc_playerList.fill = GridBagConstraints.BOTH;
 		gbc_playerList.gridx = 0;
-		gbc_playerList.gridy = 1;
+		gbc_playerList.gridy = 2;
 		gbc_playerList.weighty = 0.1;
 		contentPane.add(playerList, gbc_playerList);
 		GridBagConstraints gbc_chatField = new GridBagConstraints();
 		gbc_chatField.insets = new Insets(0, 0, 0, 5);
 		gbc_chatField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chatField.gridx = 1;
-		gbc_chatField.gridy = 1;
+		gbc_chatField.gridy = 2;
 		gbc_chatField.weighty = 0.1;
 		contentPane.add(chatField, gbc_chatField);
 		chatField.setColumns(10);
@@ -188,7 +199,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		GridBagConstraints gbc_chatButton = new GridBagConstraints();
 		gbc_chatButton.anchor = GridBagConstraints.WEST;
 		gbc_chatButton.gridx = 2;
-		gbc_chatButton.gridy = 1;
+		gbc_chatButton.gridy = 2;
 		gbc_chatButton.weighty = 0.1;
 		contentPane.add(chatButton, gbc_chatButton);
 	}
@@ -244,10 +255,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 
 	@Override
 	public void update(Observable sender, Object object) {
+		
 		if (object.getClass().equals(GameController.class)) {
-			System.out.println("PentagoXLWindow received a gamecontroller");
 			//Game started
-//			getContentPane().add(bord);
 			GameController game = (GameController)object;
 			
 			this.bord.setGame(game);
@@ -256,6 +266,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			this.fillPlayerList(game.getPlayers());
 			chatField.setEditable(true);
 			chatButton.setEnabled(true);
+			statusLabel.setText("Game Started! - " + game.getLocalPlayer().getName());
 			
 			// The hint button should only be enabled for a human player
 			if (game.getLocalPlayer().getClass().equals(HumanPlayer.class)) {
@@ -264,12 +275,17 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			}
 		} 
 		
+		else if (Player.class.isAssignableFrom(object.getClass())) {
+			statusLabel.setText("Joined as " + ((Player)object).getName());
+		}
+		
 		else if (object.getClass().equals(String.class)) {
 			if (object.equals("disconnect")) {
 				connectMenuItem.setEnabled(true);
 				joinMenuItem.setEnabled(false);
 				disconnectMenuItem.setEnabled(false);
 				connectedLabel.setText("Not connected!");
+				statusLabel.setText("Disconnected");
 			}
 		} 
 		
@@ -286,6 +302,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			joinMenuItem.setEnabled(true);
 			disconnectMenuItem.setEnabled(true);
 			connectedLabel.setText("Connected!");
+			statusLabel.setText("Connected");
 		}
 	}
 	

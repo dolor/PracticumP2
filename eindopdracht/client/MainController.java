@@ -124,6 +124,8 @@ public class MainController extends Observable implements Observer {
 				localPlayer.setName(command.getArg(0));
 				System.out.println("Joined, now has the name "
 						+ command.getArg(0));
+				this.setChanged();
+				this.notifyObservers(localPlayer);
 			}
 			
 			else if (command.getCommand().equals(Protocol.CHAT_SERVER)){
