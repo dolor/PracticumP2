@@ -215,7 +215,7 @@ public class GameController extends Observable {
 
 	public boolean gameEnded() {
 		if (board.GetWinners().size() > 0) {
-			this.endGame(endDueToWinner);
+			//this.endGame(endDueToWinner);
 			return true;
 		} else
 			return false;

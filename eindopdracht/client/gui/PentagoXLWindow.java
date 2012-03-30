@@ -329,6 +329,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 					statusLabel.setText("Invalid move made by "
 							+ command.getArg(2) + ", game ended");
 				}
+				bord.game.getBoard().drawBoard();
 			}
 		}
 

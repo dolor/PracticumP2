@@ -139,15 +139,6 @@ public class MainController extends Observable implements Observer {
 	public void update(Observable o, Object object) {
 		if (object.getClass().equals(Command.class)) {
 			Command command = (Command) object;
-
-			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
-				if (game == null)
-					System.out.println("[ERROR] Apparently the game was null");
-				else if (game.getLocalPlayer() == null)
-					System.out.println("[ERROR] Apparently the local player was null!");
-				//game.setSettingPlayer(game.getLocalPlayer());
-				//game.giveSet();
-			}
 			
 			if (command.getCommand().equals(Protocol.START)) {
 				// this.playerList.setText("");

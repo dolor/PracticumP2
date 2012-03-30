@@ -11,6 +11,8 @@ import eindopdracht.model.Position;
 public class RandomAI extends AI{
 	
 	private String[] chatLines = {"Hurr", "Durr", "Hmprf?"};
+	
+	private static int sleepTime = 20;
 
 	public RandomAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
@@ -18,6 +20,10 @@ public class RandomAI extends AI{
 
 	@Override
 	public void calculateTurn(Turn turn) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {}
+		
 		// kies een willekeurig blok
 		int block = (int) Math.round(Math.random()*8);
 		turn.setBlock(block);
@@ -30,6 +36,10 @@ public class RandomAI extends AI{
 
 	@Override
 	public void calculateSet(Set set) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {}
+		
 		// maak een lijst van mogelijke zetten
 		ArrayList<Position> positions = new ArrayList<Position>();
 		

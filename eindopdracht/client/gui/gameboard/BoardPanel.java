@@ -25,12 +25,14 @@ import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
+import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
+import eindopdracht.util.Protocol;
 
 public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	private BufferedImage backgroundImg;
 	private ArrayList<BlockPanel> blocks;
-	private GameController game;
+	public GameController game;
 	private Turn currentTurn;
 	private Set currentSet;
 	private PentagoXLWindow window;

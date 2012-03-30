@@ -142,6 +142,7 @@ public class Board {
 		for (Row r : getRows()) {
 			if (r.getLength() >= 5) {
 				PTLog.log("Board", "Found a winner: " + r.getColor());
+				System.out.println(r.toString());
 				winners.add(r.getColor());
 			}
 		}
@@ -159,7 +160,7 @@ public class Board {
 
 			for (int x = 0; x <= 8; x++) {
 				int color = this.getTileXY(x, y).getColor();
-				if (color != lastcolor && color != 0) {
+				if (color != lastcolor && color != Color.EMPTY) {
 					// niet de laaste kleur dus nieuwe rij
 					r = new Row();
 					rows.add(r);
@@ -168,13 +169,18 @@ public class Board {
 					r.addPosition(new Position(x, y));
 					r.setColor(color);
 					lastcolor = color;
-				} else if (lastcolor == color) {
+					
+				} else if (lastcolor == color && color != Color.EMPTY) {
 					// zelfde kleur dus rij wordt een langer
 					r.addPosition(new Position(x, y));
+				} else if (color == Color.EMPTY && r.getLength() > 0) {
+					// einde van een rij gevonden dus sluit hem flink af
+					lastcolor = 0;
+					r = new Row();
 				}
 			}
 		}
-
+		
 		// verticaal
 		for (int x = 0; x <= 8; x++) {
 			int lastcolor = -1;
@@ -182,7 +188,7 @@ public class Board {
 
 			for (int y = 0; y <= 8; y++) {
 				int color = this.getTileXY(x, y).getColor();
-				if (color != lastcolor && color != 0) {
+				if (color != lastcolor && color != Color.EMPTY) {
 					// niet de laaste kleur dus nieuwe rij
 					r = new Row();
 					rows.add(r);
@@ -191,9 +197,13 @@ public class Board {
 					r.addPosition(new Position(x, y));
 					r.setColor(color);
 					lastcolor = color;
-				} else if (lastcolor == color) {
+				} else if (lastcolor == color && color != Color.EMPTY) {
 					// zelfde kleur dus rij wordt een langer
 					r.addPosition(new Position(x, y));
+				} else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
+					//einde van een rij gevonden dus sluit hem voor de zekerheid af
+					lastcolor = 0;
+					r = new Row();
 				}
 			}
 		}
@@ -210,7 +220,7 @@ public class Board {
 				if (0 <= y && y <= 8) // kijk of y binnen de range valt.
 				{
 					int color = this.getTileXY(x, y).getColor();
-					if (color != lastcolor && color != 0) {
+					if (color != lastcolor && color != Color.EMPTY) {
 						// niet de laaste kleur dus nieuwe rij
 						r = new Row();
 						rows.add(r);
@@ -219,9 +229,13 @@ public class Board {
 						r.addPosition(new Position(x, y));
 						r.setColor(color);
 						lastcolor = color;
-					} else if (lastcolor == color) {
+					} else if (lastcolor == color && color != Color.EMPTY) {
 						// zelfde kleur dus rij wordt een langer
 						r.addPosition(new Position(x, y));
+					} else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
+						//einde van een rij gevonden dus sluit hem voor de zekerheid af
+						lastcolor = 0;
+						r = new Row();
 					}
 				}
 

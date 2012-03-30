@@ -134,16 +134,18 @@ public class ServerGameController extends Observable {
 		} else {
 			if (!board.set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
+				board.drawBoard();
+				PTLog.log("ServerGame", "Invalid move made: " + set.toString());
 				this.endGame(set.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				set.setExecuted(true);
 				set.getPlayer().setNumberOfTiles(set.getPlayer().getNumberOfTiles() - 1);
 				this.localBroadcast(set);
+				this.netBroadcast(Protocol.SET_TILE + " "
+						+ ModelUtil.intToLetter(set.getBlock()) + " "
+						+ set.getTile() + " " + set.getPlayer().getName());
 				if (!this.gameEnded()) {
-					this.netBroadcast(Protocol.SET_TILE + " "
-							+ ModelUtil.intToLetter(set.getBlock()) + " "
-							+ set.getTile() + " " + set.getPlayer().getName());
 					this.giveTurn();
 				}
 				return true;
@@ -165,16 +167,18 @@ public class ServerGameController extends Observable {
 			return false;
 		} else {
 			if (!board.turn(turn.getBlock(), turn.getRotation())) {
+				board.drawBoard();
+				PTLog.log("ServerGame", "Invalid move made: " + turn.toString());
 				this.endGame(turn.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				turn.setExecuted(true);
 				this.localBroadcast(turn);
+				this.netBroadcast(Protocol.TURN_BLOCK + " "
+						+ ModelUtil.intToLetter(turn.getBlock()) + " "
+						+ ModelUtil.intToDirection(turn.getRotation())
+						+ " " + turn.getPlayer().getName());
 				if (!this.gameEnded()) {
-					this.netBroadcast(Protocol.TURN_BLOCK + " "
-							+ ModelUtil.intToLetter(turn.getBlock()) + " "
-							+ ModelUtil.intToDirection(turn.getRotation())
-							+ " " + turn.getPlayer().getName());
 					this.giveSet();
 				}
 				return true;
@@ -295,8 +299,6 @@ public class ServerGameController extends Observable {
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p : players) {
-			PTLog.log(name,
-					"comparing " + player.getName() + " with " + p.getName());
 			if (p.equals(player))
 				return true;
 		}
