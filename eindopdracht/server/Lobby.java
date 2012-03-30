@@ -2,21 +2,31 @@ package eindopdracht.server;
 
 import java.util.ArrayList;
 
+import eindopdracht.util.PTLog;
+
 
 public class Lobby {
+	
+	public static int lobbyNumber = 1;
+	
 	int maxNumberOfPlayers;
 	ArrayList<ServerPlayer> players;
-	Server server;
+	ServerController server;
+	public String name;
 	
 	/**
 	 * Creates a new lobby
 	 * @param maxPlayers the maximum amount of players before this lobby starts
 	 * @param server the server this lobby runs on
 	 */
-	public Lobby(int maxPlayers, Server server) {
+	public Lobby(int maxPlayers, ServerController server) {
+		name = "Lobby-" + lobbyNumber;
+		lobbyNumber++;
+		
 		this.server = server;
 		this.maxNumberOfPlayers = maxPlayers;
 		this.players = new ArrayList<ServerPlayer>();
+		PTLog.log(name, "Opened");
 	}
 	
 	/**
@@ -41,7 +51,7 @@ public class Lobby {
 	 */
 	public boolean addPlayer(ServerPlayer player) {
 		if (players.size() < maxNumberOfPlayers)
-			players.add(players.size(), player);
+			players.add(player);
 		
 		/*
 		 * Repeats the loop until it finds a valid name
@@ -64,12 +74,13 @@ public class Lobby {
 		 * Tells the player his current name
 		 */
 		if (num > 0)
-			player.setName(player.getName() + "_" + num);
+			player.setName(player.getName() + "-" + num);
 
-		System.out.println("connected " + player.getName());
+		PTLog.log(name, "connected " + player.getName());
 		player.sendMessage("connected " + player.getName());
 				
 		if (players.size() == maxNumberOfPlayers) {
+			PTLog.log(name, "Lobby full");
 			server.startGame(this);
 		} else {
 			String msg = "players";
@@ -99,6 +110,7 @@ public class Lobby {
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p:players) {
+			PTLog.log(name, "comparing " + player.getName() + " with " + p.getName());
 			if (p.equals(player))
 				return true;
 		}

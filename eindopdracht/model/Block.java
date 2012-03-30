@@ -49,7 +49,6 @@ public class Block {
 				{
 					newI = Math.abs((col)-2) * 3 + row;
 				}
-				//System.out.println("i = " + i + ", col = " + col + ", row = " + row + ", newI = " + newI);
 
 
 				newTiles[newI] = tiles[i];

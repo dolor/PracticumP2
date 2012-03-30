@@ -6,10 +6,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import eindopdracht.server.network.Network;
+import eindopdracht.util.PTLog;
 
-public class Server {
+public class ServerController {
 	private ArrayList<Lobby> lobbies;
-	private ArrayList<ServerGame> games;
+	private ArrayList<ServerGameController> games;
 	private ArrayList<ServerPlayer> players;
 	private Network network;
 	private static int defaultPort = 8888;
@@ -23,15 +24,15 @@ public class Server {
 	 * Creates a server with port 8888
 	 * @ensure exits with an exception if 8888 can not be opened
 	 */
-	public Server() {
+	public ServerController() {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<ServerGame>();
+		this.games = new ArrayList<ServerGameController>();
 		this.players = new ArrayList<ServerPlayer>();
 		
 		try {
 			this.network = new Network(defaultPort, this);
 		} catch (IOException e) {
-			System.out.println("Failed, port already taken! " + e.getMessage());
+			PTLog.log("Server", "Failed, port already taken! " + e.getMessage());
 		}
 	}
 	
@@ -41,20 +42,20 @@ public class Server {
 	 * @ensure starts listening on the given port if valid
 	 * @ensure asks for a different value if invalid
 	 */
-	public Server(int port) {
+	public ServerController(int port) {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<ServerGame>();
+		this.games = new ArrayList<ServerGameController>();
 		this.players = new ArrayList<ServerPlayer>();
 		
 		while (this.network == null) {
 			try {
 				this.network = new Network(port, this);
 			} catch (IOException e) {
-				System.out.println("Failed, port already taken! " + e.getMessage());
+				PTLog.log("Server", "Failed, port already taken! " + e.getMessage());
 				try {
 					port = Integer.parseInt(readString("port > "));
 				} catch (NumberFormatException f) {
-					System.out.println("Come on, just enter a fucking NUMBER!");
+					PTLog.log("Server", "Come on, just enter a fucking NUMBER!");
 				}
 			}
 		}
@@ -76,15 +77,16 @@ public class Server {
 	 * @param player
 	 */
 	public void removePlayer(ServerPlayer player) {
+		PTLog.log("Server", "Attempting to remove player " + player.getName() + " from the server");
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player)) {
-				System.out.println("Removing player from a lobby");
+				PTLog.log("Server", "Removing player " + player.getName() + " from a lobby");
 				l.removePlayer(player);
 			}
 		}
-		for (ServerGame g:games) {
+		for (ServerGameController g:games) {
 			if (g.containsPlayer(player)) {
-				System.out.println("Removing player from a game, ending game");
+				PTLog.log("Server", "Removing player " + player.getName() + " from a game, ending game");
 				g.endGame(player, endDueToDisconnect);
 			}
 		}
@@ -97,16 +99,17 @@ public class Server {
 	 * @param lobby
 	 */
 	public void startGame(Lobby lobby) {
-		ServerGame newGame = new ServerGame(lobby.getPlayers(), this);
+		ServerGameController newGame = new ServerGameController(lobby.getPlayers(), this);
 		newGame.start();
 		lobbies.remove(lobby);
+		games.add(newGame);
 	}
 	
 	/**
 	 * Stops the given game
 	 * @param game
 	 */
-	public void stopGame(ServerGame game) {
+	public void stopGame(ServerGameController game) {
 		games.remove(game);
 	}
 	
@@ -116,22 +119,16 @@ public class Server {
 	 * @return
 	 */
 	public Lobby getLobby(int players) {
-		System.out.println("Getting lobby " + players);
+		PTLog.log("Server", "placing player in lobby with " + players + " players");
 		for (Lobby lobby:lobbies) {
 			if (lobby.maxNumberOfPlayers() == players) {
-				System.out.println("Found, returning!");
 				return lobby;
 			}
 		}
-		System.out.println("No lobby found, creating a new one");
+		PTLog.log("Server", "Creating a new lobby with " + players + " players");
 		Lobby newLobby = new Lobby(players, this);
 		lobbies.add(newLobby);
-		System.out.println("Returning!");
 		return newLobby;
-	}
-	
-	public static void main(String[] args) {
-		new Server();
 	}
 	
 	/** Leest een regel tekst van standaardinvoer. */

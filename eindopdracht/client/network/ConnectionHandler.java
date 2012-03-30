@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import eindopdracht.util.PTLog;
+
 public class ConnectionHandler implements Runnable{
 
 	private Socket socket;
@@ -40,11 +42,9 @@ public class ConnectionHandler implements Runnable{
 	 * @param string text to be sent
 	 */
 	public void sendString(String string) {
-		System.out.println("Sending string: " + string);
 		try {
 			out.write(string + "\n");
 			out.flush();
-			System.out.println("Sent!");
 		} catch (IOException e) {
 			// TODO Check how an error for sending should be handled; Locally or throwing to the caller.
 			e.printStackTrace();
@@ -58,9 +58,9 @@ public class ConnectionHandler implements Runnable{
 	private void listen() {
 		try {
     		if (network == null)
-    			System.out.println("NETWORK WAS NULL");
+    			PTLog.log("ConnectionHandler", "NETWORK WAS NULL");
     		else if (in == null) 
-    			System.out.println("IN WAS NULL");
+    			PTLog.log("ConnectionHandler", "IN WAS NULL");
         	String next;
         	in.ready();
         	next = in.readLine();
@@ -70,7 +70,8 @@ public class ConnectionHandler implements Runnable{
         		next = in.readLine();
         	}
         } catch (IOException e) {
-			System.out.println("Error occured while reading inputstream");
+        	network.disconnected();
+        	PTLog.log("ConnectionHandler", "Error occured while reading inputstream");
 		}
 	}
 	

@@ -12,8 +12,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import eindopdracht.util.NetworkUtil;
+import eindopdracht.util.PTLog;
 
-public class Connect extends JFrame implements ActionListener,
+public class ConnectWindow extends JFrame implements ActionListener,
 		DocumentListener, WindowListener {
 
 	private JTextField hostnameTextField;
@@ -28,7 +29,7 @@ public class Connect extends JFrame implements ActionListener,
 	 * @param pentagoXLWindow
 	 *            the main window
 	 */
-	public Connect(PentagoXLWindow pentagoXLWindow) {
+	public ConnectWindow(PentagoXLWindow pentagoXLWindow) {
 		super("Connect");
 		this.observer = pentagoXLWindow;
 		buildGUI();
@@ -88,13 +89,13 @@ public class Connect extends JFrame implements ActionListener,
 			String port = portTextField.getText();
 			if (!hostname.isEmpty() && !port.isEmpty()) {
 				if (!NetworkUtil.isValidHost(hostname))
-					System.out.println("Invalid hostname");
+					PTLog.log("ConnectWindow", "Invalid hostname");
 				else if (!NetworkUtil.isValidPort(port))
 					System.out.println("Invalid port");
 				else
 					sendForm();
 			}
-			System.out.println("Connecting to " + hostnameTextField.getText());
+			PTLog.log("ConnectWindow", "Connecting to " + hostnameTextField.getText());
 		} else if (ev.getSource().equals(hostnameTextField)
 				|| ev.getSource().equals(portTextField)) {
 			if (okayButton.isEnabled())

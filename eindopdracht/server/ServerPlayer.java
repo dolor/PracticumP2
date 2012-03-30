@@ -6,12 +6,14 @@ import java.util.Observer;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
+import eindopdracht.util.PTLog;
 
 public class ServerPlayer implements Observer {
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
-    private ServerGame game;
+    private ServerGameController game;
+    private ServerController server;
 	int state;
     private int color;
     private PlayerHandler handler;
@@ -27,8 +29,9 @@ public class ServerPlayer implements Observer {
 	 * 
 	 * @param handler
 	 */
-    public ServerPlayer(PlayerHandler handler) {
+    public ServerPlayer(PlayerHandler handler, ServerController server) {
     	this.handler = handler;
+    	this.server = server;
     }
 	
     /**
@@ -54,21 +57,6 @@ public class ServerPlayer implements Observer {
 	 */
 	public void sendMessage(String message) {
 		handler.sendMessage(message);
-	}
-	
-	/*
-	 * Handler methods; These methods are called by the network handler and the player will act like he's performing
-	 * that specific task.
-	 */
-	
-	/**
-	 * Player wants to join a lobby
-	 * Not necessary, the playerhandler handles this.
-	 */
-	@Deprecated
-	public void join() {
-		System.out.println("Now trying to join");
-		//TODO write joining code
 	}
 	
 	/**
@@ -101,15 +89,6 @@ public class ServerPlayer implements Observer {
 	}
 	
 	/**
-	 * Called if the player wants to quit the server
-	 * @ensure the player is gracefully removed from the server
-	 */
-	public void quit() {
-		System.out.println("Trying to quit. Could not escape!");
-		//TODO implement graceful quitting
-	}
-	
-	/**
 	 * Player is chatting
 	 * @param message the hooked player said
 	 * @ensure the message will be passed on to game and broadcasted to all players in the game
@@ -121,14 +100,14 @@ public class ServerPlayer implements Observer {
 	/**
 	 * @return the game
 	 */
-	public ServerGame getGame() {
+	public ServerGameController getGame() {
 		return this.game;
 	}
 
 	/**
 	 * @param game the game to set
 	 */
-	public void setGame(ServerGame game) {
+	public void setGame(ServerGameController game) {
 		this.game = game;
 	}
 
@@ -225,34 +204,28 @@ public class ServerPlayer implements Observer {
 		 */
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
-//			System.out.println("    Player " + getName() + " with state " + getState() + " received set: " + set.toString());
 			//Was a set for/by this player
 			if (set.getPlayer().equals(this)) {
 				if (set.getExecuted()) {
 					//Set was executed, set to idle
 					this.setState(IDLE);
-//					System.out.println("    Was executed, setting to idle");
 				} else {
 					//Set has to be executed, set to Setting
 					this.setState(SETTING);
-//					System.out.println("    Was not executed, setting to setting");
 				}
 			}
 		}
 		
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn)arg;
-//			System.out.println("    Player " + getName() + " with state " + getState() + " received turn: " + turn.toString());
 			//was a turn for/by this player
 			if (turn.getPlayer().equals(this)) {
 				if (turn.getExecuted()) {
 					//turn was executed, setting to idle
 					this.setState(IDLE);
-//					System.out.println("    Was executed, setting to idle");
 				} else {
 					//Turn still has to be executed, set to turning
 					this.setState(TURNING);
-//					System.out.println("    Was not executed, setting to turning");
 				}
 			}
 		}

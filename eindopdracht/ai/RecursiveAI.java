@@ -8,6 +8,7 @@ import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
 import eindopdracht.model.Row;
+import eindopdracht.util.PTLog;
 
 public class RecursiveAI extends AI{
 	ArrayList<Integer> players;
@@ -154,7 +155,7 @@ public class RecursiveAI extends AI{
 		Board nB = this.board.deepCopy();
 		
 		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
-		System.out.println("AI Set calculator "+pos.getX()+", "+pos.getY());
+		PTLog.log("RecursiveAI", "AI Set calculator "+pos.getX()+", "+pos.getY());
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
 	}

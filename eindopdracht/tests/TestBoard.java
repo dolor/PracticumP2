@@ -1,5 +1,6 @@
 package eindopdracht.tests;
 import eindopdracht.model.*;
+import eindopdracht.util.PTLog;
 
 import java.util.Scanner;
 public class TestBoard 
@@ -17,7 +18,7 @@ public class TestBoard
 			
 			for (int winner : b.GetWinners())
 			{
-				System.out.println("Winner : "+winner);
+				PTLog.log("TestBoard", "Winner : "+winner);
 			}
 			
 			System.out.print("> ");
@@ -50,7 +51,7 @@ public class TestBoard
 			}
 			catch (NumberFormatException e)
 			{
-				System.out.println("Error in converting to int");
+				PTLog.log("TestBoard", "Error in converting to int");
 			}		
 			
 			

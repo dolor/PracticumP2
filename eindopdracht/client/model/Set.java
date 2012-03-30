@@ -14,7 +14,7 @@ public class Set {
 		this.player = player;
 		this.block = -1;
 		this.tile = -1;
-		this.valid = false;
+		this.valid = true;
 		this.executed = false;
 	}
 

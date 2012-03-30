@@ -7,7 +7,7 @@ import javax.swing.text.*;
 
 import eindopdracht.client.model.player.Player;
 
-public class PlayerList extends JTextPane {
+public class PlayerListFrame extends JTextPane {
 
 	/**
 	 * Adds the player with his own color to the textpane

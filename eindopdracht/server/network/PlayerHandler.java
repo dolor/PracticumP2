@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import eindopdracht.model.Command;
-import eindopdracht.server.Server;
+import eindopdracht.server.ServerController;
 import eindopdracht.server.ServerPlayer;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 public class PlayerHandler implements Runnable {
@@ -18,7 +19,9 @@ public class PlayerHandler implements Runnable {
 	private Socket socket; // Not currently used
 	protected BufferedReader in;
 	protected BufferedWriter out;
-	private Server server;
+	private ServerController server;
+	
+	public String name; // Used for logging
 
 	/**
 	 * @param socket
@@ -31,14 +34,14 @@ public class PlayerHandler implements Runnable {
 	 * @ensure creates a valid playerhandler that handles everything regarding
 	 *         the player it is hooked up to across the network
 	 */
-	public PlayerHandler(Socket socket, Server server) throws IOException {
+	public PlayerHandler(Socket socket, ServerController server) throws IOException {
+		this.name = "Handler_Empty";
 		this.server = server;
 		this.socket = socket;
-		this.player = new ServerPlayer(this);
+		this.player = new ServerPlayer(this, server);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(
 				socket.getOutputStream()));
-
 	}
 
 	@Override
@@ -77,7 +80,7 @@ public class PlayerHandler implements Runnable {
 				next = in.readLine();
 			}
 		} catch (IOException e) {
-			System.out.println("Error occured while reading inputstream");
+			PTLog.log(name, "Error occured while reading inputstream");
 			server.removePlayer(player);
 		} catch (NullPointerException e) {
 			// TODO Check if this is really necessary
@@ -97,11 +100,10 @@ public class PlayerHandler implements Runnable {
 	private void handleInput(String input) {
 		Command command = new Command(input);
 		String c = command.getCommand();
-		System.out.println("[Handler_" + player.getName() + "] Received: "
-				+ input + ", command: " + c);
 
 		if (c.equals(Protocol.JOIN)) {
 			player.setName(command.getArgs()[0]);
+			name = "Handler_" + player.getName();
 			player.setNumberOfPlayers(Integer.parseInt(command.getArgs()[1]));
 			server.addPlayer(player);
 		}
@@ -112,7 +114,7 @@ public class PlayerHandler implements Runnable {
 			player.setTile(block, tile);
 		}
 
-		else if (c.equals(Protocol.TURN_BLOK)) {
+		else if (c.equals(Protocol.TURN_BLOCK)) {
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
@@ -123,7 +125,7 @@ public class PlayerHandler implements Runnable {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				System.out.println("Error thrown while quitting: "
+				PTLog.log(name, "Error thrown while quitting: "
 						+ e.getMessage());
 			}
 		}
@@ -135,12 +137,13 @@ public class PlayerHandler implements Runnable {
 		else if (c.equals(Protocol.CHALLENGE)) {
 			// If a client tries to challenge, handle the denial immediately to
 			// minimize disappointment. Poor guy.
-			System.out.println("Player was challenged. Not doing anything!");
-			this.sendMessage(Protocol.CHALLENGE_FAILED);
+			PTLog.log(name, "Player tried to challenge. Denying!");
+			this.sendMessage(Protocol.NO_CHALLENGE);
+			this.sendMessage(Protocol.QUIT_SERVER);
 		}
 
 		else {
-			System.out.println("Unrecognized command received!");
+			PTLog.log(name, "Unrecognized command received!");
 		}
 	}
 
@@ -155,8 +158,7 @@ public class PlayerHandler implements Runnable {
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
-			System.out
-					.println("[Error] error thrown in PlayerHandler sendMessage");
+			PTLog.log(name, "-[Error] error thrown in PlayerHandler sendMessage");
 			e.printStackTrace();
 		}
 	}

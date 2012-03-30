@@ -5,13 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import eindopdracht.server.Server;
+import eindopdracht.server.ServerController;
+import eindopdracht.util.PTLog;
 
 public class Network {
 	private ArrayList<PlayerHandler> players;
-	private Server server;
+	private ServerController server;
 	
-	public Network(int port, Server server) throws IOException{
+	public Network(int port, ServerController server) throws IOException{
 		this.server = server;
 		this.listen(port);
 		players = new ArrayList<PlayerHandler>();
@@ -29,18 +30,18 @@ public class Network {
 		
 	    socket = new ServerSocket(port);
 	    
-	    System.out.println("Port " + port + " opened, awaiting connection...");
+	    PTLog.log("Network", "Port " + port + " opened, awaiting connection...");
 
 		boolean tryConnection = true;
 	    while (tryConnection) {
 	    	try {
 				Socket sock = socket.accept();
-	    		System.out.println("Found a connection!");
+	    		PTLog.log("Network", "Found an incoming connection!");
 	            PlayerHandler client = new PlayerHandler(sock, server);
 	            Thread handlerThread = new Thread(client);
 	    		handlerThread.start();
 			} catch (IOException e) {
-				System.out.println("Connection on port " + port + " failed: " + e.getMessage());
+				PTLog.log("Network", "Connection on port " + port + " failed: " + e.getMessage());
 				e.printStackTrace();
 			}
 	    }

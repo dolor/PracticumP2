@@ -3,13 +3,13 @@ package eindopdracht.client.model.player;
 import java.util.Observable;
 import java.util.Observer;
 
-import eindopdracht.client.Game;
+import eindopdracht.client.GameController;
 
 public class Player implements Observer  {
 	protected int color;
 	protected String name;
 	protected int state;
-	protected Game game;
+	protected GameController game;
 	protected boolean localPlayer;
 	
 	private int numberOfTiles;
@@ -41,12 +41,12 @@ public class Player implements Observer  {
 		return localPlayer;
 	}
 	
-	public void setGame(Game game)
+	public void setGame(GameController game)
 	{
 		this.game = game;
 	}
 	
-	public Game getGame()
+	public GameController getGame()
 	{
 		return this.game;
 	}
@@ -104,7 +104,6 @@ public class Player implements Observer  {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Player object with not yet implemented update method got a set/turn!");
 	}
 
 }

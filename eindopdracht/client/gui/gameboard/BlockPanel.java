@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
+import eindopdracht.model.Position;
+import eindopdracht.util.PTLog;
 
 public class BlockPanel extends JPanel implements MouseMotionListener,
 		MouseListener, ComponentListener, ActionListener {
@@ -41,12 +43,12 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	private BufferedImage greenBallHighlight;
 	private BufferedImage yellowBall;
 	private BufferedImage yellowBallHighlight;
-	
+
 	private Image cwImage;
 	private Image cwImageHighlight;
 	private Image ccwImage;
 	private Image ccwImageHighlight;
-	
+
 	private JButton cwButton;
 	private JButton ccwButton;
 
@@ -62,14 +64,18 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public static int SETTING = 1;
 	public static int TURNING = 2;
 
+	private Dimension previousSize;
+
 	/**
 	 * Create a new BlockView
-	 * @param bord the bord on which this blockview is
-	 * @param blockIndex the index on the board of this block
+	 * 
+	 * @param bord
+	 *            the bord on which this blockview is
+	 * @param blockIndex
+	 *            the index on the board of this block
 	 */
 	public BlockPanel(BoardPanel bord, int blockIndex) {
-		System.out.println("Created block with index " + blockIndex);
-		
+		this.previousSize = new Dimension();
 		this.loadImages();
 		this.buildGUI();
 		this.addMouseMotionListener(this);
@@ -83,11 +89,12 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		for (int i = 0; i < 9; i++) {
 			balls.add(0);
 		}
-		
+
 	}
 
 	/**
 	 * Load all images into memory
+	 * 
 	 * @ensure all necessary images for paintComponents will be non-null
 	 */
 	private void loadImages() {
@@ -104,7 +111,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 					"eindopdracht/resources/Green Ball.png"));
 			yellowBall = ImageIO.read(new File(
 					"eindopdracht/resources/Black Ball.png"));
-			
+
 			redBallHighlight = ImageIO.read(new File(
 					"eindopdracht/resources/Red Ball Highlight.png"));
 			blueBallHighlight = ImageIO.read(new File(
@@ -113,12 +120,16 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 					"eindopdracht/resources/Green Ball Highlight.png"));
 			yellowBallHighlight = ImageIO.read(new File(
 					"eindopdracht/resources/Black Ball Highlight.png"));
-			
-			cwImage = ImageIO.read(new File("eindopdracht/resources/Turn Right.png"));
-			cwImageHighlight = ImageIO.read(new File("eindopdracht/resources/Turn Right Highlight.png"));
-			
-			ccwImage = ImageIO.read(new File("eindopdracht/resources/Turn Left.png"));
-			ccwImageHighlight = ImageIO.read(new File("eindopdracht/resources/Turn Left Highlight.png"));
+
+			cwImage = ImageIO.read(new File(
+					"eindopdracht/resources/Turn Right.png"));
+			cwImageHighlight = ImageIO.read(new File(
+					"eindopdracht/resources/Turn Right Highlight.png"));
+
+			ccwImage = ImageIO.read(new File(
+					"eindopdracht/resources/Turn Left.png"));
+			ccwImageHighlight = ImageIO.read(new File(
+					"eindopdracht/resources/Turn Left Highlight.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -129,7 +140,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 */
 	public void buildGUI() {
 		this.setLayout(null);
-		
+
 		cwButton = new JButton();
 		cwButton.setIcon(new ImageIcon(cwImage));
 		cwButton.setOpaque(false);
@@ -138,7 +149,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		cwButton.addActionListener(this);
 		cwButton.setRolloverEnabled(true);
 		cwButton.setRolloverIcon(new ImageIcon(cwImageHighlight));
-		
+
 		ccwButton = new JButton();
 		ccwButton.setIcon(new ImageIcon(ccwImage));
 		ccwButton.setOpaque(false);
@@ -146,19 +157,37 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		ccwButton.setContentAreaFilled(false);
 		ccwButton.addActionListener(this);
 		ccwButton.setRolloverEnabled(true);
-		ccwButton.setRolloverIcon(new ImageIcon(ccwImageHighlight));	
-		
+		ccwButton.setRolloverIcon(new ImageIcon(ccwImageHighlight));
+
 		this.repaint();
 	}
 
 	/**
 	 * Set this blocks tiles as the passed ArrayList of integers
-	 * @param balls ArrayList with the colors of each tile as an integer
+	 * 
+	 * @param balls
+	 *            ArrayList with the colors of each tile as an integer
 	 */
 	public void setTiles(ArrayList<Integer> balls) {
-		System.out.println("Tiles set");
 		this.balls = balls;
 		this.repaint();
+	}
+
+	/**
+	 * Sets the tile to the given color
+	 * 
+	 * @param tile
+	 * @param color
+	 * @ensure the UI is updated
+	 * @require the tile was empty, as this is not checked in the BlockPanel
+	 */
+	public void setTile(int tile, int color) {
+		balls.set(tile, color);
+		Point pos = this.getPositionForBall(tile);
+		int size = this.getSizeOfBall();
+		Rectangle repaintRectangle = new Rectangle(pos.x - size / 2, pos.y
+				- size / 2, size, size);
+		this.repaint(repaintRectangle);
 	}
 
 	/**
@@ -171,7 +200,9 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 
 	/**
 	 * Set the state of this block
-	 * @param state to set this block to
+	 * 
+	 * @param state
+	 *            to set this block to
 	 */
 	public void setState(int state) {
 		if (state == TURNING) {
@@ -180,45 +211,55 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 			this.hideRotateButtons();
 		}
 		this.state = state;
-//		this.repaint();
+		// this.repaint();
 	}
 
 	/**
-	 *
+	 * 
 	 * @return the current state of this block
 	 */
 	public int getState() {
 		return this.state;
 	}
-	
+
 	/**
 	 * Show the rotate buttons on this block
 	 */
 	public void showRotateButtons() {
-		Rectangle cwBounds = new Rectangle(this.getWidth()/2, 0, this.getWidth()/2, this.getHeight());
-		cwButton.setBounds(cwBounds);
-		Image newImage = cwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		ImageIcon newIcon = new ImageIcon(newImage);
-		cwButton.setIcon(newIcon);
-		newImage = cwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		cwButton.setRolloverIcon(newIcon);
-		
-		Rectangle ccwBounds = new Rectangle(0, 0, this.getWidth()/2, this.getHeight());
-		ccwButton.setBounds(ccwBounds);
-		
-		newImage = ccwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		ccwButton.setIcon(newIcon);
-		
-		newImage = ccwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		ccwButton.setRolloverIcon(newIcon);
-		
 		this.add(cwButton);
-		this.add(ccwButton);	
+		this.add(ccwButton);
+
+		if (!previousSize.equals(this.getSize())) {
+			previousSize = this.getSize();
+			// Update the rotate button icon sizes
+			Rectangle cwBounds = new Rectangle(this.getWidth() / 2, 0,
+					this.getWidth() / 2, this.getHeight());
+			cwButton.setBounds(cwBounds);
+			Image newImage = cwImage.getScaledInstance(this.getWidth() / 2,
+					this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			ImageIcon newIcon = new ImageIcon(newImage);
+			cwButton.setIcon(newIcon);
+			newImage = cwImageHighlight.getScaledInstance(this.getWidth() / 2,
+					this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			cwButton.setRolloverIcon(newIcon);
+
+			Rectangle ccwBounds = new Rectangle(0, 0, this.getWidth() / 2,
+					this.getHeight());
+			ccwButton.setBounds(ccwBounds);
+
+			newImage = ccwImage.getScaledInstance(this.getWidth() / 2,
+					this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			ccwButton.setIcon(newIcon);
+
+			newImage = ccwImageHighlight.getScaledInstance(this.getWidth() / 2,
+					this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			ccwButton.setRolloverIcon(newIcon);
+		}
 	}
-	
+
 	/**
 	 * Hide the rotate buttons on this block
 	 */
@@ -233,7 +274,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 *            0-8
 	 * @return position within this component
 	 */
-	private Point positionForBall(int ball) {
+	private Point getPositionForBall(int ball) {
 		double width = this.getWidth();
 
 		// In het originele plaatje gelden deze formaten: blok: 236*236 bal:
@@ -267,7 +308,9 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 
 	/**
 	 * Update the tiles with the tiles of the given block
-	 * @param block model representation
+	 * 
+	 * @param block
+	 *            model representation
 	 */
 	public void updateTiles(Block block) {
 		ArrayList<Integer> newTiles = new ArrayList<Integer>();
@@ -286,7 +329,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 
 		// Draw the highlights if setting
 		if (highlightedBall >= 0 && state == SETTING) {
-			Point highlightPos = this.positionForBall(highlightedBall);
+			Point highlightPos = this.getPositionForBall(highlightedBall);
 			int hx = highlightPos.x;
 			int hy = highlightPos.y;
 			int size = getSizeOfBall();
@@ -300,7 +343,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		for (int i = 0; i < balls.size(); i++) {
 			if (balls.get(i) > 0) {
 				// Tile was set
-				Point p = this.positionForBall(i);
+				Point p = this.getPositionForBall(i);
 				int size = getSizeOfBall();
 				BufferedImage ballImage;
 				switch (balls.get(i)) {
@@ -339,21 +382,22 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	}
 
 	@Override
+	/**
+	 * Mouse moved, so check if it is now highlighting a ball
+	 */
 	public void mouseMoved(MouseEvent arg0) {
 		if (highlightedBall >= 0) {
 			// A ball was already highlighted, check if this is still the case
-			Point hp = this.positionForBall(highlightedBall);
+			Point hp = this.getPositionForBall(highlightedBall);
 			double d = hp.distance(arg0.getPoint());
 			if (d > getSizeOfBall() / 2) {
 				highlightedBall = -1;
 				this.repaint();
 			}
-			// System.out.println(hp.distance(arg0.getPoint()) + ", was " + ((d
 			// > getSizeOfBall()/2)?"":"NOT") + " within range");
 		}
 
 		if (highlightedBall < 0) {
-			// System.out.println("No ball was selected");
 			// No ball selected. Can't be an else statement because it might
 			// have changed in the first if.
 			for (Point p : ballPositions) {
@@ -367,46 +411,55 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	}
 
 	@Override
+	/**
+	 * Should update all the values to the new size
+	 */
 	public void componentResized(ComponentEvent e) {
 		if (e.getSource().equals(this)) {
 			ballPositions = new ArrayList<Point>();
 			for (int i = 0; i <= 8; i++) {
-				ballPositions.add(this.positionForBall(i));
+				ballPositions.add(this.getPositionForBall(i));
 			}
 		}
-		
+
 		else {
-			//Was its parent, should resize to fit nicely
-			int width = ((BoardPanel)e.getSource()).getWidth();
-			int height = ((BoardPanel)e.getSource()).getHeight();
-			int x = (int)Math.floor(blockIndex / 3);
+			// Was its parent, should resize to fit nicely
+			int width = ((BoardPanel) e.getSource()).getWidth();
+			int height = ((BoardPanel) e.getSource()).getHeight();
+			int x = (int) Math.floor(blockIndex / 3);
 			int y = blockIndex % 3;
-			this.setBounds(width/3 * x, height/3 * y, width/3, height/3);
+			this.setBounds(width / 3 * x, height / 3 * y, width / 3, height / 3);
 		}
+		this.repaint();
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		previousSize = this.getSize();
 		ballPositions = new ArrayList<Point>();
 		for (int i = 0; i <= 8; i++) {
-			ballPositions.add(this.positionForBall(i));
+			ballPositions.add(this.getPositionForBall(i));
 		}
 	}
 
 	@Override
+	/**
+	 * Manual mouse click registration is necessary for the tiles
+	 */
 	public void mouseClicked(MouseEvent arg0) {
-		if (state != DISABLED) {
-			if (state == SETTING) {
-				// Was setting
-				if (highlightedBall >= 0 && balls.get(highlightedBall) == 0) {
-					System.out.println("Selected " + highlightedBall);
-					bord.set(blockIndex, highlightedBall);
-				}
+		PTLog.log("BlockPanel", blockIndex + " was clicked");
+		if (state == SETTING) {
+			// Was setting
+			if (highlightedBall >= 0 && balls.get(highlightedBall) == 0) {
+				bord.set(blockIndex, highlightedBall);
 			}
 		}
 	}
 
 	@Override
+	/**
+	 * A turn button was clicked
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(cwButton)) {
 			bord.turn(blockIndex, Block.CW);
