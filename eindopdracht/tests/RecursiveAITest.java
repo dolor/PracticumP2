@@ -12,6 +12,7 @@ import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.PTLog;
 
 public class RecursiveAITest {
 	public static void main(String[] args) {
@@ -40,7 +41,7 @@ public class RecursiveAITest {
 			RecursiveAI ai = new RecursiveAI(1, testBoard, testPlayers);
 			Set testSet = new Set(new Player());
 			ai.calculateSet(testSet);
-			System.out.println("Best move would be: " + testSet.getBlock() + "," + testSet.getTile());
+			PTLog.log("RecursiveAITest", "Best move would be: " + testSet.getBlock() + "," + testSet.getTile());
 			
 			//Let the AI calculate
 			if (RecursiveAITest.readString("Again?").equals("EXIT")) {

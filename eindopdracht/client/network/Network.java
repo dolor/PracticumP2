@@ -69,10 +69,8 @@ public class Network extends Observable implements Observer{
 	 * @require input the string received from the network
 	 */
 	public void processNetworkInput(String input) {
-		System.out.println("Processing input: " + input);
 		Command command = new Command(input);
 		if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
-			System.out.println("Received chat!");
 			this.setChanged();
 			this.notifyObservers(command);
 		} 
@@ -80,7 +78,7 @@ public class Network extends Observable implements Observer{
 		//Turn the block
 		else if (command.getCommand().equals(Protocol.TURN_BLOCK)) {
 			String playerName = command.getArg(2);
-			System.out.println("Player " + playerName + " turned a block");
+			PTLog.log("Network", "Player " + playerName + " turned a block" + command.getArg(0) + "" + command.getArg(1));
 			for (NetworkPlayer player:networkPlayers) {
 				if (player.getName().equals(playerName)) {
 					Turn turn = new Turn(player);
@@ -95,7 +93,7 @@ public class Network extends Observable implements Observer{
 		//Set the tile
 		else if (command.getCommand().equals(Protocol.SET_TILE)) {
 			String playerName = command.getArg(2);
-			System.out.println("Player " + playerName + " set a tile");
+			PTLog.log("Network", "Player " + playerName + " set a tile: " + command.getArg(0) + "" + command.getArg(1));
 			for (NetworkPlayer player:networkPlayers) {
 				if (player.getName().equals(playerName)) {
 					Set set = new Set(player);
@@ -120,10 +118,15 @@ public class Network extends Observable implements Observer{
 		
 		//Connected to the server
 		else if (command.getCommand().equals(Protocol.CONNECTED)) {
-			System.out.println("Notifying observers");
 			this.setChanged();
 			this.notifyObservers(command);
-			System.out.println("All observers notified!");
+		}
+		
+		else if (command.getCommand().equals(Protocol.END_GAME)) {
+			//Game was quit from the server-side
+			PTLog.log("Network", "Game was ended by server");
+			this.setChanged();
+			this.notifyObservers(command);
 		}
 	}
 	
@@ -152,15 +155,15 @@ public class Network extends Observable implements Observer{
 	public boolean connect(String server, int port) {
 		if (NetworkUtil.isValidHost(server) && NetworkUtil.isValidPort(port)) {
 			try {
-				System.out.println("Creating socket, connecting to " + server + "(" + port + ")");
+				PTLog.log("Network", "Creating socket, connecting to " + server + "(" + port + ")");
 				Socket sock = new Socket(server, port);
-				System.out.println("Creating handler");
+				PTLog.log("Network", "Creating handler");
 				handler = new ConnectionHandler(sock, this);
 				Thread handlerThread = new Thread(handler);
 				handlerThread.start();
 				return true;
 			} catch (IOException e) {
-				System.out.println("[Error] IOException while trying to open a connection: " + e.getMessage());
+				PTLog.log("Network", "[Error] IOException while trying to open a connection: " + e.getMessage());
 				return false;
 			}
 		} else {
@@ -199,7 +202,7 @@ public class Network extends Observable implements Observer{
 		if (handler != null) 
 			handler.sendString(Protocol.CHAT + " " + chat);
 		else
-			System.out.println("[Error] not connected to a server!");
+			PTLog.log("Network", "[Error] not connected to a server!");
 	}
 	
 	/**
@@ -220,7 +223,7 @@ public class Network extends Observable implements Observer{
 		if (handler != null)
 			handler.sendString(Protocol.JOIN + " " + name + " " + size);
 		else
-			System.out.println("[Error] not connected to a server!");
+			PTLog.log("Network", "[Error] not connected to a server!");
 	}
 
 	@Override
@@ -248,7 +251,7 @@ public class Network extends Observable implements Observer{
 		if (handler != null)
 			handler.sendString(msg);
 		else
-			System.out.println("[Error] Not connected to a server!");
+			PTLog.log("Network", "[Error] Not connected to a server!");
 	}
 	
 	/**
@@ -261,7 +264,7 @@ public class Network extends Observable implements Observer{
 		if (handler != null)
 			handler.sendString(msg);
 		else
-			System.out.println("[Error] Not connected to a server!");
+			PTLog.log("Network", "[Error] Not connected to a server!");
 	}
 	
 	/**
@@ -273,7 +276,7 @@ public class Network extends Observable implements Observer{
 			handler = null;
 		}
 		else {
-			System.out.println("[Error] Not connected to a server!");
+			PTLog.log("Network", "[Error] Not connected to a server!");
 		}
 	}
 	

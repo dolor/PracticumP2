@@ -12,7 +12,7 @@ public class PTLog {
 	 * @param message the message for the log
 	 */
 	public static void log(String name, String message) {
-		System.out.println("<" + name + "> " + message);
+		System.out.printf("%-20s %s\n", "<" + name + "> " ,message);
 	}
 	
 }

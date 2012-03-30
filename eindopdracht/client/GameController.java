@@ -192,7 +192,6 @@ public class GameController extends Observable {
 				&& this.getSettingPlayer().getState() == Player.SETTING
 				&& !set.isExecuted()) // hij is aan de beurt
 		{
-			// System.out.printf("    Set: %o, %o, %o\n", set.getBlock(),
 			// set.getTile(), set.getPlayer().getColor());
 			// de zet uitvoeren
 			set.setValid(this.board.set(set.getBlock(), set.getTile(), set
@@ -209,6 +208,7 @@ public class GameController extends Observable {
 					this.giveTurn();
 
 			} else {
+				PTLog.log("GameController", "Set was invalid!");
 				this.localBroadcast(set);
 			}
 
@@ -236,7 +236,6 @@ public class GameController extends Observable {
 			// TODO set verwerken
 			turn.setValid(this.board.turn(turn.getBlock(), turn.getRotation()));
 			if (turn.getValid()) {
-				PTLog.log("GameController", "DEBUG: Turn is invalid!");
 				turn.setExecuted(true);
 
 				this.localBroadcast(turn); // vertel iedereen dat de zet is
@@ -245,6 +244,7 @@ public class GameController extends Observable {
 				// nieuwe player is aan de beurt
 				this.nextSettingPlayer();
 			} else {
+				PTLog.log("GameController", "DEBUG: Turn is invalid!");
 				this.localBroadcast(turn);
 			}
 

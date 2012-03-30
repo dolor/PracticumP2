@@ -11,7 +11,7 @@ public class Lobby {
 	
 	int maxNumberOfPlayers;
 	ArrayList<ServerPlayer> players;
-	Server server;
+	ServerController server;
 	public String name;
 	
 	/**
@@ -19,7 +19,7 @@ public class Lobby {
 	 * @param maxPlayers the maximum amount of players before this lobby starts
 	 * @param server the server this lobby runs on
 	 */
-	public Lobby(int maxPlayers, Server server) {
+	public Lobby(int maxPlayers, ServerController server) {
 		name = "Lobby-" + lobbyNumber;
 		lobbyNumber++;
 		

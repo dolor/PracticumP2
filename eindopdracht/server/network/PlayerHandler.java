@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import eindopdracht.model.Command;
-import eindopdracht.server.Server;
+import eindopdracht.server.ServerController;
 import eindopdracht.server.ServerPlayer;
 import eindopdracht.util.ModelUtil;
 import eindopdracht.util.PTLog;
@@ -19,7 +19,7 @@ public class PlayerHandler implements Runnable {
 	private Socket socket; // Not currently used
 	protected BufferedReader in;
 	protected BufferedWriter out;
-	private Server server;
+	private ServerController server;
 	
 	public String name; // Used for logging
 
@@ -34,7 +34,7 @@ public class PlayerHandler implements Runnable {
 	 * @ensure creates a valid playerhandler that handles everything regarding
 	 *         the player it is hooked up to across the network
 	 */
-	public PlayerHandler(Socket socket, Server server) throws IOException {
+	public PlayerHandler(Socket socket, ServerController server) throws IOException {
 		this.name = "Handler_Empty";
 		this.server = server;
 		this.socket = socket;
@@ -138,7 +138,8 @@ public class PlayerHandler implements Runnable {
 			// If a client tries to challenge, handle the denial immediately to
 			// minimize disappointment. Poor guy.
 			PTLog.log(name, "Player tried to challenge. Denying!");
-			this.sendMessage(Protocol.CHALLENGE_FAILED);
+			this.sendMessage(Protocol.NO_CHALLENGE);
+			this.sendMessage(Protocol.QUIT_SERVER);
 		}
 
 		else {

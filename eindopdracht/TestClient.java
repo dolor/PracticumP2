@@ -2,6 +2,7 @@ package eindopdracht;
 
 import eindopdracht.client.MainController;
 import eindopdracht.client.gui.PentagoXLWindow;
+import eindopdracht.util.PTLog;
 
 public class TestClient {
 	
@@ -13,7 +14,7 @@ public class TestClient {
 		boolean humanPlayer = false;
 		int aiType = 0;
 		if (args.length != 4) {
-			System.out.println(USAGE);
+			PTLog.log("TestClient", USAGE);
 			System.exit(0);
 		} else {
 			name = args[0];
@@ -22,7 +23,7 @@ public class TestClient {
 				players = Integer.parseInt(args[1]);
 				aiType = Integer.parseInt(args[3]);
 			} catch (NumberFormatException e) {
-				System.out.println(USAGE);
+				PTLog.log("TestClient", USAGE);
 				System.exit(0);
 			}
 		}

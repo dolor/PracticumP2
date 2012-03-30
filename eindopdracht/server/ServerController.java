@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import eindopdracht.server.network.Network;
 import eindopdracht.util.PTLog;
 
-public class Server {
+public class ServerController {
 	private ArrayList<Lobby> lobbies;
-	private ArrayList<ServerGame> games;
+	private ArrayList<ServerGameController> games;
 	private ArrayList<ServerPlayer> players;
 	private Network network;
 	private static int defaultPort = 8888;
@@ -24,9 +24,9 @@ public class Server {
 	 * Creates a server with port 8888
 	 * @ensure exits with an exception if 8888 can not be opened
 	 */
-	public Server() {
+	public ServerController() {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<ServerGame>();
+		this.games = new ArrayList<ServerGameController>();
 		this.players = new ArrayList<ServerPlayer>();
 		
 		try {
@@ -42,9 +42,9 @@ public class Server {
 	 * @ensure starts listening on the given port if valid
 	 * @ensure asks for a different value if invalid
 	 */
-	public Server(int port) {
+	public ServerController(int port) {
 		this.lobbies = new ArrayList<Lobby>();
-		this.games = new ArrayList<ServerGame>();
+		this.games = new ArrayList<ServerGameController>();
 		this.players = new ArrayList<ServerPlayer>();
 		
 		while (this.network == null) {
@@ -84,7 +84,7 @@ public class Server {
 				l.removePlayer(player);
 			}
 		}
-		for (ServerGame g:games) {
+		for (ServerGameController g:games) {
 			if (g.containsPlayer(player)) {
 				PTLog.log("Server", "Removing player " + player.getName() + " from a game, ending game");
 				g.endGame(player, endDueToDisconnect);
@@ -99,7 +99,7 @@ public class Server {
 	 * @param lobby
 	 */
 	public void startGame(Lobby lobby) {
-		ServerGame newGame = new ServerGame(lobby.getPlayers(), this);
+		ServerGameController newGame = new ServerGameController(lobby.getPlayers(), this);
 		newGame.start();
 		lobbies.remove(lobby);
 		games.add(newGame);
@@ -109,7 +109,7 @@ public class Server {
 	 * Stops the given game
 	 * @param game
 	 */
-	public void stopGame(ServerGame game) {
+	public void stopGame(ServerGameController game) {
 		games.remove(game);
 	}
 	

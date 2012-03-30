@@ -11,13 +11,13 @@ import eindopdracht.util.ModelUtil;
 import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
-public class ServerGame extends Observable {
+public class ServerGameController extends Observable {
 	
 	public static int gameNumber = 1;
 
 	ArrayList<ServerPlayer> players;
 	ServerPlayer settingPlayer; // Player die aan de beurt is
-	Server server;
+	ServerController server;
 	
 	public String name; // Used for log files
 
@@ -28,7 +28,7 @@ public class ServerGame extends Observable {
 	 * @param players that are in the game
 	 * @require players are valid, at least 2 and max 4
 	 */
-	public ServerGame(ArrayList<ServerPlayer> players, Server server) {
+	public ServerGameController(ArrayList<ServerPlayer> players, ServerController server) {
 		name = "Game-" + gameNumber;
 		gameNumber++;
 		
@@ -38,8 +38,6 @@ public class ServerGame extends Observable {
 		for (ServerPlayer player : players) {
 			player.setGame(this);
 			this.addObserver(player);
-			System.out
-					.println("Added observer with class " + player.getClass());
 		}
 
 		for (int i = 0; i < players.size(); i++) {
@@ -110,12 +108,12 @@ public class ServerGame extends Observable {
 	 */
 	public boolean set(Set set) {
 		if (set.getPlayer().getState() != ServerPlayer.SETTING) {
-			this.endGame(set.getPlayer(), Server.endDueToCheat);
+			this.endGame(set.getPlayer(), ServerController.endDueToCheat);
 			return false;
 		} else {
 			if (!board.set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
-				this.endGame(set.getPlayer(), Server.endDueToCheat);
+				this.endGame(set.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				set.setExecuted(true);
@@ -139,11 +137,11 @@ public class ServerGame extends Observable {
 	 */
 	public boolean turn(Turn turn) {
 		if (turn.getPlayer().getState() != ServerPlayer.TURNING) {
-			this.endGame(turn.getPlayer(), Server.endDueToCheat);
+			this.endGame(turn.getPlayer(), ServerController.endDueToCheat);
 			return false;
 		} else {
 			if (!board.turn(turn.getBlock(), turn.getRotation())) {
-				this.endGame(turn.getPlayer(), Server.endDueToCheat);
+				this.endGame(turn.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				turn.setExecuted(true);
@@ -167,9 +165,9 @@ public class ServerGame extends Observable {
 	 */
 	public boolean gameEnded() {
 		if (board.GameOver()) {
-			System.out.println("GAME IS OVER");
+			PTLog.log(name, "GAME IS OVER");
 			String gameOverString = new String(Protocol.END_GAME + " "
-					+ Server.endDueToWinner);
+					+ ServerController.endDueToWinner);
 			for (Integer playerColor : board.GetWinners()) {
 				for (ServerPlayer player : players) {
 					if (player.getColor() == playerColor) {
@@ -178,7 +176,7 @@ public class ServerGame extends Observable {
 					}
 				}
 			}
-			System.out.println(gameOverString);
+			PTLog.log(name, gameOverString);
 			this.netBroadcast(gameOverString);
 			
 			for (ServerPlayer p : players) {
@@ -226,17 +224,18 @@ public class ServerGame extends Observable {
 	 * why.
 	 */
 	public void endGame(ServerPlayer player, int reason) {
-		if (reason == Server.endDueToCheat)
+		if (reason == ServerController.endDueToCheat)
 			PTLog.log(name, "Ending game because a player set before it was his turn");
-		else if (reason == Server.endDueToDisconnect)
+		else if (reason == ServerController.endDueToDisconnect) {
 			PTLog.log(name, "Ending game because a player disconnected");
-		else if (reason == Server.endDueToWinner)
+			players.remove(player);
+		}
+		else if (reason == ServerController.endDueToWinner)
 			PTLog.log(name, "Ending game because a player won!");
-		else if (reason == Server.endDueToRemise)
+		else if (reason == ServerController.endDueToRemise)
 			PTLog.log(name, "Ending game because the players are out of moves");
 
-		this.netBroadcast(Protocol.END_GAME + " " + player.getName() + " "
-				+ reason);
+		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + player.getName());
 		for (ServerPlayer p : players) {
 			players.remove(p);
 		}

@@ -90,7 +90,7 @@ public class MainController extends Observable implements Observer {
 	public void exit() {
 		if (network != null)
 			network.quit();
-		System.out.println("QUITTING");
+		PTLog.log("MainController", "QUITTING");
 		System.exit(0);
 	}
 	
@@ -128,18 +128,6 @@ public class MainController extends Observable implements Observer {
 						+ command.getArg(0));
 				this.setChanged();
 				this.notifyObservers(localPlayer);
-			}
-			
-			else if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
-				//Pass it along
-				this.setChanged();
-				this.notifyObservers(object);
-			}
-			
-			else if (command.getCommand().equals(Protocol.END_GAME)) {
-				//Game ended, update the interface so it knows
-				this.setChanged();
-				this.notifyObservers(object);
 			}
 		} else if (object.getClass().equals(GameController.class)) {
 			this.game = ((GameController) object);

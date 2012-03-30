@@ -64,17 +64,13 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		this.setBounds(0, 0, this.getPreferredSize().width, this.getPreferredSize().height);
 		
 		blocks = new ArrayList<BlockPanel>();
-		int width = this.getSize().width;
-		int height = this.getSize().height;
-		for (int y = 0; y < dimension; y++) {
-			for (int x = 0; x < dimension; x++) {
-				BlockPanel block = new BlockPanel(this, x + y*dimension);
-//				block.setBounds(width/3 * x, height/3 * y, width/3, height/3);
-				this.addComponentListener(block);
-				this.add(block);
-				blocks.add(block);
-			}
+		for (int b = 0; b < dimension*dimension; b++) {
+			BlockPanel block = new BlockPanel(this, b);
+			this.addComponentListener(block);
+			this.add(block);
+			blocks.add(block);
 		}
+		
 		this.repaint();
 	}
 	
@@ -117,6 +113,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 				this.currentSet = set;
 				this.setBlockStates(BlockPanel.SETTING);
 			} else if (set.getBlock() >= 0 && set.getTile() >= 0){
+				PTLog.log("BoardPanel", "Set " + set.getBlock() + "-" + set.getTile());
 				int updatedBlock = set.getBlock();
 				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
 				this.updateTiles(board);
@@ -143,7 +140,6 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 			} else if (turn.getBlock() >= 0 && turn.getRotation() >= 1 && turn.getRotation() <= 2){
 				window.setStatus("Waiting...");
 				int updatedBlock = turn.getBlock();
-				System.out.println("Updating block " + updatedBlock);
 				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
 				this.updateTiles(board);
 			}
@@ -162,7 +158,6 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		if (this.currentTurn != null) {
 			currentTurn.setBlock(block);
 			currentTurn.setRotation(direction);
-			System.out.println("    blockpanel performed: " + currentTurn.toString());
 			game.turn(currentTurn);
 			currentTurn = null;
 		}
@@ -180,7 +175,6 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		if (this.currentSet != null) {
 			currentSet.setBlock(block);
 			currentSet.setTile(tile);
-			System.out.println("    blockpanel performed: " + currentSet.toString());
 			game.set(currentSet);
 			currentSet = null;
 		}
@@ -252,11 +246,6 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		int y = parent.getSize().height / 2 - size / 2;
 		this.setBounds(x, y, size, size);
 		
-//		GridLayout layout = new GridLayout(dimension, dimension);
-//		layout.setHgap(8);
-//		layout.setVgap(8);
-//		this.setLayout(layout);
-//		this.updateUI();
 		this.repaint();
 	}
 

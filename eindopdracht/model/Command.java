@@ -43,7 +43,6 @@ public class Command {
 		String comm = scanner.next();
 		String[] args = new String[0];
 		int i = 0;
-		System.out.println(comm);
 		//Add all the arguments
 		while (scanner.hasNext()) {
 			args = new String[args.length + 1];

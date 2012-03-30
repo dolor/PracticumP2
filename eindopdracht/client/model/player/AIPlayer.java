@@ -42,7 +42,7 @@ public class AIPlayer extends Player{
 	public void update(Observable o, Object arg) {
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
-			if (set.getPlayer().equals(this) && !set.isExecuted()) {
+			if (set.getPlayer().equals(this) && !set.isExecuted() && set.getValid()) {
 				//The set is for this player and should still be executed
 				ai.calculateSet(set);
 				game.set(set);
@@ -51,7 +51,7 @@ public class AIPlayer extends Player{
 		
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn)arg;
-			if (turn.getPlayer().equals(this) && !turn.isExecuted()) {
+			if (turn.getPlayer().equals(this) && !turn.isExecuted() && turn.getValid()) {
 				//The turn is for this player and should still be executed
 				ai.calculateTurn(turn);
 				game.turn(turn);

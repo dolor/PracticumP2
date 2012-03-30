@@ -5,14 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import eindopdracht.server.Server;
+import eindopdracht.server.ServerController;
 import eindopdracht.util.PTLog;
 
 public class Network {
 	private ArrayList<PlayerHandler> players;
-	private Server server;
+	private ServerController server;
 	
-	public Network(int port, Server server) throws IOException{
+	public Network(int port, ServerController server) throws IOException{
 		this.server = server;
 		this.listen(port);
 		players = new ArrayList<PlayerHandler>();

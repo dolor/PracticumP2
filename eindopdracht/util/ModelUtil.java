@@ -21,7 +21,7 @@ public class ModelUtil {
 			if (letters[i].equals(letter))
 				return i;
 		}
-		System.out.println("[ERROR] Letter " + letter + " could not be found! Returning 0 instead");
+		PTLog.log("ModelUtil", "[ERROR] Letter " + letter + " could not be found! Returning 0 instead");
 		return 0;
 	}
 	
@@ -87,12 +87,12 @@ public class ModelUtil {
 		for (int i = 0; i < letters.length; i++) {
 			String letter = ModelUtil.intToLetter(i);
 			int number = ModelUtil.letterToInt(letter);
-			System.out.println(i + " > " + letter + " > " + number);
+			PTLog.log("ModelUtil", i + " > " + letter + " > " + number);
 		}
 		for (int i = 0; i < 4; i ++) {
 			String direction = ModelUtil.intToDirection(i);
 			int number = ModelUtil.directionToInt(direction);
-			System.out.println(i + " > " + direction + " > " + number);
+			PTLog.log("ModelUtil", i + " > " + direction + " > " + number);
 		}
 	}
 }

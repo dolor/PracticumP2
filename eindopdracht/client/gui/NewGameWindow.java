@@ -13,7 +13,7 @@ import javax.swing.event.DocumentListener;
 
 import eindopdracht.util.NetworkUtil;
 
-public class NewGame extends JFrame implements DocumentListener,
+public class NewGameWindow extends JFrame implements DocumentListener,
 		ActionListener, WindowListener {
 
 	/**
@@ -37,7 +37,7 @@ public class NewGame extends JFrame implements DocumentListener,
 	 * @param pentagoXLWindow
 	 *            the main window
 	 */
-	public NewGame(PentagoXLWindow pentagoXLWindow) {
+	public NewGameWindow(PentagoXLWindow pentagoXLWindow) {
 		super("New Game");
 		this.observer = pentagoXLWindow;
 		buildGUI();

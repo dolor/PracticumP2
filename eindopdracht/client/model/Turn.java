@@ -16,7 +16,7 @@ public class Turn {
 		this.rotation = -1;
 		this.player = player;	
 		this.executed = false;
-		this.valid = false;
+		this.valid = true;
 	}
 	
 	public void setExecuted(boolean executed)

@@ -1,5 +1,7 @@
 package eindopdracht;
 
+import eindopdracht.util.PTLog;
+
 public class Server {
 	public static void main(String[] args) {
 		if (args.length > 1) {
@@ -7,13 +9,12 @@ public class Server {
 			try {
 				port = Integer.parseInt(args[0]);
 			} catch (NumberFormatException e) {
-				System.out
-						.println("Should either be used without an argument to start " +
+				PTLog.log("Server", "Should either be used without an argument to start " +
 								"with port 8888, or provide a valid number as a port.");
 			}
-			new eindopdracht.server.Server(port);
+			new eindopdracht.server.ServerController(port);
 		} else {
-			new eindopdracht.server.Server();
+			new eindopdracht.server.ServerController();
 		}
 	}
 }
