@@ -20,7 +20,7 @@ public class PlayerHandler implements Runnable {
 	protected BufferedReader in;
 	protected BufferedWriter out;
 	private ServerController server;
-	
+
 	public String name; // Used for logging
 
 	/**
@@ -34,7 +34,8 @@ public class PlayerHandler implements Runnable {
 	 * @ensure creates a valid playerhandler that handles everything regarding
 	 *         the player it is hooked up to across the network
 	 */
-	public PlayerHandler(Socket socket, ServerController server) throws IOException {
+	public PlayerHandler(Socket socket, ServerController server)
+			throws IOException {
 		this.name = "Handler_Empty";
 		this.server = server;
 		this.socket = socket;
@@ -75,17 +76,18 @@ public class PlayerHandler implements Runnable {
 			next = in.readLine();
 			while (next != null) {
 				// If null, the connection was terminated
-				this.handleInput(next);
-
+				synchronized (this) {
+					this.handleInput(next);
+				}
 				next = in.readLine();
 			}
 		} catch (IOException e) {
 			PTLog.log(name, "Error occured while reading inputstream");
 			server.removePlayer(player);
-		} /*catch (NullPointerException e) {
-			PTLog.log(name, "NullPointerException, quitting");
-			System.exit(0);
-		}*/
+		} /*
+		 * catch (NullPointerException e) { PTLog.log(name,
+		 * "NullPointerException, quitting"); System.exit(0); }
+		 */
 	}
 
 	/**
@@ -97,7 +99,8 @@ public class PlayerHandler implements Runnable {
 	 * @ensure converts the input to a command and handles appropriately, log
 	 *         message if it is an invalid command
 	 */
-	private void handleInput(String input) {
+	private synchronized void handleInput(String input) {
+		PTLog.log(name, "Received: " + input);
 		Command command = new Command(input);
 		String c = command.getCommand();
 
@@ -125,8 +128,8 @@ public class PlayerHandler implements Runnable {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				PTLog.log(name, "Error thrown while quitting: "
-						+ e.getMessage());
+				PTLog.log(name,
+						"Error thrown while quitting: " + e.getMessage());
 			}
 		}
 
@@ -153,12 +156,14 @@ public class PlayerHandler implements Runnable {
 	 * 
 	 * @param msg
 	 */
-	public void sendMessage(String msg) {
+	public synchronized void sendMessage(String msg) {
+		PTLog.log(name, "Sending: " + msg);
 		try {
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
-			PTLog.log(name, "-[Error] error thrown in PlayerHandler sendMessage");
+			PTLog.log(name,
+					"-[Error] error thrown in PlayerHandler sendMessage");
 			e.printStackTrace();
 		}
 	}

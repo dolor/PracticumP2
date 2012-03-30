@@ -8,6 +8,7 @@ import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
 import eindopdracht.ai.RecursiveAI;
 import eindopdracht.client.model.*;
+import eindopdracht.util.PTLog;
 
 public class AIPlayer extends Player{
 	
@@ -44,6 +45,7 @@ public class AIPlayer extends Player{
 			Set set = (Set)arg;
 			if (set.getPlayer().equals(this) && !set.isExecuted() && set.getValid()) {
 				//The set is for this player and should still be executed
+				PTLog.log(name, "Is now going to set!");
 				ai.calculateSet(set);
 				game.set(set);
 			}
@@ -53,6 +55,7 @@ public class AIPlayer extends Player{
 			Turn turn = (Turn)arg;
 			if (turn.getPlayer().equals(this) && !turn.isExecuted() && turn.getValid()) {
 				//The turn is for this player and should still be executed
+				PTLog.log(name, "Is now going to turn!");
 				ai.calculateTurn(turn);
 				game.turn(turn);
 			}

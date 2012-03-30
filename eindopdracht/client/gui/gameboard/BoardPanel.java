@@ -241,6 +241,14 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		}
 		this.repaint();
 	}
+	
+	/**
+	 * Set all tiles to 0
+	 * @ensure the tiles will all be 0 after this
+	 */
+	public void clear() {
+		this.updateTiles(new Board());
+	}
 
 	@Override
 	public Dimension getMinimumSize() {

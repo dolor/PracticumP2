@@ -35,7 +35,7 @@ public class ServerGameController extends Observable {
 	 */
 	public ServerGameController(ArrayList<ServerPlayer> players,
 			ServerController server) {
-		name = "Game-" + gameNumber;
+		name = "Game_" + gameNumber;
 		gameNumber++;
 
 		this.players = players;
@@ -141,10 +141,10 @@ public class ServerGameController extends Observable {
 				set.getPlayer().setNumberOfTiles(set.getPlayer().getNumberOfTiles() - 1);
 				this.localBroadcast(set);
 				if (!this.gameEnded()) {
-					this.giveTurn();
 					this.netBroadcast(Protocol.SET_TILE + " "
 							+ ModelUtil.intToLetter(set.getBlock()) + " "
 							+ set.getTile() + " " + set.getPlayer().getName());
+					this.giveTurn();
 				}
 				return true;
 			}
@@ -171,11 +171,11 @@ public class ServerGameController extends Observable {
 				turn.setExecuted(true);
 				this.localBroadcast(turn);
 				if (!this.gameEnded()) {
-					this.giveSet();
 					this.netBroadcast(Protocol.TURN_BLOCK + " "
 							+ ModelUtil.intToLetter(turn.getBlock()) + " "
 							+ ModelUtil.intToDirection(turn.getRotation())
 							+ " " + turn.getPlayer().getName());
+					this.giveSet();
 				}
 				return true;
 			}
@@ -206,6 +206,7 @@ public class ServerGameController extends Observable {
 			for (ServerPlayer p : players) {
 				players.remove(p);
 			}
+			board.drawBoard();
 			server.stopGame(this);
 			return true;
 		}
@@ -270,17 +271,18 @@ public class ServerGameController extends Observable {
 		String playerName = player.getName();
 		if (reason == ServerController.endDueToCheat)
 			PTLog.log(name,
-					"Ending game because a player set before it was his turn");
+					"Ending game because " + playerName + " set before it was his turn");
 		else if (reason == ServerController.endDueToDisconnect) {
-			PTLog.log(name, "Ending game because a player disconnected");
+			PTLog.log(name, "Ending game because " + playerName + " disconnected");
 			players.remove(player);
 		} else if (reason == ServerController.endDueToWinner)
-			PTLog.log(name, "Ending game because a player won!");
+			PTLog.log(name, "Ending game because " + playerName + " won!");
 		else if (reason == ServerController.endDueToRemise)
 			PTLog.log(name, "Ending game because the players are out of moves");
 
 		PTLog.log(name, Protocol.END_GAME + " " + reason + " " + playerName);
 		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + playerName);
+		this.netBroadcast(Protocol.QUIT_SERVER);
 		players.clear();
 	}
 

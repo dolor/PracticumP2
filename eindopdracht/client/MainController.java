@@ -21,6 +21,14 @@ public class MainController extends Observable implements Observer {
 	private Network network;
 	private GameController game;
 	private Player localPlayer;
+	
+	//Save these details so we can reconnect
+	private String host;
+	private int port;
+	private String playerName;
+	private int lobbySize;
+	private boolean humanPlayer;
+	private int aiType;
 
 	public MainController() {
 		PentagoXLWindow frame = new PentagoXLWindow(this);
@@ -35,6 +43,9 @@ public class MainController extends Observable implements Observer {
 	 * @ensure sets up a socket and network handler if succesfull, throws an exception if not.
 	 */
 	public void connect(String host, int port) {
+		this.host = host;
+		this.port = port;
+		
 		PTLog.log("MainController", "Connecting with " + host + " on port " + port);
 		network = new Network();
 		network.addObserver(this);
@@ -56,6 +67,11 @@ public class MainController extends Observable implements Observer {
 	 * @require aiType: 0->random, 1->intelligent, 2-> recursive
 	 */
 	public void join(String name, int players, boolean humanPlayer, int aiType) {
+		playerName = name;
+		lobbySize = players;
+		this.humanPlayer = humanPlayer;
+		this.aiType = aiType;
+		
 		PTLog.log("MainController", "Joining as " + name + " in a lobby with " + players
 				+ " players max");
 		if (!humanPlayer)
@@ -69,6 +85,14 @@ public class MainController extends Observable implements Observer {
 		if (network != null) {
 			network.join(name, players);
 		}
+	}
+	
+	/**
+	 * Restart the last game. Can only be used after a game has been played.
+	 */
+	public void restart() {
+		this.connect(host, port);
+		this.join(playerName, lobbySize, humanPlayer, aiType);
 	}
 
 	/**
@@ -116,6 +140,15 @@ public class MainController extends Observable implements Observer {
 		if (object.getClass().equals(Command.class)) {
 			Command command = (Command) object;
 
+			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				if (game == null)
+					System.out.println("[ERROR] Apparently the game was null");
+				else if (game.getLocalPlayer() == null)
+					System.out.println("[ERROR] Apparently the local player was null!");
+				game.setSettingPlayer(game.getLocalPlayer());
+				game.giveSet();
+			}
+			
 			if (command.getCommand().equals(Protocol.START)) {
 				// this.playerList.setText("");
 				String[] p = command.getArgs();
@@ -129,6 +162,16 @@ public class MainController extends Observable implements Observer {
 				this.setChanged();
 				this.notifyObservers(localPlayer);
 			}
+			
+			else if (command.getCommand().equals(Protocol.QUIT_SERVER)) {
+				PTLog.log("MainController", "The server quit");
+				this.disconnect();
+			}
+			
+			else if (command.getCommand().equals(Protocol.END_GAME)) {
+				this.disconnect();
+			}
+			
 		} else if (object.getClass().equals(GameController.class)) {
 			this.game = ((GameController) object);
 		}
@@ -177,6 +220,7 @@ public class MainController extends Observable implements Observer {
 		else if (localPlayer.getClass().equals(AIPlayer.class)) {
 			((AIPlayer) localPlayer).initializeAI();
 		}
+		
 		game.start();
 	}
 }

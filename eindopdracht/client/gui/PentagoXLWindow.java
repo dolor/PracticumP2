@@ -1,14 +1,9 @@
 package eindopdracht.client.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.*;
-
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -27,12 +22,9 @@ import javax.swing.JMenuItem;
 
 import eindopdracht.client.GameController;
 import eindopdracht.client.MainController;
-import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.client.model.player.HumanPlayer;
-import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
-import eindopdracht.model.Board;
 import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
@@ -42,9 +34,7 @@ import eindopdracht.client.gui.gameboard.BoardPanel;
 import java.awt.Insets;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
-import java.awt.GridLayout;
 import javax.swing.JTextField;
-import java.awt.FlowLayout;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
@@ -64,7 +54,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	JFrame newGameFrame;
 	private JTextPane chatWindow;
 	private JMenuItem hintButton;
-	private JMenuItem connectedLabel;
+	private JMenuItem restartButton;
 	private JTextField chatField;
 	private JButton chatButton;
 	private PlayerListFrame playerList;
@@ -122,10 +112,11 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		hintButton.addActionListener(this);
 		menuBar.add(hintButton);
 
-		connectedLabel = new JMenuItem("Not Connected");
-		connectedLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		connectedLabel.setEnabled(false);
-		menuBar.add(connectedLabel);
+		restartButton = new JMenuItem("");
+		restartButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		restartButton.setEnabled(false);
+		restartButton.addActionListener(this);
+		menuBar.add(restartButton);
 
 		Component horizontalStrut = Box.createHorizontalStrut(383);
 		menuBar.add(horizontalStrut);
@@ -225,6 +216,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 				newGameFrame = new NewGameWindow(this);
 		} else if (e.getSource().equals(disconnectMenuItem)) {
 			mc.disconnect();
+			statusLabel.setText("Disconnected");
 		} else if (e.getSource().getClass().equals(JMenuItem.class)
 				&& ((JMenuItem) e.getSource()).getText().equals("Exit")) {
 			mc.exit();
@@ -238,6 +230,10 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		} else if (e.getSource().equals(chatButton)) {
 			mc.sendChat(chatField.getText());
 			this.chatField.setText("");
+		} else if (e.getSource().equals(restartButton)) {
+			mc.restart();
+			restartButton.setText("");
+			restartButton.setEnabled(false);
 		}
 	}
 
@@ -298,11 +294,11 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 
 		else if (object.getClass().equals(String.class)) {
 			if (object.equals("disconnect")) {
+				PTLog.log("Window", "Disconnected!");
 				connectMenuItem.setEnabled(true);
 				joinMenuItem.setEnabled(false);
 				disconnectMenuItem.setEnabled(false);
-				connectedLabel.setText("Not connected!");
-				statusLabel.setText("Disconnected");
+				playerList.setText("");
 			}
 		}
 
@@ -315,8 +311,12 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 				int reason = Integer.parseInt(command.getArg(0));
 
 				if (reason == GameController.endDueToWinner) {
-					statusLabel.setText("Winners:");
-					for (int i = 2; i < command.getArgs().length; i++) {
+					if (command.getArgs().length > 1)
+						statusLabel.setText("Winners:");
+					else
+						statusLabel.setText("Winner:");
+					
+					for (int i = 1; i < command.getArgs().length; i++) {
 						statusLabel.setText(statusLabel.getText() + " "
 								+ command.getArg(i));
 					}
@@ -333,10 +333,10 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		}
 
 		else if (object.getClass().equals(Network.class)) {
+			bord.clear();
 			connectMenuItem.setEnabled(false);
 			joinMenuItem.setEnabled(true);
 			disconnectMenuItem.setEnabled(true);
-			connectedLabel.setText("Connected!");
 			statusLabel.setText("Connected");
 			((Network) object).addObserver(this);
 		}
@@ -348,6 +348,8 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	public void endGame() {
 		bord.disable();
 		PTLog.log("Window", "Now showing a replay button");
+		restartButton.setText("Replay");
+		restartButton.setEnabled(true);
 	}
 
 	/**

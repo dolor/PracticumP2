@@ -53,6 +53,7 @@ public class Network {
 	 * @ensure message will be sent to all connected network players
 	 */
 	public void broadcast(String msg) {
+		PTLog.log("Network", msg);
 		for (PlayerHandler player:players) {
 			player.sendMessage(msg);
 		}

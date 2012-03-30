@@ -7,6 +7,7 @@ import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
 import eindopdracht.util.PTLog;
+import eindopdracht.util.Protocol;
 
 public class ServerPlayer implements Observer {
 	private String name;
@@ -211,6 +212,7 @@ public class ServerPlayer implements Observer {
 					this.setState(IDLE);
 				} else {
 					//Set has to be executed, set to Setting
+					handler.sendMessage(Protocol.YOUR_TURN);
 					this.setState(SETTING);
 				}
 			}

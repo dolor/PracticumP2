@@ -68,7 +68,7 @@ public class Network extends Observable implements Observer{
 	 * Creates a Command object and passes it through notifyObservers.
 	 * @require input the string received from the network
 	 */
-	public void processNetworkInput(String input) {
+	public synchronized void processNetworkInput(String input) {
 		Command command = new Command(input);
 		if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
 			this.setChanged();
@@ -113,7 +113,8 @@ public class Network extends Observable implements Observer{
 		
 		//Give the turn to the localplayer
 		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
-			game.setSettingPlayer(game.getLocalPlayer());
+			this.setChanged();
+			this.notifyObservers(command);
 		} 
 		
 		//Connected to the server
@@ -125,6 +126,12 @@ public class Network extends Observable implements Observer{
 		else if (command.getCommand().equals(Protocol.END_GAME)) {
 			//Game was quit from the server-side
 			PTLog.log("Network", "Game was ended by server");
+			this.setChanged();
+			this.notifyObservers(command);
+		}
+		
+		else if (command.getCommand().equals(Protocol.QUIT_SERVER)) {
+			PTLog.log("Network", "Server Quit");
 			this.setChanged();
 			this.notifyObservers(command);
 		}
