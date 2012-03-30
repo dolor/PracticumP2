@@ -2,7 +2,10 @@ package eindopdracht.client.gui.gameboard;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
@@ -60,15 +63,35 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * Set up the GUI
 	 */
 	public void buildGUI() {
-		this.setLayout(new GridLayout(dimension, dimension));
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0 };
+		gbl_contentPane.columnWeights = new double[] { 1.0, 1.0, 1.0,
+				Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 1.0, 1.0, 1.0,
+				Double.MIN_VALUE };
+		this.setLayout(gbl_contentPane);
+		
+//		this.setLayout(new GridLayout(dimension, dimension));
 		this.setBounds(0, 0, this.getPreferredSize().width, this.getPreferredSize().height);
 		
+		GridBagConstraints gbc_block = new GridBagConstraints();
+		gbc_block.fill = GridBagConstraints.BOTH;
+		gbc_block.gridx = 0;
+		gbc_block.gridy = 0;
+		gbc_block.insets = new Insets(5, 5, 5, 5);
+		
 		blocks = new ArrayList<BlockPanel>();
-		for (int b = 0; b < dimension*dimension; b++) {
-			BlockPanel block = new BlockPanel(this, b);
-			this.addComponentListener(block);
-			this.add(block);
-			blocks.add(block);
+		for (int y = 0; y < dimension; y++) {
+			for (int x = 0; x < dimension; x++) {
+				BlockPanel block = new BlockPanel(this, x + y * dimension);
+				this.addComponentListener(block);
+				
+				gbc_block.gridx = x;
+				gbc_block.gridy = y;
+				this.add(block, gbc_block);
+				blocks.add(block);
+			}
 		}
 		
 		this.repaint();
@@ -113,7 +136,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 				this.currentSet = set;
 				this.setBlockStates(BlockPanel.SETTING);
 			} else if (set.getBlock() >= 0 && set.getTile() >= 0){
-				PTLog.log("BoardPanel", "Set " + set.getBlock() + "-" + set.getTile());
+//				PTLog.log("BoardPanel", "Set " + set.getBlock() + "-" + set.getTile());
 				int updatedBlock = set.getBlock();
 				blocks.get(updatedBlock).updateTiles(board.getBlock(updatedBlock));
 				this.updateTiles(board);
@@ -185,6 +208,13 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 */
 	public void resetHints() {
 		
+	}
+	
+	/**
+	 * Disable the board for all input untill restarted
+	 */
+	public void disable() {
+		this.setBlockStates(BlockPanel.DISABLED);
 	}
 	
 	/**

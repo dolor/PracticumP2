@@ -20,6 +20,9 @@ public class GameController extends Observable {
 	public static int endDueToRemise = 2;
 	public static int endDueToCheat = 3;
 	public static int endDueToDisconnect = 4;
+	
+	public static int maxTilesFor2Players = 40;
+	public static int maxTilesForMorePlayers = 20;
 
 	/**
 	 * Maakt een game aan.
@@ -34,9 +37,9 @@ public class GameController extends Observable {
 		//Give all players their tiles
 		for (Player p:players) {
 			if (players.size() == 2)
-				p.setNumberOfTiles(40);
+				p.setNumberOfTiles(maxTilesFor2Players);
 			else
-				p.setNumberOfTiles(20);
+				p.setNumberOfTiles(maxTilesForMorePlayers);
 		}
 
 		// geef spelers hun kleur

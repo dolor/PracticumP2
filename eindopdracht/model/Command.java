@@ -43,18 +43,24 @@ public class Command {
 		String comm = scanner.next();
 		String[] args = new String[0];
 		int i = 0;
+		
 		//Add all the arguments
+		this.argString = "";
+		
 		while (scanner.hasNext()) {
 			args = new String[args.length + 1];
 			if (this.args != null)
 				System.arraycopy(this.args, 0, args, 0, this.args.length);
 			args[i] = scanner.next();
 			this.args = args;
+			
 			this.argString = this.argString + args[i] + " ";
 			i++;
 		}
-		if (argString != null)
+		if (argString != null) {
+//			PTLog.log("Command", "Original: " + fullCommand + "|| argString: " + argString);
 			argString.trim();
+		}
 				
 		this.command = comm;
 		this.args = args;

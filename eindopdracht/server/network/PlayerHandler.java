@@ -82,10 +82,10 @@ public class PlayerHandler implements Runnable {
 		} catch (IOException e) {
 			PTLog.log(name, "Error occured while reading inputstream");
 			server.removePlayer(player);
-		} catch (NullPointerException e) {
-			// TODO Check if this is really necessary
+		} /*catch (NullPointerException e) {
+			PTLog.log(name, "NullPointerException, quitting");
 			System.exit(0);
-		}
+		}*/
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else if (c.equals(Protocol.CHAT)) {
-			player.chat(command.getArg(0));
+			player.chat(command.getArgString());
 		}
 
 		else if (c.equals(Protocol.CHALLENGE)) {

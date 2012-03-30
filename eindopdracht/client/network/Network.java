@@ -78,7 +78,7 @@ public class Network extends Observable implements Observer{
 		//Turn the block
 		else if (command.getCommand().equals(Protocol.TURN_BLOCK)) {
 			String playerName = command.getArg(2);
-			PTLog.log("Network", "Player " + playerName + " turned a block" + command.getArg(0) + "" + command.getArg(1));
+//			PTLog.log("Network", "Player " + playerName + " turned a block" + command.getArg(0) + " " + command.getArg(1));
 			for (NetworkPlayer player:networkPlayers) {
 				if (player.getName().equals(playerName)) {
 					Turn turn = new Turn(player);
@@ -93,7 +93,7 @@ public class Network extends Observable implements Observer{
 		//Set the tile
 		else if (command.getCommand().equals(Protocol.SET_TILE)) {
 			String playerName = command.getArg(2);
-			PTLog.log("Network", "Player " + playerName + " set a tile: " + command.getArg(0) + "" + command.getArg(1));
+//			PTLog.log("Network", "Player " + playerName + " set a tile: " + command.getArg(0) + " " + command.getArg(1));
 			for (NetworkPlayer player:networkPlayers) {
 				if (player.getName().equals(playerName)) {
 					Set set = new Set(player);
@@ -199,6 +199,7 @@ public class Network extends Observable implements Observer{
 	 * @param chat
 	 */
 	public void sendChat(String chat) {
+//		PTLog.log("Network", "Sending chat: " + chat);
 		if (handler != null) 
 			handler.sendString(Protocol.CHAT + " " + chat);
 		else

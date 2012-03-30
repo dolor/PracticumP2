@@ -89,7 +89,8 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		for (int i = 0; i < 9; i++) {
 			balls.add(0);
 		}
-
+		
+		ballPositions = new ArrayList<Point>();
 	}
 
 	/**
@@ -140,6 +141,8 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 */
 	public void buildGUI() {
 		this.setLayout(null);
+		
+		this.setOpaque(false);
 
 		cwButton = new JButton();
 		cwButton.setIcon(new ImageIcon(cwImage));
@@ -421,15 +424,6 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 				ballPositions.add(this.getPositionForBall(i));
 			}
 		}
-
-		else {
-			// Was its parent, should resize to fit nicely
-			int width = ((BoardPanel) e.getSource()).getWidth();
-			int height = ((BoardPanel) e.getSource()).getHeight();
-			int x = (int) Math.floor(blockIndex / 3);
-			int y = blockIndex % 3;
-			this.setBounds(width / 3 * x, height / 3 * y, width / 3, height / 3);
-		}
 		this.repaint();
 	}
 
@@ -447,7 +441,6 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * Manual mouse click registration is necessary for the tiles
 	 */
 	public void mouseClicked(MouseEvent arg0) {
-		PTLog.log("BlockPanel", blockIndex + " was clicked");
 		if (state == SETTING) {
 			// Was setting
 			if (highlightedBall >= 0 && balls.get(highlightedBall) == 0) {
