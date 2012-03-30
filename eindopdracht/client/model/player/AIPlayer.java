@@ -8,7 +8,9 @@ import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
 import eindopdracht.ai.RecursiveAI;
 import eindopdracht.client.model.*;
+import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
+import eindopdracht.util.Protocol;
 
 public class AIPlayer extends Player{
 	
@@ -41,6 +43,13 @@ public class AIPlayer extends Player{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		if (arg.getClass().equals(Command.class)) {
+			Command command = (Command)arg;
+			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				game.giveSet();
+			}
+		}
+		
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set)arg;
 			if (set.getPlayer().equals(this) && !set.isExecuted() && set.getValid()) {

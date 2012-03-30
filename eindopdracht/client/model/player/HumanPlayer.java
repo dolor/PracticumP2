@@ -14,6 +14,8 @@ import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
 import eindopdracht.model.Command;
+import eindopdracht.util.PTLog;
+import eindopdracht.util.Protocol;
 
 public class HumanPlayer extends Player{
 	
@@ -50,6 +52,13 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if (arg.getClass().equals(Command.class)) {
+			Command command = (Command)arg;
+			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				PTLog.log(name, "JUST GOT MY TURN");
+				game.giveSet();
+			}
+		}
 		/*if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
 			this.makeSet((Set)arg);
 		}

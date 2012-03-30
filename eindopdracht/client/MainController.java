@@ -145,8 +145,8 @@ public class MainController extends Observable implements Observer {
 					System.out.println("[ERROR] Apparently the game was null");
 				else if (game.getLocalPlayer() == null)
 					System.out.println("[ERROR] Apparently the local player was null!");
-				game.setSettingPlayer(game.getLocalPlayer());
-				game.giveSet();
+				//game.setSettingPlayer(game.getLocalPlayer());
+				//game.giveSet();
 			}
 			
 			if (command.getCommand().equals(Protocol.START)) {
@@ -197,6 +197,8 @@ public class MainController extends Observable implements Observer {
 			if (p[i].equals(localPlayer.getName())) {
 				// was the local player
 				players.add(localPlayer);
+				network.setLocalPlayer(localPlayer);
+				network.addObserver(localPlayer);
 			} else {
 				NetworkPlayer newPlayer = new NetworkPlayer();
 				network.addNetworkPlayer(newPlayer);

@@ -24,9 +24,10 @@ public class Network extends Observable implements Observer{
 	
 	private ConnectionHandler handler;
 	private ArrayList<NetworkPlayer> networkPlayers;
-	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-	private GameController game;
 	private String localPlayerName;
+	private Player localPlayer;
+
+	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
 	
 	/**
 	 *
@@ -48,19 +49,11 @@ public class Network extends Observable implements Observer{
 	}
 	
 	/**
-	 * 
-	 * @param name the name of the local player
+	 * Sets the local player
+	 * @param player
 	 */
-	public void setLocalPlayerName(String name) {
-		this.localPlayerName = name;
-	}
-	
-	/**
-	 * 
-	 * @return the name of the local player
-	 */
-	public String getLocalPlayerName() {
-		return this.localPlayerName;
+	public void setLocalPlayer(Player player) {
+		this.localPlayer = player;
 	}
 	
 	/**

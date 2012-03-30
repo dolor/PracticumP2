@@ -85,8 +85,8 @@ public class GameController extends Observable {
 												// beurt
 		PTLog.log("GameController", "Player " + settingPlayer.getName()
 				+ " got the first turn");
-		if (!settingPlayer.equals(localPlayer))
-			this.giveSet();
+		//if (!settingPlayer.equals(localPlayer))
+		//	this.giveSet();
 	}
 
 	/**
@@ -116,112 +116,27 @@ public class GameController extends Observable {
 	}
 
 	/**
-	 * maakt een set object aan en stuurt dat naar observers
+	 * gives the localPlayer the set and notifies the observers.
+	 * @ensure observers notified that the local player can set
 	 */
 	public void giveSet() {
-		if (this.getSettingPlayer().getNumberOfTiles() > 0) {
-			Set set = new Set(this.getSettingPlayer());
-			this.getSettingPlayer().setState(Player.SETTING);
-
+		if (localPlayer.getNumberOfTiles() > 0) {
+			//Else this player can't set anymore, and the server should end the game soon
+			Set set = new Set(localPlayer);
+			localPlayer.setState(Player.SETTING);
 			this.localBroadcast(set);
-		} else {
-			this.endGame(endDueToRemise);
 		}
 	}
 
 	/**
-	 * geeft een turn object naar de observers
+	 * gives the localPlayer the turn and notifies the observers.
+	 * @ensure observers notified that the local player can turn
 	 */
 	public void giveTurn() {
-		Turn turn = new Turn(this.getSettingPlayer());
-		this.getSettingPlayer().setState(Player.TURNING);
+		Turn turn = new Turn(localPlayer);
+		localPlayer.setState(Player.TURNING);
 
 		this.localBroadcast(turn);
-	}
-
-	/**
-	 * 
-	 * @return the currently setting player
-	 */
-	public Player getSettingPlayer() {
-		return this.settingPlayer;
-	}
-
-	/**
-	 * 
-	 * @param player
-	 *            that is now the setting player
-	 */
-	public void setSettingPlayer(Player player) {
-		if (this.players.contains(player)) {
-			if (this.getSettingPlayer() != null)
-				this.getSettingPlayer().setState(Player.IDLE);
-			this.settingPlayer = player;
-		}
-	}
-
-	/**
-	 * Get the next setting player
-	 * 
-	 * @ensure player after the current settingPlayer in the player array is set
-	 *         as setting
-	 * @ensure if it is the local player, the turn is not given untill the
-	 *         server allows it
-	 */
-	public void nextSettingPlayer() {
-		int index = players.indexOf(getSettingPlayer());
-
-		if (index + 1 < players.size()) // als de volgende index binnen de range
-										// ligt
-		{
-			index++;
-		} else // begin bij het begin.
-		{
-			index = 0;
-		}
-
-		this.getSettingPlayer().setState(Player.IDLE); // zet de player op idle
-
-		this.setSettingPlayer(players.get(index));
-
-		if (!this.gameEnded() && !settingPlayer.equals(localPlayer))
-			this.giveSet();
-	}
-
-	/**
-	 * Perform the given set
-	 * 
-	 * @param set
-	 *            to perform
-	 */
-	public void set(Set set) {
-		synchronized (this) {
-			if (set.getPlayer() == this.getSettingPlayer()
-					&& this.getSettingPlayer().getState() == Player.SETTING
-					&& !set.isExecuted()) // hij is aan de beurt
-			{
-				// set.getTile(), set.getPlayer().getColor());
-				// de zet uitvoeren
-				set.setValid(this.board.set(set.getBlock(), set.getTile(), set
-						.getPlayer().getColor()));
-				if (set.getValid()) {
-					set.setExecuted(true);
-					set.getPlayer().setNumberOfTiles(
-							set.getPlayer().getNumberOfTiles() - 1);
-
-					this.localBroadcast(set); // vertel iedereen dat de zet is
-												// uitgevoerd
-
-					// deel een nieuwe turn uit
-					if (!this.gameEnded())
-						this.giveTurn();
-
-				} else {
-					PTLog.log("GameController", "Set was invalid!");
-					this.localBroadcast(set);
-				}
-			}
-		}
 	}
 
 	/**
@@ -236,6 +151,40 @@ public class GameController extends Observable {
 	}
 
 	/**
+	 * Perform the given set
+	 * 
+	 * @param set
+	 *            to perform
+	 */
+	public void set(Set set) {
+//		synchronized (this) {
+			if (!set.isExecuted()) // hij is aan de beurt
+			{
+				// set.getTile(), set.getPlayer().getColor());
+				// de zet uitvoeren
+				set.setValid(this.board.set(set.getBlock(), set.getTile(), set
+						.getPlayer().getColor()));
+				if (set.getValid()) {
+					set.setExecuted(true);
+					set.getPlayer().setNumberOfTiles(
+							set.getPlayer().getNumberOfTiles() - 1);
+
+					this.localBroadcast(set); // vertel iedereen dat de zet is
+												// uitgevoerd
+
+					// deel een nieuwe turn uit
+					if (!this.gameEnded() && set.getPlayer().equals(localPlayer))
+						this.giveTurn();
+
+				} else {
+					PTLog.log("GameController", "Set was invalid!");
+					this.localBroadcast(set);
+				}
+			}
+//		}
+	}
+
+	/**
 	 * Perform the given Turn
 	 * 
 	 * @param turn
@@ -243,9 +192,7 @@ public class GameController extends Observable {
 	 */
 	public void turn(Turn turn) {
 		synchronized (this) {
-			if (turn.getPlayer() == this.getSettingPlayer()
-					&& this.getSettingPlayer().getState() == Player.TURNING
-					&& !turn.isExecuted()) // hij is aan de beurt
+			if (!turn.isExecuted()) // hij is aan de beurt
 			{
 				// TODO set verwerken
 				turn.setValid(this.board.turn(turn.getBlock(),
@@ -257,7 +204,7 @@ public class GameController extends Observable {
 												// uitgevoerd
 
 					// nieuwe player is aan de beurt
-					this.nextSettingPlayer();
+					//this.nextSettingPlayer();
 				} else {
 					PTLog.log("GameController", "DEBUG: Turn is invalid!");
 					this.localBroadcast(turn);
