@@ -225,9 +225,7 @@ public class ServerGameController extends Observable {
 			PTLog.log(name, gameOverString);
 			this.netBroadcast(gameOverString);
 			
-			for (ServerPlayer p : players) {
-				players.remove(p);
-			}
+			players.clear();
 			server.stopGame(this);
 			return true;
 		}
