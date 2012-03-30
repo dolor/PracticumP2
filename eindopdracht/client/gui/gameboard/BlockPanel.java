@@ -62,6 +62,8 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public static int DISABLED = 0;
 	public static int SETTING = 1;
 	public static int TURNING = 2;
+	
+	private Dimension previousSize;
 
 	/**
 	 * Create a new BlockView
@@ -69,6 +71,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * @param blockIndex the index on the board of this block
 	 */
 	public BlockPanel(BoardPanel bord, int blockIndex) {
+		this.previousSize = new Dimension();
 		this.loadImages();
 		this.buildGUI();
 		this.addMouseMotionListener(this);
@@ -208,28 +211,32 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 * Show the rotate buttons on this block
 	 */
 	public void showRotateButtons() {
-		Rectangle cwBounds = new Rectangle(this.getWidth()/2, 0, this.getWidth()/2, this.getHeight());
-		cwButton.setBounds(cwBounds);
-		Image newImage = cwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		ImageIcon newIcon = new ImageIcon(newImage);
-		cwButton.setIcon(newIcon);
-		newImage = cwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		cwButton.setRolloverIcon(newIcon);
-		
-		Rectangle ccwBounds = new Rectangle(0, 0, this.getWidth()/2, this.getHeight());
-		ccwButton.setBounds(ccwBounds);
-		
-		newImage = ccwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		ccwButton.setIcon(newIcon);
-		
-		newImage = ccwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		newIcon = new ImageIcon(newImage);
-		ccwButton.setRolloverIcon(newIcon);
-		
 		this.add(cwButton);
 		this.add(ccwButton);	
+
+		if (!previousSize.equals(this.getSize())) {
+			previousSize = this.getSize();
+			//Update the rotate button icon sizes
+			Rectangle cwBounds = new Rectangle(this.getWidth()/2, 0, this.getWidth()/2, this.getHeight());
+			cwButton.setBounds(cwBounds);
+			Image newImage = cwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			ImageIcon newIcon = new ImageIcon(newImage);
+			cwButton.setIcon(newIcon);
+			newImage = cwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			cwButton.setRolloverIcon(newIcon);
+			
+			Rectangle ccwBounds = new Rectangle(0, 0, this.getWidth()/2, this.getHeight());
+			ccwButton.setBounds(ccwBounds);
+			
+			newImage = ccwImage.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			ccwButton.setIcon(newIcon);
+			
+			newImage = ccwImageHighlight.getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			newIcon = new ImageIcon(newImage);
+			ccwButton.setRolloverIcon(newIcon);
+		}
 	}
 	
 	/**
@@ -396,10 +403,12 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 			int y = blockIndex % 3;
 			this.setBounds(width/3 * x, height/3 * y, width/3, height/3);
 		}
+		this.repaint();
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		previousSize = this.getSize();
 		ballPositions = new ArrayList<Point>();
 		for (int i = 0; i <= 8; i++) {
 			ballPositions.add(this.getPositionForBall(i));

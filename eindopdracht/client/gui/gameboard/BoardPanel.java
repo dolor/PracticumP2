@@ -252,11 +252,12 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		int y = parent.getSize().height / 2 - size / 2;
 		this.setBounds(x, y, size, size);
 		
-		GridLayout layout = new GridLayout(dimension, dimension);
-		layout.setHgap(8);
-		layout.setVgap(8);
-		this.setLayout(layout);
-		this.updateUI();
+//		GridLayout layout = new GridLayout(dimension, dimension);
+//		layout.setHgap(8);
+//		layout.setVgap(8);
+//		this.setLayout(layout);
+//		this.updateUI();
+		this.repaint();
 	}
 
 	public void componentMoved(ComponentEvent e) {}
