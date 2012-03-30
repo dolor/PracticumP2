@@ -13,6 +13,7 @@ import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Command;
+import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 public class MainController extends Observable implements Observer {
@@ -34,7 +35,7 @@ public class MainController extends Observable implements Observer {
 	 * @ensure sets up a socket and network handler if succesfull, throws an exception if not.
 	 */
 	public void connect(String host, int port) {
-		System.out.println("Connecting with " + host + " on port " + port);
+		PTLog.log("MainController", "Connecting with " + host + " on port " + port);
 		network = new Network();
 		network.addObserver(this);
 		if (network.connect(host, port)) {
@@ -55,9 +56,10 @@ public class MainController extends Observable implements Observer {
 	 * @require aiType: 0->random, 1->intelligent, 2-> recursive
 	 */
 	public void join(String name, int players, boolean humanPlayer, int aiType) {
-		System.out.println("Joining as " + name + " in a lobby with " + players
+		PTLog.log("MainController", "Joining as " + name + " in a lobby with " + players
 				+ " players max");
-		System.out.println("Starting with AI type " + aiType);
+		if (!humanPlayer)
+			PTLog.log("MainController", "Starting with AI type " + aiType);
 		if (humanPlayer)
 			localPlayer = new HumanPlayer();
 		else
@@ -122,14 +124,20 @@ public class MainController extends Observable implements Observer {
 
 			else if (command.getCommand().equals(Protocol.CONNECTED)) {
 				localPlayer.setName(command.getArg(0));
-				System.out.println("Joined, now has the name "
+				PTLog.log("MainController", "Joined, now has the name "
 						+ command.getArg(0));
 				this.setChanged();
 				this.notifyObservers(localPlayer);
 			}
 			
-			else if (command.getCommand().equals(Protocol.CHAT_SERVER)){
+			else if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
 				//Pass it along
+				this.setChanged();
+				this.notifyObservers(object);
+			}
+			
+			else if (command.getCommand().equals(Protocol.END_GAME)) {
+				//Game ended, update the interface so it knows
 				this.setChanged();
 				this.notifyObservers(object);
 			}
@@ -152,17 +160,14 @@ public class MainController extends Observable implements Observer {
 	 *            array of playernames that are in the game
 	 */
 	public void startGame(String[] p) {
-		System.out.println("Starting the game!");
+		PTLog.log("Maincontroller", "Starting the game!");
 		ArrayList<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < p.length; i++) {
 			if (p[i].equals(localPlayer.getName())) {
 				// was the local player
-				System.out.println("Found the local player");
-				;
 				players.add(localPlayer);
 			} else {
 				NetworkPlayer newPlayer = new NetworkPlayer();
-				System.out.println("Adding a networkplayer");
 				network.addNetworkPlayer(newPlayer);
 				newPlayer.setName(p[i]);
 				players.add(newPlayer);
@@ -172,6 +177,7 @@ public class MainController extends Observable implements Observer {
 		
 		game.setLocalPlayer(localPlayer);
 		game.addObserver(network);
+		game.addObserver(this);
 		
 		this.setChanged();
 		this.notifyObservers(game);

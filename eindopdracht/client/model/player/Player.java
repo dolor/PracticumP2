@@ -104,7 +104,6 @@ public class Player implements Observer  {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Player object with not yet implemented update method got a set/turn!");
 	}
 
 }

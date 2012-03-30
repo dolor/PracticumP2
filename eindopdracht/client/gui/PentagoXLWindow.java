@@ -153,7 +153,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		//panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.setLayout(null);
 		
-		bord = new BoardPanel();
+		bord = new BoardPanel(this);
 		panel.addComponentListener(bord);
 		GridLayout gridLayout = (GridLayout) bord.getLayout();
 		gridLayout.setVgap(8);
@@ -291,9 +291,11 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 		
 		else if (object.getClass().equals(Command.class)) {
 			Command command = (Command)object;
+			PTLog.log("Window", "Updated with command: " + command.getCommand());
 			if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
-				System.out.println("Displaying chat: " + command.getArgString());
 				this.receiveChat(command.getArgString());
+			} else if (command.getCommand().equals(Protocol.END_GAME)) {
+				int reason = Integer.parseInt(command.getArg(0));
 			}
 		}
 		
@@ -303,7 +305,16 @@ public class PentagoXLWindow extends JFrame implements WindowListener, ActionLis
 			disconnectMenuItem.setEnabled(true);
 			connectedLabel.setText("Connected!");
 			statusLabel.setText("Connected");
+			((Network)object).addObserver(this);
 		}
+	}
+	
+	/**
+	 * Sets the statusLabel in the window to inform the player of changes
+	 * @param status
+	 */
+	public void setStatus(String status) {
+		statusLabel.setText(status);
 	}
 	
 	/**

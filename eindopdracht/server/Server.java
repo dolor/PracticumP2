@@ -102,6 +102,7 @@ public class Server {
 		ServerGame newGame = new ServerGame(lobby.getPlayers(), this);
 		newGame.start();
 		lobbies.remove(lobby);
+		games.add(newGame);
 	}
 	
 	/**

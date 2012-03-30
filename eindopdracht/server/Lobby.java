@@ -110,6 +110,7 @@ public class Lobby {
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p:players) {
+			PTLog.log(name, "comparing " + player.getName() + " with " + p.getName());
 			if (p.equals(player))
 				return true;
 		}
