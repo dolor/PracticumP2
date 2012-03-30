@@ -8,13 +8,18 @@ import eindopdracht.server.model.Turn;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.util.ModelUtil;
+import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 public class ServerGame extends Observable {
+	
+	public static int gameNumber = 1;
 
 	ArrayList<ServerPlayer> players;
 	ServerPlayer settingPlayer; // Player die aan de beurt is
 	Server server;
+	
+	public String name; // Used for log files
 
 	Board board;
 
@@ -24,6 +29,9 @@ public class ServerGame extends Observable {
 	 * @require players are valid, at least 2 and max 4
 	 */
 	public ServerGame(ArrayList<ServerPlayer> players, Server server) {
+		name = "Game-" + gameNumber;
+		gameNumber++;
+		
 		this.players = players;
 		this.board = new Board();
 
@@ -45,7 +53,7 @@ public class ServerGame extends Observable {
 	 * @ensure players will be notified
 	 */
 	public void start() {
-		System.out.println("Game started with " + players.size() + " players!");
+		PTLog.log(name, "Game started with " + players.size() + " players!");
 
 		// Tell the players that the game is starting
 		String msg = Protocol.START;
@@ -65,7 +73,6 @@ public class ServerGame extends Observable {
 	 */
 	public void chat(String chat, ServerPlayer player) {
 		String fullChatString = Protocol.CHAT_SERVER + " [" + player.getName() + "] " + chat;
-		System.out.println("Protocol says " + Protocol.CHAT_SERVER + " , sending " + fullChatString);
 		this.netBroadcast(fullChatString);
 	}
 
@@ -82,7 +89,6 @@ public class ServerGame extends Observable {
 		}
 		Set set = new Set(settingPlayer);
 		set.setExecuted(false);
-		System.out.println("        Gave SET to " + settingPlayer.getName());
 		this.localBroadcast(set);
 	}
 
@@ -93,7 +99,6 @@ public class ServerGame extends Observable {
 	public void giveTurn() {
 		Turn turn = new Turn(settingPlayer);
 		turn.setExecuted(false);
-		System.out.println("        Gave TURN to " + settingPlayer.getName());
 		this.localBroadcast(turn);
 	}
 
@@ -104,18 +109,12 @@ public class ServerGame extends Observable {
 	 * @param set to set
 	 */
 	public boolean set(Set set) {
-		System.out.println(set.toString() + " set, player state was "
-				+ set.getPlayer().getState());
 		if (set.getPlayer().getState() != ServerPlayer.SETTING) {
-			System.out
-					.println("Ending game because a player set before it was his turn");
 			this.endGame(set.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
 			if (!board.set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
-				System.out
-						.println("Ending game because an invalid set was made");
 				this.endGame(set.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {
@@ -139,17 +138,11 @@ public class ServerGame extends Observable {
 	 * @param turn to perform
 	 */
 	public boolean turn(Turn turn) {
-		System.out.println(turn.toString() + " turned, player state was "
-				+ turn.getPlayer().getState());
 		if (turn.getPlayer().getState() != ServerPlayer.TURNING) {
-			System.out.println("Invalid player state: "
-					+ turn.getPlayer().getState());
 			this.endGame(turn.getPlayer(), Server.endDueToCheat);
 			return false;
 		} else {
 			if (!board.turn(turn.getBlock(), turn.getRotation())) {
-				System.out
-						.println("Ending game because an invalid turn was made");
 				this.endGame(turn.getPlayer(), Server.endDueToCheat);
 				return false;
 			} else {
@@ -233,7 +226,15 @@ public class ServerGame extends Observable {
 	 * why.
 	 */
 	public void endGame(ServerPlayer player, int reason) {
-		System.out.println("Ending the game due to reason " + reason);
+		if (reason == Server.endDueToCheat)
+			PTLog.log(name, "Ending game because a player set before it was his turn");
+		else if (reason == Server.endDueToDisconnect)
+			PTLog.log(name, "Ending game because a player disconnected");
+		else if (reason == Server.endDueToWinner)
+			PTLog.log(name, "Ending game because a player won!");
+		else if (reason == Server.endDueToRemise)
+			PTLog.log(name, "Ending game because the players are out of moves");
+
 		this.netBroadcast(Protocol.END_GAME + " " + player.getName() + " "
 				+ reason);
 		for (ServerPlayer p : players) {
@@ -264,7 +265,6 @@ public class ServerGame extends Observable {
 	 * 
 	 */
 	public void netBroadcast(String message) {
-		System.out.println("Broadcasting: " + message);
 		for (ServerPlayer player : players)
 			player.sendMessage(message);
 	}

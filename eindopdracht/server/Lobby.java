@@ -2,11 +2,17 @@ package eindopdracht.server;
 
 import java.util.ArrayList;
 
+import eindopdracht.util.PTLog;
+
 
 public class Lobby {
+	
+	public static int lobbyNumber = 1;
+	
 	int maxNumberOfPlayers;
 	ArrayList<ServerPlayer> players;
 	Server server;
+	public String name;
 	
 	/**
 	 * Creates a new lobby
@@ -14,9 +20,13 @@ public class Lobby {
 	 * @param server the server this lobby runs on
 	 */
 	public Lobby(int maxPlayers, Server server) {
+		name = "Lobby-" + lobbyNumber;
+		lobbyNumber++;
+		
 		this.server = server;
 		this.maxNumberOfPlayers = maxPlayers;
 		this.players = new ArrayList<ServerPlayer>();
+		PTLog.log(name, "Opened");
 	}
 	
 	/**
@@ -64,12 +74,13 @@ public class Lobby {
 		 * Tells the player his current name
 		 */
 		if (num > 0)
-			player.setName(player.getName() + "_" + num);
+			player.setName(player.getName() + "-" + num);
 
-		System.out.println("connected " + player.getName());
+		PTLog.log(name, "connected " + player.getName());
 		player.sendMessage("connected " + player.getName());
 				
 		if (players.size() == maxNumberOfPlayers) {
+			PTLog.log(name, "Lobby full");
 			server.startGame(this);
 		} else {
 			String msg = "players";

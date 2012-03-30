@@ -2,6 +2,8 @@ package eindopdracht.model;
 
 import java.util.Scanner;
 
+import eindopdracht.util.PTLog;
+
 /**
  * @author Dolor
  * Used to store Commands
@@ -33,10 +35,9 @@ public class Command {
 	 */
 	public Command(String fullCommand) {
 		Scanner scanner = new Scanner(fullCommand); 
-		System.out.println("Creating command from " + fullCommand);
 		if (!scanner.hasNext())
 		{
-			System.out.println("Empty command received!");
+			PTLog.log("Command", "Empty command received!");
 			System.exit(0);
 		}
 		String comm = scanner.next();
@@ -58,7 +59,6 @@ public class Command {
 				
 		this.command = comm;
 		this.args = args;
-		System.out.println("Command created");
 	}
 	
 	/**
@@ -95,8 +95,6 @@ public class Command {
 	 * @ensure return != null
 	 */
 	public String getArgString() {
-		System.out.println("Asked for argstring");
-		System.out.println("returning " + argString);
 		return argString;
 	}
 	

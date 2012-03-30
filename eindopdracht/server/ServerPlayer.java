@@ -6,12 +6,14 @@ import java.util.Observer;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
+import eindopdracht.util.PTLog;
 
 public class ServerPlayer implements Observer {
 	private String name;
     private int preferredNumberOfPlayers;
     private Lobby lobby;
     private ServerGame game;
+    private Server server;
 	int state;
     private int color;
     private PlayerHandler handler;
@@ -27,8 +29,9 @@ public class ServerPlayer implements Observer {
 	 * 
 	 * @param handler
 	 */
-    public ServerPlayer(PlayerHandler handler) {
+    public ServerPlayer(PlayerHandler handler, Server server) {
     	this.handler = handler;
+    	this.server = server;
     }
 	
     /**
@@ -54,21 +57,6 @@ public class ServerPlayer implements Observer {
 	 */
 	public void sendMessage(String message) {
 		handler.sendMessage(message);
-	}
-	
-	/*
-	 * Handler methods; These methods are called by the network handler and the player will act like he's performing
-	 * that specific task.
-	 */
-	
-	/**
-	 * Player wants to join a lobby
-	 * Not necessary, the playerhandler handles this.
-	 */
-	@Deprecated
-	public void join() {
-		System.out.println("Now trying to join");
-		//TODO write joining code
 	}
 	
 	/**
@@ -98,15 +86,6 @@ public class ServerPlayer implements Observer {
 		turn.setBlock(block);
 		turn.setRotation(direction);
 		game.turn(turn);
-	}
-	
-	/**
-	 * Called if the player wants to quit the server
-	 * @ensure the player is gracefully removed from the server
-	 */
-	public void quit() {
-		System.out.println("Trying to quit. Could not escape!");
-		//TODO implement graceful quitting
 	}
 	
 	/**

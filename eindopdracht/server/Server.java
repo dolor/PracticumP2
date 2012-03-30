@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import eindopdracht.server.network.Network;
+import eindopdracht.util.PTLog;
 
 public class Server {
 	private ArrayList<Lobby> lobbies;
@@ -31,7 +32,7 @@ public class Server {
 		try {
 			this.network = new Network(defaultPort, this);
 		} catch (IOException e) {
-			System.out.println("Failed, port already taken! " + e.getMessage());
+			PTLog.log("Server", "Failed, port already taken! " + e.getMessage());
 		}
 	}
 	
@@ -50,11 +51,11 @@ public class Server {
 			try {
 				this.network = new Network(port, this);
 			} catch (IOException e) {
-				System.out.println("Failed, port already taken! " + e.getMessage());
+				PTLog.log("Server", "Failed, port already taken! " + e.getMessage());
 				try {
 					port = Integer.parseInt(readString("port > "));
 				} catch (NumberFormatException f) {
-					System.out.println("Come on, just enter a fucking NUMBER!");
+					PTLog.log("Server", "Come on, just enter a fucking NUMBER!");
 				}
 			}
 		}
@@ -76,15 +77,16 @@ public class Server {
 	 * @param player
 	 */
 	public void removePlayer(ServerPlayer player) {
+		PTLog.log("Server", "Attempting to remove player " + player.getName() + " from the server");
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player)) {
-				System.out.println("Removing player from a lobby");
+				PTLog.log("Server", "Removing player " + player.getName() + " from a lobby");
 				l.removePlayer(player);
 			}
 		}
 		for (ServerGame g:games) {
 			if (g.containsPlayer(player)) {
-				System.out.println("Removing player from a game, ending game");
+				PTLog.log("Server", "Removing player " + player.getName() + " from a game, ending game");
 				g.endGame(player, endDueToDisconnect);
 			}
 		}
@@ -116,22 +118,16 @@ public class Server {
 	 * @return
 	 */
 	public Lobby getLobby(int players) {
-		System.out.println("Getting lobby " + players);
+		PTLog.log("Server", "placing player in lobby with " + players + " players");
 		for (Lobby lobby:lobbies) {
 			if (lobby.maxNumberOfPlayers() == players) {
-				System.out.println("Found, returning!");
 				return lobby;
 			}
 		}
-		System.out.println("No lobby found, creating a new one");
+		PTLog.log("Server", "Creating a new lobby with " + players + " players");
 		Lobby newLobby = new Lobby(players, this);
 		lobbies.add(newLobby);
-		System.out.println("Returning!");
 		return newLobby;
-	}
-	
-	public static void main(String[] args) {
-		new Server();
 	}
 	
 	/** Leest een regel tekst van standaardinvoer. */

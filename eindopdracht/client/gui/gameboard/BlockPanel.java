@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
+import eindopdracht.model.Position;
 
 public class BlockPanel extends JPanel implements MouseMotionListener,
 		MouseListener, ComponentListener, ActionListener {
@@ -157,6 +158,21 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		this.balls = balls;
 		this.repaint();
 	}
+	
+	/**
+	 * Sets the tile to the given color
+	 * @param tile
+	 * @param color
+	 * @ensure the UI is updated
+	 * @require the tile was empty, as this is not checked in the BlockPanel
+	 */
+	public void setTile(int tile, int color) {
+		balls.set(tile, color);
+		Point pos = this.getPositionForBall(tile);
+		int size = this.getSizeOfBall();
+		Rectangle repaintRectangle = new Rectangle(pos.x - size/2, pos.y - size/2, size, size);
+		this.repaint(repaintRectangle);
+	}
 
 	/**
 	 * 
@@ -230,7 +246,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	 *            0-8
 	 * @return position within this component
 	 */
-	private Point positionForBall(int ball) {
+	private Point getPositionForBall(int ball) {
 		double width = this.getWidth();
 
 		// In het originele plaatje gelden deze formaten: blok: 236*236 bal:
@@ -283,7 +299,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 
 		// Draw the highlights if setting
 		if (highlightedBall >= 0 && state == SETTING) {
-			Point highlightPos = this.positionForBall(highlightedBall);
+			Point highlightPos = this.getPositionForBall(highlightedBall);
 			int hx = highlightPos.x;
 			int hy = highlightPos.y;
 			int size = getSizeOfBall();
@@ -297,7 +313,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		for (int i = 0; i < balls.size(); i++) {
 			if (balls.get(i) > 0) {
 				// Tile was set
-				Point p = this.positionForBall(i);
+				Point p = this.getPositionForBall(i);
 				int size = getSizeOfBall();
 				BufferedImage ballImage;
 				switch (balls.get(i)) {
@@ -339,7 +355,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public void mouseMoved(MouseEvent arg0) {
 		if (highlightedBall >= 0) {
 			// A ball was already highlighted, check if this is still the case
-			Point hp = this.positionForBall(highlightedBall);
+			Point hp = this.getPositionForBall(highlightedBall);
 			double d = hp.distance(arg0.getPoint());
 			if (d > getSizeOfBall() / 2) {
 				highlightedBall = -1;
@@ -368,7 +384,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		if (e.getSource().equals(this)) {
 			ballPositions = new ArrayList<Point>();
 			for (int i = 0; i <= 8; i++) {
-				ballPositions.add(this.positionForBall(i));
+				ballPositions.add(this.getPositionForBall(i));
 			}
 		}
 		
@@ -386,7 +402,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public void componentShown(ComponentEvent e) {
 		ballPositions = new ArrayList<Point>();
 		for (int i = 0; i <= 8; i++) {
-			ballPositions.add(this.positionForBall(i));
+			ballPositions.add(this.getPositionForBall(i));
 		}
 	}
 
