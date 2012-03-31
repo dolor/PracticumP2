@@ -1,15 +1,15 @@
 package eindopdracht.ai;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
+import eindopdracht.util.PTLog;
 
 public class RandomAI extends AI {
-
-	private String[] chatLines = { "Hurr", "Durr", "Hmprf?" };
 
 	private static int sleepTime = 20;
 	// Used because these dumb AIs are so fast there gets a race condition in
@@ -17,6 +17,7 @@ public class RandomAI extends AI {
 
 	public RandomAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
+		this.chatLines = new String[]{ "Hurr", "Durr", "Hmprf", "Grmpf", "Eh", "Ah"};
 	}
 
 	@Override
@@ -63,5 +64,27 @@ public class RandomAI extends AI {
 
 		if (Math.random() > 0.8)
 			this.chat();
+	}
+
+	/**
+	 * Returns a random chatline for this AI
+	 * @ensure null if not implemented in AI
+	 * @return
+	 */
+	public String chat() {
+		int numberOfWords = (int)Math.floor(Math.sqrt(Math.random() * 9));
+		String full = "";
+		
+		for (int i = 0; i < numberOfWords; i++)
+			full = full + super.chat() + " ";
+		
+		full = full.trim();
+		full.toLowerCase();
+		full.toUpperCase(Locale.ENGLISH);
+		
+		int ending = (int)(Math.random() * 4);
+		full = full + chatEndings[ending];
+		
+		return full;
 	}
 }

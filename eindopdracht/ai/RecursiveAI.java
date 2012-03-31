@@ -16,6 +16,10 @@ public class RecursiveAI extends AI {
 	public RecursiveAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
 		this.players = players;
+		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
+				"I see...", "Hah, now i've got a genius plan!",
+				"Did you seriously think that was going to work?",
+				"We'll see.", "Hah!" };
 	}
 
 	public static final int SCORE_GROUND = 2;
@@ -156,7 +160,8 @@ public class RecursiveAI extends AI {
 
 		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
 		PTLog.log("RecursiveAI",
-				"AI Set calculator " + pos.getX() + ", " + pos.getY());
+				"Calculated set: " + pos.getX() + ", " + pos.getY()
+						+ " score: " + pos.getScore());
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
 	}

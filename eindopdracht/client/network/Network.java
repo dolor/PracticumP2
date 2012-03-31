@@ -240,6 +240,13 @@ public class Network extends Observable implements Observer{
 			if (turn.isExecuted() && turn.getPlayer().isLocal())
 				this.turnBlock(turn.getBlock(), turn.getRotation());
 		}
+		
+		else if (arg.getClass().equals(Command.class)) {
+			Command command = (Command)arg;
+			if (command.getCommand().equals("sendchat")) {
+				this.sendChat(command.getArgString());
+			}
+		}
 	}
 	
 	/**
