@@ -173,8 +173,8 @@ public class GameController extends Observable {
 												// uitgevoerd
 
 					// deel een nieuwe turn uit
-					if (!this.gameEnded() && set.getPlayer().equals(localPlayer))
-						this.giveTurn();
+					//if (!this.gameEnded() && set.getPlayer().equals(localPlayer))
+					//	this.giveTurn();
 
 				} else {
 					PTLog.log("GameController", "Set was invalid!");

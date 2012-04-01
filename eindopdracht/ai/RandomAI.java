@@ -11,13 +11,13 @@ import eindopdracht.util.PTLog;
 
 public class RandomAI extends AI {
 
-	private static int sleepTime = 20;
+	private static int sleepTime = 50;
 	// Used because these dumb AIs are so fast there gets a race condition in
 	// the network. Shouldn't be necessary with the recursive AI
 
 	public RandomAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
-		this.chatLines = new String[]{ "Hurr", "Durr", "Hmprf", "Grmpf", "Eh", "Ah"};
+		this.chatLines = new String[]{ "hurr", "durr", "hmprf", "grmpf", "eh", "ah", "oh", "ehe", "derp", "darp", "durp"};
 	}
 
 	@Override
@@ -59,11 +59,12 @@ public class RandomAI extends AI {
 		Position pos = positions.get(index);
 
 		// vul de set
-		set.setBlock(pos.getBlock());
-		set.setTile(pos.getTile());
 
+		//Kijk of je moet chatten
 		if (Math.random() > 0.8)
 			this.chat();
+		set.setBlock(pos.getBlock());
+		set.setTile(pos.getTile());
 	}
 
 	/**
@@ -79,8 +80,10 @@ public class RandomAI extends AI {
 			full = full + super.chat() + " ";
 		
 		full = full.trim();
-		full.toLowerCase();
-		full.toUpperCase(Locale.ENGLISH);
+		
+		if (full != null && !full.equals(""))
+			full = Character.toUpperCase(full.charAt(0)) + full.substring(1);
+		//Capitalize first word
 		
 		int ending = (int)(Math.random() * 4);
 		full = full + chatEndings[ending];

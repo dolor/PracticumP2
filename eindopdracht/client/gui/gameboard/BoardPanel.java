@@ -81,7 +81,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		gbc_block.fill = GridBagConstraints.BOTH;
 		gbc_block.gridx = 0;
 		gbc_block.gridy = 0;
-		gbc_block.insets = new Insets(5, 5, 5, 5);
+		gbc_block.insets = new Insets(2, 2, 2, 2);
 		
 		blocks = new ArrayList<BlockPanel>();
 		for (int y = 0; y < dimension; y++) {

@@ -75,7 +75,7 @@ public class AIPlayer extends Player {
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set) arg;
 			if (set.getPlayer().equals(this) && !set.isExecuted()
-					&& set.getValid()) {
+					&& set.getValid() && !game.getBoard().GameOver()) {
 				// The set is for this player and should still be executed
 				PTLog.log(name, "Is now going to set!");
 				ai.calculateSet(set);
@@ -87,7 +87,7 @@ public class AIPlayer extends Player {
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn) arg;
 			if (turn.getPlayer().equals(this) && !turn.isExecuted()
-					&& turn.getValid()) {
+					&& turn.getValid() && !game.getBoard().GameOver()) {
 				// The turn is for this player and should still be executed
 				PTLog.log(name, "Is now going to turn!");
 				ai.calculateTurn(turn);

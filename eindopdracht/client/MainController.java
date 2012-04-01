@@ -29,6 +29,7 @@ public class MainController extends Observable implements Observer {
 	private int lobbySize;
 	private boolean humanPlayer;
 	private int aiType;
+	private int numberOfReplays;
 
 	public MainController() {
 		PentagoXLWindow frame = new PentagoXLWindow(this);
@@ -53,6 +54,14 @@ public class MainController extends Observable implements Observer {
 			this.setChanged();
 			this.notifyObservers(network);
 		}
+	}
+	
+	/**
+	 * Sets the number of times this game should automatically restart
+	 * @param replays
+	 */
+	public void setNumberOfReplays(int replays) {
+		this.numberOfReplays = replays;
 	}
 
 	/**
@@ -161,6 +170,14 @@ public class MainController extends Observable implements Observer {
 			
 			else if (command.getCommand().equals(Protocol.END_GAME)) {
 				this.disconnect();
+				if (this.numberOfReplays > 0) {
+					PTLog.log("MainController", "Going to play " + numberOfReplays + " more games");
+					this.numberOfReplays--;
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e){}
+					this.restart();
+				}
 			}
 			
 		} else if (object.getClass().equals(GameController.class)) {

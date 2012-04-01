@@ -4,6 +4,8 @@ import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.Document;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -32,6 +34,8 @@ import eindopdracht.util.Protocol;
 import javax.swing.JButton;
 import eindopdracht.client.gui.gameboard.BoardPanel;
 import java.awt.Insets;
+
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -125,7 +129,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 333, 236, 40, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 293, 20, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 293, 30, 0 };
 		gbl_contentPane.columnWeights = new double[] { 1.0, 0.0, 0.5,
 				Double.MIN_VALUE };
 		gbl_contentPane.rowWeights = new double[] { 0.0, 1.0, 0.1,
@@ -172,7 +176,8 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		gbc_chatWindow.fill = GridBagConstraints.BOTH;
 		gbc_chatWindow.gridx = 1;
 		gbc_chatWindow.gridy = 1;
-		contentPane.add(chatWindow, gbc_chatWindow);
+		JScrollPane jsp = new JScrollPane(chatWindow);
+		contentPane.add(jsp, gbc_chatWindow);
 
 		chatField = new JTextField();
 		chatField.setEditable(false);
@@ -185,7 +190,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		gbc_playerList.gridx = 0;
 		gbc_playerList.gridy = 2;
 		gbc_playerList.weighty = 0.1;
-		contentPane.add(playerList, gbc_playerList);
+		JScrollPane playerScroll = new JScrollPane(playerList);
+		contentPane.add(playerScroll, gbc_playerList);
+		
 		GridBagConstraints gbc_chatField = new GridBagConstraints();
 		gbc_chatField.insets = new Insets(0, 0, 0, 5);
 		gbc_chatField.fill = GridBagConstraints.HORIZONTAL;
@@ -261,6 +268,10 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	 */
 	public void receiveChat(String chat) {
 		chatWindow.setText(chatWindow.getText() + chat + "\n");
+		
+		//Scroll naar onder
+		Document d = chatWindow.getDocument();
+		chatWindow.select(d.getLength(), d.getLength());
 	}
 
 	@Override
@@ -268,6 +279,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 
 		if (object.getClass().equals(GameController.class)) {
 			// Game started
+			playerList.setText("");
 			GameController game = (GameController) object;
 
 			this.bord.setGame(game);
@@ -298,7 +310,6 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 				connectMenuItem.setEnabled(true);
 				joinMenuItem.setEnabled(false);
 				disconnectMenuItem.setEnabled(false);
-				playerList.setText("");
 			}
 		}
 
@@ -311,7 +322,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 				int reason = Integer.parseInt(command.getArg(0));
 
 				if (reason == GameController.endDueToWinner) {
-					if (command.getArgs().length > 1)
+					if (command.getArgs().length > 2)
 						statusLabel.setText("Winners:");
 					else
 						statusLabel.setText("Winner:");
@@ -340,6 +351,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 			disconnectMenuItem.setEnabled(true);
 			statusLabel.setText("Connected");
 			((Network) object).addObserver(this);
+			((Network) object).addObserver(bord);
 		}
 	}
 	

@@ -61,10 +61,15 @@ public class HumanPlayer extends Player{
 		}
 		/*if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
 			this.makeSet((Set)arg);
-		}
+		}*/
 		
-		else if (arg.getClass().equals(Turn.class) && ((Turn)arg).getPlayer().equals(this)) {
-			this.makeTurn((Turn)arg);
+	/*	else if (arg.getClass().equals(Turn.class)) {
+			Turn turn = (Turn) arg;
+			if (turn.getPlayer().equals(this) && !turn.isExecuted()
+					&& turn.getValid()) {
+				// The turn is for this player and should still be executed
+				bordGUI.
+			}
 		}*/
 	}
 	

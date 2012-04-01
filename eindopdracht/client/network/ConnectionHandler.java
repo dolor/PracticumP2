@@ -49,6 +49,7 @@ public class ConnectionHandler implements Runnable {
 	 *            text to be sent
 	 */
 	public synchronized void sendString(String string) {
+		PTLog.log("ConnectionHandler", "Sending: " + string);
 		try {
 			out.write(string + "\n");
 			out.flush();

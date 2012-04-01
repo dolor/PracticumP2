@@ -76,9 +76,7 @@ public class PlayerHandler implements Runnable {
 			next = in.readLine();
 			while (next != null) {
 				// If null, the connection was terminated
-				synchronized (this) {
-					this.handleInput(next);
-				}
+				this.handleInput(next);
 				next = in.readLine();
 			}
 		} catch (IOException e) {
@@ -111,6 +109,7 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else if (c.equals(Protocol.SET_TILE)) {
+			PTLog.log(name, "Received: SET_TILE " + command.getArg(0) + " " + command.getArg(1));
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int tile = Integer.parseInt(command.getArg(1));
 			player.setTile(block, tile);
@@ -161,8 +160,8 @@ public class PlayerHandler implements Runnable {
 			out.flush();
 		} catch (IOException e) {
 			PTLog.log(name,
-					"-[Error] error thrown in PlayerHandler sendMessage");
-			e.printStackTrace();
+					"-[Error] error thrown in PlayerHandler sendMessage: " + e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 
