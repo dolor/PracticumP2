@@ -229,8 +229,8 @@ public class ServerPlayer implements Observer {
 					this.setState(IDLE);
 				} else {
 					// Set has to be executed, set to Setting
-					handler.sendMessage(Protocol.YOUR_TURN);
 					this.setState(SETTING);
+					handler.sendMessage(Protocol.YOUR_TURN);
 				}
 			}
 		}

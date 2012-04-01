@@ -120,7 +120,7 @@ public class MainController extends Observable implements Observer {
 	 * @ensure the game will be closed
 	 * @ensure if there's a network connection it will be closed gently
 	 */
-	public void exit() {
+	public void exit() {	
 		if (network != null)
 			network.quit();
 		PTLog.log("MainController", "QUITTING");
@@ -174,7 +174,7 @@ public class MainController extends Observable implements Observer {
 					PTLog.log("MainController", "Going to play " + numberOfReplays + " more games");
 					this.numberOfReplays--;
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e){}
 					this.restart();
 				}
@@ -188,6 +188,7 @@ public class MainController extends Observable implements Observer {
 			if (object.equals("disconnect")) {
 				this.setChanged();
 				this.notifyObservers("disconnect");
+				game.endGame(GameController.endDueToDisconnect);
 			}
 		}
 	}

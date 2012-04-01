@@ -173,8 +173,8 @@ public class GameController extends Observable {
 												// uitgevoerd
 
 					// deel een nieuwe turn uit
-					//if (!this.gameEnded() && set.getPlayer().equals(localPlayer))
-					//	this.giveTurn();
+					if (!board.GameOver() && set.getPlayer().equals(localPlayer))
+						this.giveTurn();
 
 				} else {
 					PTLog.log("GameController", "Set was invalid!");
@@ -194,7 +194,6 @@ public class GameController extends Observable {
 		synchronized (this) {
 			if (!turn.isExecuted()) // hij is aan de beurt
 			{
-				// TODO set verwerken
 				turn.setValid(this.board.turn(turn.getBlock(),
 						turn.getRotation()));
 				if (turn.getValid()) {
@@ -227,6 +226,6 @@ public class GameController extends Observable {
 	 * @param reason
 	 */
 	public void endGame(int reason) {
-
+		board = null;
 	}
 }

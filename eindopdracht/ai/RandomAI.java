@@ -11,7 +11,7 @@ import eindopdracht.util.PTLog;
 
 public class RandomAI extends AI {
 
-	private static int sleepTime = 50;
+	private static int sleepTime = 5;
 	// Used because these dumb AIs are so fast there gets a race condition in
 	// the network. Shouldn't be necessary with the recursive AI
 

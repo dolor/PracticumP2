@@ -116,6 +116,7 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else if (c.equals(Protocol.TURN_BLOCK)) {
+			PTLog.log(name, "TURN_BLOCK");
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
@@ -155,6 +156,8 @@ public class PlayerHandler implements Runnable {
 	 * @param msg
 	 */
 	public synchronized void sendMessage(String msg) {
+		if (msg.contains("your_turn"))
+			PTLog.log(name, "YOUR_TURN");
 		try {
 			out.write(msg + "\n");
 			out.flush();

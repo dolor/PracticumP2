@@ -96,14 +96,14 @@ public class Network extends Observable implements Observer {
 			String playerName = command.getArg(2);
 			// PTLog.log("Network", "Player " + playerName + " set a tile: " +
 			// command.getArg(0) + " " + command.getArg(1));
-			if (playerName.equals(localPlayer.getName())) {
+			/*if (playerName.equals(localPlayer.getName())) {
 				//The set had been performed, now TURN!
 				Turn turn = new Turn(localPlayer);
 				localPlayer.setState(Player.TURNING);
 
 				this.setChanged();
 				this.notifyObservers(turn);
-			} else {
+			} else {*/
 				for (NetworkPlayer player : networkPlayers) {
 					if (player.getName().equals(playerName)) {
 						Set set = new Set(player);
@@ -113,7 +113,7 @@ public class Network extends Observable implements Observer {
 						player.performSet(set);
 					}
 				}
-			}
+			//}
 		}
 
 		// Start a new game
