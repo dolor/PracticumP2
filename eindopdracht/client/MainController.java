@@ -124,7 +124,6 @@ public class MainController extends Observable implements Observer {
 		if (network != null)
 			network.quit();
 		PTLog.log("MainController", "QUITTING");
-		System.exit(0);
 	}
 	
 	/**
