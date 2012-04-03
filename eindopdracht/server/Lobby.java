@@ -20,7 +20,7 @@ public class Lobby {
 	 * @param server the server this lobby runs on
 	 */
 	public Lobby(int maxPlayers, ServerController server) {
-		name = "Lobby-" + lobbyNumber;
+		name = "Lobby_" + lobbyNumber;
 		lobbyNumber++;
 		
 		this.server = server;
@@ -80,7 +80,6 @@ public class Lobby {
 		player.sendMessage("connected " + player.getName());
 				
 		if (players.size() == maxNumberOfPlayers) {
-			PTLog.log(name, "Lobby full");
 			server.startGame(this);
 		} else {
 			String msg = "players";

@@ -21,6 +21,15 @@ public class MainController extends Observable implements Observer {
 	private Network network;
 	private GameController game;
 	private Player localPlayer;
+	
+	//Save these details so we can reconnect
+	private String host;
+	private int port;
+	private String playerName;
+	private int lobbySize;
+	private boolean humanPlayer;
+	private int aiType;
+	private int numberOfReplays;
 
 	public MainController() {
 		PentagoXLWindow frame = new PentagoXLWindow(this);
@@ -35,6 +44,9 @@ public class MainController extends Observable implements Observer {
 	 * @ensure sets up a socket and network handler if succesfull, throws an exception if not.
 	 */
 	public void connect(String host, int port) {
+		this.host = host;
+		this.port = port;
+		
 		PTLog.log("MainController", "Connecting with " + host + " on port " + port);
 		network = new Network();
 		network.addObserver(this);
@@ -42,6 +54,14 @@ public class MainController extends Observable implements Observer {
 			this.setChanged();
 			this.notifyObservers(network);
 		}
+	}
+	
+	/**
+	 * Sets the number of times this game should automatically restart
+	 * @param replays
+	 */
+	public void setNumberOfReplays(int replays) {
+		this.numberOfReplays = replays;
 	}
 
 	/**
@@ -56,6 +76,11 @@ public class MainController extends Observable implements Observer {
 	 * @require aiType: 0->random, 1->intelligent, 2-> recursive
 	 */
 	public void join(String name, int players, boolean humanPlayer, int aiType) {
+		playerName = name;
+		lobbySize = players;
+		this.humanPlayer = humanPlayer;
+		this.aiType = aiType;
+		
 		PTLog.log("MainController", "Joining as " + name + " in a lobby with " + players
 				+ " players max");
 		if (!humanPlayer)
@@ -69,6 +94,14 @@ public class MainController extends Observable implements Observer {
 		if (network != null) {
 			network.join(name, players);
 		}
+	}
+	
+	/**
+	 * Restart the last game. Can only be used after a game has been played.
+	 */
+	public void restart() {
+		this.connect(host, port);
+		this.join(playerName, lobbySize, humanPlayer, aiType);
 	}
 
 	/**
@@ -87,7 +120,7 @@ public class MainController extends Observable implements Observer {
 	 * @ensure the game will be closed
 	 * @ensure if there's a network connection it will be closed gently
 	 */
-	public void exit() {
+	public void exit() {	
 		if (network != null)
 			network.quit();
 		PTLog.log("MainController", "QUITTING");
@@ -115,7 +148,7 @@ public class MainController extends Observable implements Observer {
 	public void update(Observable o, Object object) {
 		if (object.getClass().equals(Command.class)) {
 			Command command = (Command) object;
-
+			
 			if (command.getCommand().equals(Protocol.START)) {
 				// this.playerList.setText("");
 				String[] p = command.getArgs();
@@ -129,6 +162,24 @@ public class MainController extends Observable implements Observer {
 				this.setChanged();
 				this.notifyObservers(localPlayer);
 			}
+			
+			else if (command.getCommand().equals(Protocol.QUIT_SERVER)) {
+				PTLog.log("MainController", "The server quit");
+				this.disconnect();
+			}
+			
+			else if (command.getCommand().equals(Protocol.END_GAME)) {
+				this.disconnect();
+				if (this.numberOfReplays > 0) {
+					PTLog.log("MainController", "Going to play " + numberOfReplays + " more games");
+					this.numberOfReplays--;
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e){}
+					this.restart();
+				}
+			}
+			
 		} else if (object.getClass().equals(GameController.class)) {
 			this.game = ((GameController) object);
 		}
@@ -137,6 +188,7 @@ public class MainController extends Observable implements Observer {
 			if (object.equals("disconnect")) {
 				this.setChanged();
 				this.notifyObservers("disconnect");
+				game.endGame(GameController.endDueToDisconnect);
 			}
 		}
 	}
@@ -154,6 +206,8 @@ public class MainController extends Observable implements Observer {
 			if (p[i].equals(localPlayer.getName())) {
 				// was the local player
 				players.add(localPlayer);
+				network.setLocalPlayer(localPlayer);
+				network.addObserver(localPlayer);
 			} else {
 				NetworkPlayer newPlayer = new NetworkPlayer();
 				network.addNetworkPlayer(newPlayer);
@@ -177,6 +231,7 @@ public class MainController extends Observable implements Observer {
 		else if (localPlayer.getClass().equals(AIPlayer.class)) {
 			((AIPlayer) localPlayer).initializeAI();
 		}
+		
 		game.start();
 	}
 }

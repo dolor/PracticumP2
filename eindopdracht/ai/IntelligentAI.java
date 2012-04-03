@@ -12,6 +12,10 @@ import eindopdracht.model.Position;
 public class IntelligentAI extends AI {
 	
 	IntelligentAI otherplayersAI;
+	
+	private static int sleepTime = 15;
+	// Used because these dumb AIs are so fast there gets a race condition in
+	// the network. Shouldn't be necessary with the recursive AI
 
 	public IntelligentAI(int color, Board board, ArrayList<Integer> players) { // TODO: ANDERE SPELERS DOORGEVEN
 		super(color, board, players);
@@ -275,7 +279,10 @@ public class IntelligentAI extends AI {
 	
 	@Override
 	public void calculateTurn(Turn turn) {
-		// TODO Auto-generated method stub
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {}
+		
 		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.getOtherPlayers());
 		r.calculateTurn(turn);
 	}
@@ -365,6 +372,9 @@ public class IntelligentAI extends AI {
 
 	@Override
 	public void calculateSet(Set set) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {}
 		
 		ArrayList<IntelligentSet> options = getOptions();
 		// neem de hoogste en return die

@@ -36,7 +36,7 @@ public class Network {
 	    while (tryConnection) {
 	    	try {
 				Socket sock = socket.accept();
-	    		PTLog.log("Network", "Found an incoming connection!");
+//	    		PTLog.log("Network", "Found an incoming connection!");
 	            PlayerHandler client = new PlayerHandler(sock, server);
 	            Thread handlerThread = new Thread(client);
 	    		handlerThread.start();
@@ -53,6 +53,7 @@ public class Network {
 	 * @ensure message will be sent to all connected network players
 	 */
 	public void broadcast(String msg) {
+		PTLog.log("Network", msg);
 		for (PlayerHandler player:players) {
 			player.sendMessage(msg);
 		}

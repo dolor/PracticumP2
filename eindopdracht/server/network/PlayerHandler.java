@@ -20,7 +20,7 @@ public class PlayerHandler implements Runnable {
 	protected BufferedReader in;
 	protected BufferedWriter out;
 	private ServerController server;
-	
+
 	public String name; // Used for logging
 
 	/**
@@ -34,7 +34,8 @@ public class PlayerHandler implements Runnable {
 	 * @ensure creates a valid playerhandler that handles everything regarding
 	 *         the player it is hooked up to across the network
 	 */
-	public PlayerHandler(Socket socket, ServerController server) throws IOException {
+	public PlayerHandler(Socket socket, ServerController server)
+			throws IOException {
 		this.name = "Handler_Empty";
 		this.server = server;
 		this.socket = socket;
@@ -76,16 +77,15 @@ public class PlayerHandler implements Runnable {
 			while (next != null) {
 				// If null, the connection was terminated
 				this.handleInput(next);
-
 				next = in.readLine();
 			}
 		} catch (IOException e) {
 			PTLog.log(name, "Error occured while reading inputstream");
 			server.removePlayer(player);
-		} catch (NullPointerException e) {
-			// TODO Check if this is really necessary
-			System.exit(0);
-		}
+		} /*
+		 * catch (NullPointerException e) { PTLog.log(name,
+		 * "NullPointerException, quitting"); System.exit(0); }
+		 */
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class PlayerHandler implements Runnable {
 	 * @ensure converts the input to a command and handles appropriately, log
 	 *         message if it is an invalid command
 	 */
-	private void handleInput(String input) {
+	private synchronized void handleInput(String input) {
 		Command command = new Command(input);
 		String c = command.getCommand();
 
@@ -109,12 +109,14 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else if (c.equals(Protocol.SET_TILE)) {
+			PTLog.log(name, "Received: SET_TILE " + command.getArg(0) + " " + command.getArg(1));
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int tile = Integer.parseInt(command.getArg(1));
 			player.setTile(block, tile);
 		}
 
 		else if (c.equals(Protocol.TURN_BLOCK)) {
+			PTLog.log(name, "TURN_BLOCK");
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
@@ -125,13 +127,13 @@ public class PlayerHandler implements Runnable {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				PTLog.log(name, "Error thrown while quitting: "
-						+ e.getMessage());
+				PTLog.log(name,
+						"Error thrown while quitting: " + e.getMessage());
 			}
 		}
 
 		else if (c.equals(Protocol.CHAT)) {
-			player.chat(command.getArg(0));
+			player.chat(command.getArgString());
 		}
 
 		else if (c.equals(Protocol.CHALLENGE)) {
@@ -153,13 +155,16 @@ public class PlayerHandler implements Runnable {
 	 * 
 	 * @param msg
 	 */
-	public void sendMessage(String msg) {
+	public synchronized void sendMessage(String msg) {
+		if (msg.contains("your_turn"))
+			PTLog.log(name, "YOUR_TURN");
 		try {
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
-			PTLog.log(name, "-[Error] error thrown in PlayerHandler sendMessage");
-			e.printStackTrace();
+			PTLog.log(name,
+					"-[Error] error thrown in PlayerHandler sendMessage: " + e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 

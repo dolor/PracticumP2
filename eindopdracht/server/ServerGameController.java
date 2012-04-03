@@ -12,32 +12,44 @@ import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 public class ServerGameController extends Observable {
-	
+
 	public static int gameNumber = 1;
 
 	ArrayList<ServerPlayer> players;
 	ServerPlayer settingPlayer; // Player die aan de beurt is
 	ServerController server;
-	
-	public String name; // Used for log files
 
+	public String name; // Used for log files
 	Board board;
 
+	public static int maxTilesFor2Players = 40;
+	public static int maxTilesForMorePlayers = 20;
+
 	/**
-	 * Create a new game with the given players that will be managed by the server
-	 * @param players that are in the game
+	 * Create a new game with the given players that will be managed by the
+	 * server
+	 * 
+	 * @param players
+	 *            that are in the game
 	 * @require players are valid, at least 2 and max 4
 	 */
-	public ServerGameController(ArrayList<ServerPlayer> players, ServerController server) {
-		name = "Game-" + gameNumber;
+	public ServerGameController(ArrayList<ServerPlayer> players,
+			ServerController server) {
+		name = "Game_" + gameNumber;
 		gameNumber++;
-		
+
 		this.players = players;
 		this.board = new Board();
+		this.server = server;
 
 		for (ServerPlayer player : players) {
 			player.setGame(this);
 			this.addObserver(player);
+
+			if (players.size() == 2)
+				player.setNumberOfTiles(maxTilesFor2Players);
+			else
+				player.setNumberOfTiles(maxTilesForMorePlayers);
 		}
 
 		for (int i = 0; i < players.size(); i++) {
@@ -48,6 +60,7 @@ public class ServerGameController extends Observable {
 
 	/**
 	 * Start the game
+	 * 
 	 * @ensure players will be notified
 	 */
 	public void start() {
@@ -63,35 +76,41 @@ public class ServerGameController extends Observable {
 
 		this.giveSet();
 	}
-	
+
 	/**
 	 * Called if the server receives chat from a player
+	 * 
 	 * @param chat
 	 * @param player
 	 */
 	public void chat(String chat, ServerPlayer player) {
-		String fullChatString = Protocol.CHAT_SERVER + " [" + player.getName() + "] " + chat;
+		String fullChatString = Protocol.CHAT_SERVER + " [" + player.getName()
+				+ "] " + chat;
 		this.netBroadcast(fullChatString);
 	}
 
 	/**
 	 * Creates a set for the next player and broadcasts it
+	 * 
 	 * @ensure next player will get the set
 	 */
 	public void giveSet() {
-		//TODO implement checking for the number of tiles
 		if (settingPlayer != null) {
 			this.settingPlayer = getNextPlayer(settingPlayer);
 		} else {
 			this.settingPlayer = players.get(0);
 		}
-		Set set = new Set(settingPlayer);
-		set.setExecuted(false);
-		this.localBroadcast(set);
+
+		if (!gameEnded() && !outOfTiles()) {
+			Set set = new Set(settingPlayer);
+			set.setExecuted(false);
+			this.localBroadcast(set);
+		}
 	}
 
 	/**
 	 * Creates a turn for the next player and broadcasts it
+	 * 
 	 * @ensure next player will get the turn
 	 */
 	public void giveTurn() {
@@ -101,28 +120,37 @@ public class ServerGameController extends Observable {
 	}
 
 	/**
-	 * Tries to set. 
+	 * Tries to set.
+	 * 
 	 * @ensure false if invalid move
 	 * @ensure true and will be performed if valid
-	 * @param set to set
+	 * @param set
+	 *            to set
 	 */
 	public boolean set(Set set) {
-		if (set.getPlayer().getState() != ServerPlayer.SETTING) {
+		if (set.getPlayer().getState() == ServerPlayer.IDLE) {
+			PTLog.log("Game", "Ending game because " + set.getPlayer().getName() + " set before he could");
 			this.endGame(set.getPlayer(), ServerController.endDueToCheat);
 			return false;
 		} else {
 			if (!board.set(set.getBlock(), set.getTile(), set.getPlayer()
 					.getColor())) {
+				board.drawBoard();
+				PTLog.log("ServerGame", "Invalid move made: " + set.toString());
 				this.endGame(set.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				set.setExecuted(true);
+				set.getPlayer().setNumberOfTiles(
+						set.getPlayer().getNumberOfTiles() - 1);
 				this.localBroadcast(set);
+
+				//Eerst de zet van de ander broadcasten, dan giveSet, die er ook voor zorgt dat YOUR_TURN wordt verstuurd
+				this.netBroadcast(Protocol.SET_TILE + " "
+						+ ModelUtil.intToLetter(set.getBlock()) + " "
+						+ set.getTile() + " " + set.getPlayer().getName());
 				if (!this.gameEnded()) {
 					this.giveTurn();
-					this.netBroadcast(Protocol.SET_TILE + " "
-							+ ModelUtil.intToLetter(set.getBlock()) + " "
-							+ set.getTile() + " " + set.getPlayer().getName());
 				}
 				return true;
 			}
@@ -130,28 +158,35 @@ public class ServerGameController extends Observable {
 	}
 
 	/**
-	 * Tries to turn. 
+	 * Tries to turn.
+	 * 
 	 * @ensure false if invalid move
 	 * @ensure true and will be performed if valid
-	 * @param turn to perform
+	 * @param turn
+	 *            to perform
 	 */
 	public boolean turn(Turn turn) {
-		if (turn.getPlayer().getState() != ServerPlayer.TURNING) {
+		if (turn.getPlayer().getState() == ServerPlayer.IDLE) {
+			PTLog.log("Game", "Ending game because " + turn.getPlayer().getName() + " turned before he could");
 			this.endGame(turn.getPlayer(), ServerController.endDueToCheat);
 			return false;
 		} else {
 			if (!board.turn(turn.getBlock(), turn.getRotation())) {
+				board.drawBoard();
+				PTLog.log("ServerGame", "Invalid move made: " + turn.toString());
 				this.endGame(turn.getPlayer(), ServerController.endDueToCheat);
 				return false;
 			} else {
 				turn.setExecuted(true);
 				this.localBroadcast(turn);
+
+				//Eerst de zet van de ander broadcasten, dan giveTurn, die er ook voor zorgt dat YOUR_TURN wordt verstuurd
+				this.netBroadcast(Protocol.TURN_BLOCK + " "
+						+ ModelUtil.intToLetter(turn.getBlock()) + " "
+						+ ModelUtil.intToDirection(turn.getRotation()) + " "
+						+ turn.getPlayer().getName());
 				if (!this.gameEnded()) {
 					this.giveSet();
-					this.netBroadcast(Protocol.TURN_BLOCK + " "
-							+ ModelUtil.intToLetter(turn.getBlock()) + " "
-							+ ModelUtil.intToDirection(turn.getRotation())
-							+ " " + turn.getPlayer().getName());
 				}
 				return true;
 			}
@@ -165,7 +200,7 @@ public class ServerGameController extends Observable {
 	 */
 	public boolean gameEnded() {
 		if (board.GameOver()) {
-			PTLog.log(name, "GAME IS OVER");
+			PTLog.log(name, "Game has winner");
 			String gameOverString = new String(Protocol.END_GAME + " "
 					+ ServerController.endDueToWinner);
 			for (Integer playerColor : board.GetWinners()) {
@@ -178,10 +213,26 @@ public class ServerGameController extends Observable {
 			}
 			PTLog.log(name, gameOverString);
 			this.netBroadcast(gameOverString);
-			
+
 			for (ServerPlayer p : players) {
 				players.remove(p);
 			}
+			board.drawBoard();
+			server.stopGame(this);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean outOfTiles() {
+		if (settingPlayer.getNumberOfTiles() <= 0) {
+			PTLog.log(name, "Game remised");
+			String gameOverString = new String(Protocol.END_GAME + " "
+					+ ServerController.endDueToRemise);
+			PTLog.log(name, gameOverString);
+			this.netBroadcast(gameOverString);
+
+			players.clear();
 			server.stopGame(this);
 			return true;
 		}
@@ -208,15 +259,17 @@ public class ServerGameController extends Observable {
 		}
 		return nextPlayer;
 	}
-	
+
 	/**
 	 * Removes the players from the game and tells them the game ended
+	 * 
 	 * @require player != null
-	 * @ensure all hooked players will receive the message that this game is OVER
+	 * @ensure all hooked players will receive the message that this game is
+	 *         OVER
 	 * @param player
 	 */
 	public void playerLeft(Player player) {
-		//TODO implement
+		// TODO implement
 	}
 
 	/**
@@ -224,21 +277,28 @@ public class ServerGameController extends Observable {
 	 * why.
 	 */
 	public void endGame(ServerPlayer player, int reason) {
+		String playerName = player.getName();
 		if (reason == ServerController.endDueToCheat)
-			PTLog.log(name, "Ending game because a player set before it was his turn");
+			PTLog.log(name, "Ending game because " + playerName
+					+ " set before it was his turn");
 		else if (reason == ServerController.endDueToDisconnect) {
-			PTLog.log(name, "Ending game because a player disconnected");
+			PTLog.log(name, "Ending game because " + playerName
+					+ " disconnected");
 			players.remove(player);
-		}
-		else if (reason == ServerController.endDueToWinner)
-			PTLog.log(name, "Ending game because a player won!");
+		} else if (reason == ServerController.endDueToWinner)
+			PTLog.log(name, "Ending game because " + playerName + " won!");
 		else if (reason == ServerController.endDueToRemise)
 			PTLog.log(name, "Ending game because the players are out of moves");
 
-		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + player.getName());
-		for (ServerPlayer p : players) {
-			players.remove(p);
-		}
+		if (reason != ServerController.endDueToWinner
+				&& reason != ServerController.endDueToRemise)
+			System.exit(0);
+		// TODO Dit weer weghalen
+
+		// PTLog.log(name, Protocol.END_GAME + " " + reason + " " + playerName);
+		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + playerName);
+		this.netBroadcast(Protocol.QUIT_SERVER);
+		players.clear();
 	}
 
 	/**
@@ -250,7 +310,6 @@ public class ServerGameController extends Observable {
 	 */
 	public boolean containsPlayer(ServerPlayer player) {
 		for (ServerPlayer p : players) {
-			PTLog.log(name, "comparing " + player.getName() + " with " + p.getName());
 			if (p.equals(player))
 				return true;
 		}
@@ -260,7 +319,8 @@ public class ServerGameController extends Observable {
 	/**
 	 * Broadcast a message to all connected players
 	 * 
-	 * @param message to broadcast
+	 * @param message
+	 *            to broadcast
 	 * @ensure all hooked players will receive the message
 	 * 
 	 */

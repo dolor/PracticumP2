@@ -66,7 +66,7 @@ public class ServerController {
 	 * connects. Also adds the player to the lobby.
 	 * @param player
 	 */
-	public void addPlayer(ServerPlayer player) {
+	public synchronized void addPlayer(ServerPlayer player) {
 		players.add(players.size(), player);
 		this.getLobby(player.preferredNumberOfPlayers()).addPlayer(player);
 	}
@@ -77,16 +77,13 @@ public class ServerController {
 	 * @param player
 	 */
 	public void removePlayer(ServerPlayer player) {
-		PTLog.log("Server", "Attempting to remove player " + player.getName() + " from the server");
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player)) {
-				PTLog.log("Server", "Removing player " + player.getName() + " from a lobby");
 				l.removePlayer(player);
 			}
 		}
 		for (ServerGameController g:games) {
 			if (g.containsPlayer(player)) {
-				PTLog.log("Server", "Removing player " + player.getName() + " from a game, ending game");
 				g.endGame(player, endDueToDisconnect);
 			}
 		}

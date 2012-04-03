@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.*;
+import eindopdracht.util.PTLog;
 
 public abstract class AI {
 
 	int color;
 	Board board;
 	ArrayList<Integer> otherplayers;
-	private String[] chatLines = {""};
+	public String[] chatLines;
+	public static String[] chatEndings = {"", ".", "!", "?"};
 	
 	/**
 	 * 
@@ -74,8 +76,10 @@ public abstract class AI {
 	 * @return
 	 */
 	public String chat() {
-		if (chatLines.length > 0)
-			return chatLines[(int)Math.random()*chatLines.length];
+		if (chatLines != null && chatLines.length > 0) {
+			int msgInt = (int)(Math.random()*chatLines.length);
+			return chatLines[msgInt];
+		}
 		else
 			return null;
 	}

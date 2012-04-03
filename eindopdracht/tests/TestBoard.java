@@ -21,10 +21,7 @@ public class TestBoard
 				System.out.println("Rij: " + r.getLength());
 			}
 			
-			for (int winner : b.GetWinners())
-			{
-				PTLog.log("TestBoard", "Winner : "+winner);
-			}
+			
 			
 			System.out.print("> ");
 			Scanner in = new Scanner(System.in);
@@ -35,35 +32,44 @@ public class TestBoard
 			
 			String[] argumenten =  input.split(" ");
 			
-			try
-			{
-				if (argumenten[0].equals("s"))
+			if (argumenten.length == 4) {
+				try
 				{
-					int x = Integer.parseInt(argumenten[1]);
-					int y = Integer.parseInt(argumenten[2]);
-					int color = Integer.parseInt(argumenten[3]);
+					if (argumenten[0].equals("s"))
+					{
+						int x = Integer.parseInt(argumenten[1]);
+						int y = Integer.parseInt(argumenten[2]);
+						int color = Integer.parseInt(argumenten[3]);
+						
+						b.getTileXY(x, y).setColor(color, true);
+					}
+					else if (argumenten[0].equals("t"))
+					{
+						int block = Integer.parseInt(argumenten[1]);
+						int rotation = Integer.parseInt(argumenten[2]);
+						
+						b.turn(block, rotation);
+					}
 					
-					b.getTileXY(x, y).setColor(color, true);
 				}
-				else if (argumenten[0].equals("t"))
+				catch (NumberFormatException e)
 				{
-					int block = Integer.parseInt(argumenten[1]);
-					int rotation = Integer.parseInt(argumenten[2]);
-					
-					b.turn(block, rotation);
-				}
-				
+					PTLog.log("TestBoard", "Error in converting to int");
+				}	
+			} else{
+				PTLog.log("BoardTest", "Usage: S <x> <y> <colo>");
+				PTLog.log("BoardTest", "Usage: T <block> <rotation>");
 			}
-			catch (NumberFormatException e)
-			{
-				PTLog.log("TestBoard", "Error in converting to int");
-			}		
 			
 			
-			
+			if (b.GetWinners().size() > 0) {
+				doorgaan = false;
+				for (int winner : b.GetWinners())
+				{
+					PTLog.log("TestBoard", "Winner : "+winner);
+				}
+			}
 		}
-		
-		
 	}
 
 }

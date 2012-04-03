@@ -7,60 +7,69 @@ import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
 import eindopdracht.util.PTLog;
+import eindopdracht.util.Protocol;
 
 public class ServerPlayer implements Observer {
 	private String name;
-    private int preferredNumberOfPlayers;
-    private Lobby lobby;
-    private ServerGameController game;
-    private ServerController server;
+	private int preferredNumberOfPlayers;
+	private Lobby lobby;
+	private ServerGameController game;
+	private ServerController server;
 	int state;
-    private int color;
-    private PlayerHandler handler;
-    
-    private int numberOfTiles;
-	
+	private int color;
+	private PlayerHandler handler;
+
+	private int numberOfTiles;
+
 	public static final int TURNING = 2;
 	public static final int SETTING = 1;
 	public static final int IDLE = 0;
-    
+
 	/**
 	 * Create a network player with the given handler
 	 * 
 	 * @param handler
 	 */
-    public ServerPlayer(PlayerHandler handler, ServerController server) {
-    	this.handler = handler;
-    	this.server = server;
-    }
-	
-    /**
-     * Set the preferred lobby type this player wants to join
-     * @param number the amount of players in the game
-     */
+	public ServerPlayer(PlayerHandler handler, ServerController server) {
+		this.handler = handler;
+		this.server = server;
+	}
+
+	/**
+	 * Set the preferred lobby type this player wants to join
+	 * 
+	 * @param number
+	 *            the amount of players in the game
+	 */
 	public void setNumberOfPlayers(int number) {
 		this.preferredNumberOfPlayers = number;
 	}
-	
+
 	/**
-     * The preferred lobby type this player wants to join
-     * @return number the amount of players in the preferred game
-     */
+	 * The preferred lobby type this player wants to join
+	 * 
+	 * @return number the amount of players in the preferred game
+	 */
 	public int preferredNumberOfPlayers() {
 		return this.preferredNumberOfPlayers;
 	}
-	
+
 	/**
 	 * Send the given message to the player this ServerPlayer represents
-	 * @param message to send
+	 * 
+	 * @param message
+	 *            to send
 	 * @ensure the message is sent to the hooked player
 	 */
 	public void sendMessage(String message) {
+		if (!message.contains("set_tile") && !message.contains("turn_block") && !message.contains("chat"))
+			PTLog.log(name, message);
 		handler.sendMessage(message);
 	}
-	
+
 	/**
 	 * Player wants to set a tile
+	 * 
 	 * @param block
 	 * @param tile
 	 * @require 0 <= (block, tile) <= 8
@@ -72,12 +81,14 @@ public class ServerPlayer implements Observer {
 		set.setTile(tile);
 		game.set(set);
 	}
-	
-	
+
 	/**
 	 * Players wants to rotate a block.
-	 * @param block block to turn
-	 * @param direction 1=CW, 2=CCW
+	 * 
+	 * @param block
+	 *            block to turn
+	 * @param direction
+	 *            1=CW, 2=CCW
 	 * @require 0 <= block <= 8, direction == (1||2)
 	 * @ensure the game is notified of the desired turn
 	 */
@@ -87,11 +98,14 @@ public class ServerPlayer implements Observer {
 		turn.setRotation(direction);
 		game.turn(turn);
 	}
-	
+
 	/**
 	 * Player is chatting
-	 * @param message the hooked player said
-	 * @ensure the message will be passed on to game and broadcasted to all players in the game
+	 * 
+	 * @param message
+	 *            the hooked player said
+	 * @ensure the message will be passed on to game and broadcasted to all
+	 *         players in the game
 	 */
 	public void chat(String message) {
 		game.chat(message, this);
@@ -105,7 +119,8 @@ public class ServerPlayer implements Observer {
 	}
 
 	/**
-	 * @param game the game to set
+	 * @param game
+	 *            the game to set
 	 */
 	public void setGame(ServerGameController game) {
 		this.game = game;
@@ -119,7 +134,8 @@ public class ServerPlayer implements Observer {
 	}
 
 	/**
-	 * @param lobby the lobby to set
+	 * @param lobby
+	 *            the lobby to set
 	 */
 	public void setLobby(Lobby lobby) {
 		this.lobby = lobby;
@@ -133,12 +149,13 @@ public class ServerPlayer implements Observer {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * 
 	 * @return the state of this current player
@@ -146,22 +163,20 @@ public class ServerPlayer implements Observer {
 	 * @ensure 1 if setting
 	 * @ensure 2 if turning
 	 */
-	public int getState()
-	{
+	public int getState() {
 		return this.state;
 	}
-	
+
 	/**
 	 * 
-	 * @param state the state of this current player
+	 * @param state
+	 *            the state of this current player
 	 * @require 0 if idle
 	 * @require 1 if setting
 	 * @require 2 if turning
 	 */
-	public void setState(int state)
-	{
-		if (state >= 0 && state <= 2)
-		{
+	public void setState(int state) {
+		if (state >= 0 && state <= 2) {
 			this.state = state;
 		}
 	}
@@ -174,7 +189,8 @@ public class ServerPlayer implements Observer {
 	}
 
 	/**
-	 * @param color the color to set
+	 * @param color
+	 *            the color to set
 	 * @require 1 <= color <= 4
 	 */
 	public void setColor(int color) {
@@ -191,7 +207,8 @@ public class ServerPlayer implements Observer {
 
 	/**
 	 * 
-	 * @param numberOfTiles the maximum number of balls this player can have
+	 * @param numberOfTiles
+	 *            the maximum number of balls this player can have
 	 */
 	public void setNumberOfTiles(int numberOfTiles) {
 		this.numberOfTiles = numberOfTiles;
@@ -200,31 +217,33 @@ public class ServerPlayer implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		/*
-		 * The player listens for sets and turns to determine its own current state.
+		 * The player listens for sets and turns to determine its own current
+		 * state.
 		 */
 		if (arg.getClass().equals(Set.class)) {
-			Set set = (Set)arg;
-			//Was a set for/by this player
+			Set set = (Set) arg;
+			// Was a set for/by this player
 			if (set.getPlayer().equals(this)) {
 				if (set.getExecuted()) {
-					//Set was executed, set to idle
+					// Set was executed, set to idle
 					this.setState(IDLE);
 				} else {
-					//Set has to be executed, set to Setting
+					// Set has to be executed, set to Setting
 					this.setState(SETTING);
+					handler.sendMessage(Protocol.YOUR_TURN);
 				}
 			}
 		}
-		
+
 		else if (arg.getClass().equals(Turn.class)) {
-			Turn turn = (Turn)arg;
-			//was a turn for/by this player
+			Turn turn = (Turn) arg;
+			// was a turn for/by this player
 			if (turn.getPlayer().equals(this)) {
 				if (turn.getExecuted()) {
-					//turn was executed, setting to idle
+					// turn was executed, setting to idle
 					this.setState(IDLE);
 				} else {
-					//Turn still has to be executed, set to turning
+					// Turn still has to be executed, set to turning
 					this.setState(TURNING);
 				}
 			}

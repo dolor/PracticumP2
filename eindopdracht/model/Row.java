@@ -61,4 +61,13 @@ public class Row {
 		return this.posities.size();
 	}
 	
+	@Override
+	public String toString() {
+		String string = "|";
+		for (Position pos:posities) {
+			string = string + pos.getX() + "." + pos.getY() + "|";
+		}
+		return string;
+	}
+	
 }
