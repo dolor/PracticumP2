@@ -34,7 +34,6 @@ public class NetworkUtil {
 				return false;
 			}
 			return true;
-			// TODO support for IPV6?
 		}
 	}
 

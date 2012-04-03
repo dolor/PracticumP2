@@ -108,14 +108,6 @@ public class ServerPlayer implements Observer {
 	 *         players in the game
 	 */
 	public void chat(String message) {
-		
-		// TODO: DEBUG weghalen
-		if (message == null)
-		{
-			PTLog.log(name, "message == null");
-		}
-		
-		
 		game.chat(message, this);
 	}
 

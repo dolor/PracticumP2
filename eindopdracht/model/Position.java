@@ -63,7 +63,6 @@ public class Position {
 		int BlockCol = (int) Math.floor(x / 3);
 		int BlockRow = (int) Math.floor(y / 3);
 		
-		//TODO: Testen of dit klopt
 		return BlockRow * 3 + BlockCol;
 	}
 	

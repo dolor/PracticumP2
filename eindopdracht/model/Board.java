@@ -53,14 +53,6 @@ public class Board {
 	 */
 
 	public Tile getTileXY(int x, int y) {
-		/*
-		 * // kijk welk block het is int BlockCol = (int) Math.floor(x / 3); int
-		 * BlockRow = (int) Math.floor(y / 3);
-		 * 
-		 * int TileCol = x % 3; int TileRow = y % 3; //TODO: Testen of dit klopt
-		 * return blocks[BlockRow * 3 + BlockCol].getTile(TileRow*3 + TileCol);
-		 */
-
 		Position pos = new Position(x, y);
 
 		return blocks[pos.getBlock()].getTile(pos.getTile());
@@ -76,68 +68,6 @@ public class Board {
 	public ArrayList<Integer> GetWinners() {
 		// ga alle rijen af
 		ArrayList<Integer> winners = new ArrayList<Integer>();
-
-		/*
-		 * TODO: Als we klaar zijn weghalen: // check cols /*for (int y = 0; y
-		 * <= 8; y++) { int count = 0; int lastcolor = 0;
-		 * 
-		 * for (int x = 0; x <= 8; x++) {
-		 * 
-		 * // haal de kleur van de tegel op int color =
-		 * getTileXY(x,y).getColor();
-		 * 
-		 * // kijk of die dezelfde kleur is if (color == lastcolor) { count +=
-		 * 1; // doe de count +1 } else { count = 1; }
-		 * 
-		 * if (count >= 5 && !winners.contains(color)) // 5 op een rij {
-		 * winners.add(color); } lastcolor = color; }
-		 * 
-		 * } // check rows for (int x = 0; x <= 8; x++) { int count = 0; int
-		 * lastcolor = 0;
-		 * 
-		 * for (int y = 0; y <= 8; y++) {
-		 * 
-		 * // haal de kleur van de tegel op int color =
-		 * getTileXY(x,y).getColor();
-		 * 
-		 * // kijk of die dezelfde kleur is if (color == lastcolor) { count +=
-		 * 1; // doe de count +1 } else { count = 1; }
-		 * 
-		 * if (count >= 5 && !winners.contains(color)) // 5 op een rij {
-		 * winners.add(color); } lastcolor = color; } }
-		 * 
-		 * // check diagonal // ga alle diagonalen af // voor links boven naar
-		 * rechts onder for (int dY = -7; dY <= 8; dY++) { int count = 0; int
-		 * lastcolor = 0; for (int x = 0; x <= 8; x++) { int y = dY - x;
-		 * 
-		 * if (0 <= y && y <= 8) // kijk of y binnen de range valt. { // haal de
-		 * kleur van de tegel op int color = getTileXY(x,y).getColor();
-		 * 
-		 * // kijk of die dezelfde kleur is if (color == lastcolor) { count +=
-		 * 1; // doe de count +1 } else { count = 1; // het is de eerste keer
-		 * dus = 1 }
-		 * 
-		 * if (count >= 5 && !winners.contains(color)) // 5 op een rij {
-		 * winners.add(color); } lastcolor = color; }
-		 * 
-		 * } }
-		 * 
-		 * // voor rechts boven naar links onder for (int dY = 0; dY <= 16;
-		 * dY++) { int count = 0; int lastcolor = 0; for (int x = 0; x <= 8;
-		 * x++) { int y = dY + x; // bereken de y behorend bij de x
-		 * 
-		 * if (0 <= y && y <= 8) // kijk of y binnen de range valt. { // haal de
-		 * kleur van de tegel op int color = getTileXY(x,y).getColor();
-		 * 
-		 * // kijk of die dezelfde kleur is if (color == lastcolor) { count +=
-		 * 1; // doe de count +1 } else { count = 1; // het is de eerste keer
-		 * dus = 1 }
-		 * 
-		 * if (count >= 5 && !winners.contains(color)) // 5 op een rij {
-		 * winners.add(color); } lastcolor = color; }
-		 * 
-		 * } }
-		 */
 
 		for (Row r : getRows()) {
 			if (r.getLength() >= 5) {
