@@ -8,7 +8,7 @@ public class ModelUtil {
 	 * Contains some static methods to convert model-related things. and stuff.
 	 */
 
-	private static String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
+	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
 	
 	/**
 	 * Converts a letter to an integer index
