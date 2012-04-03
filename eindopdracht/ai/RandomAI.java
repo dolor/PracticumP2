@@ -6,6 +6,7 @@ import java.util.Locale;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
+import eindopdracht.model.Color;
 import eindopdracht.model.Position;
 import eindopdracht.util.PTLog;
 
@@ -17,7 +18,7 @@ public class RandomAI extends AI {
 
 	public RandomAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
-		this.chatLines = new String[]{ "hurr", "durr", "hmprf", "grmpf", "eh", "ah", "oh", "ehe", "derp", "darp", "durp"};
+		this.chatLines = new String[]{ "hurr", "durr", "hmprf", "HA! GAAYYY", "eh", "ah", "oh", "ehe", "derp", "GAAAYYYY", "durp"};
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class RandomAI extends AI {
 
 		for (int x = 0; x <= 8; x++) {
 			for (int y = 0; y <= 8; y++) {
-				if (board.getTileXY(x, y).getColor() == 0) {
+				if (board.getTileXY(x, y).getColor() == Color.EMPTY) {
 					positions.add(new Position(x, y));
 				}
 			}
