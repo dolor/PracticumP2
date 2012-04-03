@@ -76,6 +76,7 @@ public class PlayerHandler implements Runnable {
 			next = in.readLine();
 			while (next != null) {
 				// If null, the connection was terminated
+				PTLog.log(name, next);
 				this.handleInput(next);
 				next = in.readLine();
 			}
@@ -98,6 +99,7 @@ public class PlayerHandler implements Runnable {
 	 *         message if it is an invalid command
 	 */
 	private synchronized void handleInput(String input) {
+		PTLog.log(name, input);
 		Command command = new Command(input);
 		String c = command.getCommand();
 
@@ -156,8 +158,8 @@ public class PlayerHandler implements Runnable {
 	 * @param msg
 	 */
 	public void sendMessage(String msg) {
-		//if (msg.contains("your_turn"))
-		//	PTLog.log(name, "YOUR_TURN");
+		if (msg.contains("your_turn"))
+			PTLog.log(name, "YOUR_TURN");
 		try {
 			out.write(msg + "\n");
 			out.flush();

@@ -20,7 +20,6 @@ public class RecursiveAI extends AI {
 		this.players = players;
 		
 		System.out.println(players.toString());
-		// TODO Auto-generated constructor stub
 		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
 				"I see...", "Hah, now i've got a genius plan!",
 				"Did you seriously think that was going to work?",
@@ -106,18 +105,18 @@ public class RecursiveAI extends AI {
 	 *            the board
 	 * @return the best move
 	 */
-	private Position getRecusiveSet(int color, int depth, Board board) {
+	private PositionAI getRecusiveSet(int color, int depth, Board board) {
 		depth = depth - 1;
 
 		if (depth > 1) {
-			Position bestpos = new Position(-1, -1);
+			PositionAI bestpos = new PositionAI(-1, -1);
 
 			for (int y = 0; y <= 8; y++) {
 				for (int x = 0; x <= 8; x++) {
 
 					if (board.getTileXY(x, y).getColor() == 0) {
 
-						Position pos = new Position(x, y);
+						PositionAI pos = new PositionAI(x, y);
 
 						// plaats op het board
 						board.set(pos.getBlock(), pos.getTile(), color);
@@ -223,7 +222,7 @@ public class RecursiveAI extends AI {
 		}
 		else
 		{
-			return new Position(-1, -1, -1);
+			return new PositionAI(-1, -1);
 		}
 
 
@@ -270,7 +269,7 @@ public class RecursiveAI extends AI {
 	public void calculateSet(Set set) {
 		Board nB = this.board.deepCopy();
 
-		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
+		PositionAI pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
 		PTLog.log("RecursiveAI",
 				"Calculated set: " + pos.getX() + ", " + pos.getY()
 						+ " score: " + pos.getScore());

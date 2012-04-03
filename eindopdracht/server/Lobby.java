@@ -73,21 +73,25 @@ public class Lobby {
 		/*
 		 * Tells the player his current name
 		 */
-		if (num > 0)
+		if (num > 0) {
+			PTLog.log(name, "Player got another name");
 			player.setName(player.getName() + "-" + num);
+		}
 
+		PTLog.log(name, "Player now has name " + player.getName());
 		PTLog.log(name, "connected " + player.getName());
 		player.sendMessage("connected " + player.getName());
 				
+		String msg = "players";
+		for (ServerPlayer p:players) {
+			//if (!p.equals(player))
+				msg = msg + " " + p.getName();
+		}
+		PTLog.log(name, "Sending join message: " + msg);
+		player.sendMessage(msg);
+		
 		if (players.size() == maxNumberOfPlayers) {
 			server.startGame(this);
-		} else {
-			String msg = "players";
-			for (ServerPlayer p:players) {
-				if (!p.equals(player))
-					msg = msg + " " + p.getName();
-			}
-			player.sendMessage(msg);
 		}
 
 		return true;

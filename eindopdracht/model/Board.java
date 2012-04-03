@@ -268,7 +268,7 @@ public class Board {
 				}
 			}
 		}
-<<<<<<< HEAD
+
 		
 		ArrayList<Row> returnRows = new ArrayList<Row>();
 		
@@ -281,10 +281,7 @@ public class Board {
 		}
 		
 		return returnRows;
-=======
 
-		return rows;
->>>>>>> c30b16313d06dc1ccbb227e1bf26fe222f1bc683
 	}
 
 	public void setBlock(Block b, int block) {
