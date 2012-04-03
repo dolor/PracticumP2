@@ -15,7 +15,6 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		
 		this.players = players;
-		// TODO Auto-generated constructor stub
 	}
 
 	public static final int WINNEND = 1;
@@ -59,7 +58,6 @@ public class RecursiveAI2 extends AI {
 
 	@Override
 	public void calculateTurn(Turn turn) {
-		// TODO Auto-generated method stub
 		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.players);
 		r.calculateTurn(turn);		
 	}
@@ -105,10 +103,17 @@ public class RecursiveAI2 extends AI {
 					
 					// haal de uitkomst van de zet op					
 					int uitkomst = geefUitkomst(b, this.getColor()) ;
-
+					
+					
+					
 					if (uitkomst == this.WINNEND)
 					{
 						// als een zet winnend is, meteen returnen
+						return p;
+					}
+					// de eerst volgende zet voor de tegestander is bij deze positie winnend
+					else if (depth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(color)) == this.WINNEND)
+					{
 						return p;
 					}
 					else if (uitkomst == this.ONBESLIST && depth >= 1)

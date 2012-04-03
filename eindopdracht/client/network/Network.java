@@ -139,6 +139,7 @@ public class Network extends Observable implements Observer {
 
 		else if (command.getCommand().equals(Protocol.END_GAME)) {
 			// Game was quit from the server-side
+			PTLog.log("Network", command.getCommand());
 			PTLog.log("Network", "Game was ended by server");
 			this.setChanged();
 			this.notifyObservers(command);
