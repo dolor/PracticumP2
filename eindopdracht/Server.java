@@ -4,7 +4,7 @@ import eindopdracht.util.PTLog;
 
 public class Server {
 	// TODO: quit sturen als de server afgesloten wordt met control-c
-	// TODO: als een speler weg gaat zonder exit kan de server dit niet hebben.
+
 	public static void main(String[] args) {
 		if (args.length > 1) {
 			int port = -1;

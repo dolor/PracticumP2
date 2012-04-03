@@ -80,8 +80,10 @@ public class PlayerHandler implements Runnable {
 				this.handleInput(next);
 				next = in.readLine();
 			}
+			PTLog.log(name, "Connection closed");
+			server.removePlayer(player);
 		} catch (IOException e) {
-			PTLog.log(name, "Error occured while reading inputstream");
+			PTLog.log(name, "Connection to the player lost, removing from game");
 			server.removePlayer(player);
 		} /*
 		 * catch (NullPointerException e) { PTLog.log(name,

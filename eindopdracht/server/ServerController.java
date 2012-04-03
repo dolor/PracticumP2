@@ -28,7 +28,7 @@ public class ServerController {
 		this.lobbies = new ArrayList<Lobby>();
 		this.games = new ArrayList<ServerGameController>();
 		this.players = new ArrayList<ServerPlayer>();
-		
+				
 		try {
 			this.network = new Network(defaultPort, this);
 		} catch (IOException e) {
@@ -67,6 +67,7 @@ public class ServerController {
 	 * @param player
 	 */
 	public synchronized void addPlayer(ServerPlayer player) {
+		PTLog.log("Server", "Player joined, wants name " + player.getName());
 		players.add(players.size(), player);
 		this.getLobby(player.preferredNumberOfPlayers()).addPlayer(player);
 	}
@@ -77,6 +78,7 @@ public class ServerController {
 	 * @param player
 	 */
 	public void removePlayer(ServerPlayer player) {
+		PTLog.log("Server", "Removing player " + player.getName());
 		for (Lobby l:lobbies) {
 			if (l.containsPlayer(player)) {
 				l.removePlayer(player);

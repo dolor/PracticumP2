@@ -213,6 +213,7 @@ public class ServerGameController extends Observable {
 			}
 			PTLog.log(name, gameOverString);
 			this.netBroadcast(gameOverString);
+			this.netBroadcast(Protocol.QUIT_SERVER);
 
 			for (ServerPlayer p : players) {
 				players.remove(p);
@@ -295,7 +296,7 @@ public class ServerGameController extends Observable {
 
 		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + playerName);
 		this.netBroadcast(Protocol.QUIT_SERVER);
-		players.clear();
+		server.stopGame(this);
 	}
 
 	/**

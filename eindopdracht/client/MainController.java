@@ -166,18 +166,19 @@ public class MainController extends Observable implements Observer {
 			else if (command.getCommand().equals(Protocol.QUIT_SERVER)) {
 				PTLog.log("MainController", "The server quit");
 				this.disconnect();
-			}
-			
-			else if (command.getCommand().equals(Protocol.END_GAME)) {
-				this.disconnect();
 				if (this.numberOfReplays > 0) {
 					PTLog.log("MainController", "Going to play " + numberOfReplays + " more games");
 					this.numberOfReplays--;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e){}
+					//try {
+					//	Thread.sleep(1000);
+					//} catch (InterruptedException e){}
 					this.restart();
 				}
+			}
+			
+			else if (command.getCommand().equals(Protocol.END_GAME)) {
+				//this.disconnect();
+				
 			}
 			
 		} else if (object.getClass().equals(GameController.class)) {

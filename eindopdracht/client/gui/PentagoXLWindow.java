@@ -78,6 +78,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	public PentagoXLWindow(MainController mc) {
 		this.mc = mc;
 		this.addComponentListener(this);
+		this.addWindowListener(this);
 
 		setTitle("Pentago XL");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -324,6 +325,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 			} 
 			
 			else if (command.getCommand().equals(Protocol.END_GAME)) {
+				PTLog.log("Window", "Received END_GAME in window, now going to NOT quit!");
 				this.endGame();
 				int reason = Integer.parseInt(command.getArg(0));
 
@@ -444,6 +446,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 
 	@Override
 	public void windowClosing(WindowEvent e) {
+		PTLog.log("Window", "CLOSING");
+		if (mc != null)
+			mc.exit();
 		e.getWindow().dispose();
 	}
 
