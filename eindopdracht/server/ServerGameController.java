@@ -278,9 +278,11 @@ public class ServerGameController extends Observable {
 	 */
 	public void endGame(ServerPlayer player, int reason) {
 		String playerName = player.getName();
-		if (reason == ServerController.endDueToCheat)
+		if (reason == ServerController.endDueToCheat) {
 			PTLog.log(name, "Ending game because " + playerName
 					+ " set before it was his turn");
+			System.exit(0);
+		}
 		else if (reason == ServerController.endDueToDisconnect) {
 			PTLog.log(name, "Ending game because " + playerName
 					+ " disconnected");
@@ -292,7 +294,6 @@ public class ServerGameController extends Observable {
 
 		if (reason != ServerController.endDueToWinner
 				&& reason != ServerController.endDueToRemise)
-			System.exit(0);
 		// TODO Dit weer weghalen
 
 		// PTLog.log(name, Protocol.END_GAME + " " + reason + " " + playerName);

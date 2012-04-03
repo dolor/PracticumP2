@@ -77,7 +77,6 @@ public class AIPlayer extends Player {
 			if (set.getPlayer().equals(this) && !set.isExecuted()
 					&& set.getValid() && !game.getBoard().GameOver()) {
 				// The set is for this player and should still be executed
-				PTLog.log(name, "Is now going to set!");
 				ai.calculateSet(set);
 				game.set(set);
 			}
@@ -89,7 +88,6 @@ public class AIPlayer extends Player {
 			if (turn.getPlayer().equals(this) && !turn.isExecuted()
 					&& turn.getValid() && !game.getBoard().GameOver()) {
 				// The turn is for this player and should still be executed
-				PTLog.log(name, "Is now going to turn!");
 				ai.calculateTurn(turn);
 				game.turn(turn);
 			}

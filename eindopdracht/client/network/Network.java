@@ -78,6 +78,7 @@ public class Network extends Observable implements Observer {
 			String playerName = command.getArg(2);
 			// PTLog.log("Network", "Player " + playerName + " turned a block" +
 			// command.getArg(0) + " " + command.getArg(1));
+			PTLog.log("Network", "TURN_BLOCK " + playerName);
 
 			for (NetworkPlayer player : networkPlayers) {
 				if (player.getName().equals(playerName)) {
@@ -104,6 +105,7 @@ public class Network extends Observable implements Observer {
 				this.setChanged();
 				this.notifyObservers(turn);
 			} else {*/
+			PTLog.log("Network", "SET_TILE " + command.getArg(0) + " " + command.getArg(1) + " " + command.getArg(2));
 				for (NetworkPlayer player : networkPlayers) {
 					if (player.getName().equals(playerName)) {
 						Set set = new Set(player);
@@ -124,6 +126,7 @@ public class Network extends Observable implements Observer {
 
 		// Give the turn to the localplayer
 		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+			PTLog.log("Network", "YOUR_TURN");
 			this.setChanged();
 			this.notifyObservers(command);
 		}
@@ -289,6 +292,7 @@ public class Network extends Observable implements Observer {
 	public void setTile(int block, int tile) {
 		String msg = String.format(Protocol.SET_TILE + " " + letters[block]
 				+ " " + tile);
+		PTLog.log("Network", "sending: " + msg);
 		if (handler != null)
 			handler.sendString(msg);
 		else
@@ -306,6 +310,7 @@ public class Network extends Observable implements Observer {
 	public void turnBlock(int block, int rotation) {
 		String msg = String.format(Protocol.TURN_BLOCK + " %s %s",
 				letters[block], rotation == 1 ? "CW" : "CCW");
+		PTLog.log("Network", "sending: " + msg);
 		if (handler != null)
 			handler.sendString(msg);
 		else

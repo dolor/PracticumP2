@@ -155,9 +155,9 @@ public class PlayerHandler implements Runnable {
 	 * 
 	 * @param msg
 	 */
-	public synchronized void sendMessage(String msg) {
-		if (msg.contains("your_turn"))
-			PTLog.log(name, "YOUR_TURN");
+	public void sendMessage(String msg) {
+		//if (msg.contains("your_turn"))
+		//	PTLog.log(name, "YOUR_TURN");
 		try {
 			out.write(msg + "\n");
 			out.flush();

@@ -49,7 +49,6 @@ public class ConnectionHandler implements Runnable {
 	 *            text to be sent
 	 */
 	public synchronized void sendString(String string) {
-		PTLog.log("ConnectionHandler", "Sending: " + string);
 		try {
 			out.write(string + "\n");
 			out.flush();
@@ -76,7 +75,6 @@ public class ConnectionHandler implements Runnable {
 			while (next != null) {
 				// If null, the connection was terminated
 				synchronized (this) {
-					PTLog.log("ConnectionHandler", "Input received: " + next);
 					network.processNetworkInput(next);
 				}
 				next = in.readLine();
