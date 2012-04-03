@@ -50,8 +50,6 @@ public class Lobby {
 	 * this player fills the lobby up.
 	 */
 	public boolean addPlayer(ServerPlayer player) {
-		if (players.size() < maxNumberOfPlayers)
-			players.add(player);
 		
 		/*
 		 * Repeats the loop until it finds a valid name
@@ -61,7 +59,8 @@ public class Lobby {
 		while (!validName) {
 			boolean numRaised = false;
 			for (ServerPlayer p:players) {
-				if (p.getName().equals(player.getName()) && !p.equals(player)) {
+				if ((num > 0 && p.getName().equals(player.getName() + "_" + num) || (num == 0 && p.getName().equals(player.getName())))) {
+					PTLog.log(name, "Found a player with an identical name!");
 					numRaised = true;
 					num++;
 				}
@@ -69,13 +68,17 @@ public class Lobby {
 			if (!numRaised)
 				validName = true;
 		}
+		PTLog.log(name, "Num is now " + num);
+		
+		if (players.size() < maxNumberOfPlayers)
+			players.add(player);
 		
 		/*
 		 * Tells the player his current name
 		 */
 		if (num > 0) {
 			PTLog.log(name, "Player got another name");
-			player.setName(player.getName() + "-" + num);
+			player.setName(player.getName() + "_" + num);
 		}
 
 		PTLog.log(name, "Player now has name " + player.getName());
