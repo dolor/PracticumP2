@@ -140,7 +140,8 @@ public class MainController extends Observable implements Observer {
 	public void sendChat(String chat) {
 		chat = chat.replaceAll("\\n","");
 		chat = chat.replaceAll("\\t","");
-		network.sendChat(chat);
+		if (chat.split(" ").length > 1)
+			network.sendChat(chat);
 	}
 
 	@Override

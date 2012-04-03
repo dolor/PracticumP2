@@ -149,6 +149,12 @@ public class Network extends Observable implements Observer {
 			this.setChanged();
 			this.notifyObservers(command);
 		}
+		
+		else if (command.getCommand().equals(Protocol.PLAYERS)) {
+			PTLog.log("Network", "Received playerlist: " + command.getArgString());
+			this.setChanged();
+			this.notifyObservers(command);
+		}
 	}
 
 	/**

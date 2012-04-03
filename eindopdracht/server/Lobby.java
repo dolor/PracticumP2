@@ -84,11 +84,12 @@ public class Lobby {
 				
 		String msg = "players";
 		for (ServerPlayer p:players) {
-			//if (!p.equals(player))
-				msg = msg + " " + p.getName();
+			msg = msg + " " + p.getName();
 		}
+		
 		PTLog.log(name, "Sending join message: " + msg);
-		player.sendMessage(msg);
+		for (ServerPlayer p:players) 
+			p.sendMessage(msg);
 		
 		if (players.size() == maxNumberOfPlayers) {
 			server.startGame(this);

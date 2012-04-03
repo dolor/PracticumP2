@@ -25,6 +25,7 @@ import javax.swing.JMenuItem;
 import eindopdracht.client.GameController;
 import eindopdracht.client.MainController;
 import eindopdracht.client.model.player.HumanPlayer;
+import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Command;
@@ -281,6 +282,8 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 			// Game started
 			playerList.setText("");
 			GameController game = (GameController) object;
+			
+			joinMenuItem.setEnabled(false);
 
 			this.bord.setGame(game);
 			game.addObserver(bord);
@@ -300,6 +303,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 
 		else if (Player.class.isAssignableFrom(object.getClass())) {
 			//Player is only broadcasted when you joined a server
+			//Broadcasted object was a player type
 			statusLabel.setText("Joined as " + ((Player) object).getName());
 			this.setTitle("Pentago XL - " + ((Player)object).getName());
 		}
@@ -317,7 +321,9 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 			Command command = (Command) object;
 			if (command.getCommand().equals(Protocol.CHAT_SERVER)) {
 				this.receiveChat(command.getArgString());
-			} else if (command.getCommand().equals(Protocol.END_GAME)) {
+			} 
+			
+			else if (command.getCommand().equals(Protocol.END_GAME)) {
 				this.endGame();
 				int reason = Integer.parseInt(command.getArg(0));
 
@@ -341,6 +347,21 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 							+ command.getArg(2) + ", game ended");
 				}
 				bord.game.getBoard().drawBoard();
+			}
+			
+			else if (command.getCommand().equals(Protocol.PLAYERS)) {
+				//Got a player list and apparently joined a lobby or game
+				joinMenuItem.setEnabled(false);
+				PTLog.log("Window", "Received the playerlist!");
+				ArrayList<Player> players = new ArrayList<Player>();
+				
+				for (int i = 0; i < command.getArgs().length; i++) {
+					Player p = new Player();
+					p.setName(command.getArgs()[i]);
+					p.setColor(i + 1);
+					players.add(p);
+				}
+				this.fillPlayerList(players);
 			}
 		}
 
@@ -404,6 +425,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	 *            to add to the list
 	 */
 	public void fillPlayerList(ArrayList<Player> players) {
+		playerList.setText("");
 		for (Player player : players) {
 			playerList.addPlayer(player);
 		}
