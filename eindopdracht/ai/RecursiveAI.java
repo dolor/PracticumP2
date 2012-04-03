@@ -13,9 +13,13 @@ import eindopdracht.util.PTLog;
 public class RecursiveAI extends AI {
 	ArrayList<Integer> players;
 
+	String[] chatLines;
+	
 	public RecursiveAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
 		this.players = players;
+		
+		System.out.println(players.toString());
 		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
 				"I see...", "Hah, now i've got a genius plan!",
 				"Did you seriously think that was going to work?",
@@ -23,11 +27,15 @@ public class RecursiveAI extends AI {
 	}
 
 	public static final int SCORE_GROUND = 2;
-	public static final int ROWS_SCORE = 5;
-	public static final int WINNING_MOVE = 1000000000;
+	public static final int ROWS_SCORE = 2;
+	public static final long WINNING_MOVE = 6;
+	public static final int LOSING_MOVE = 4;
+	
+	public static final int RECUSION_DEPTH = 6;
+	
+	//public static final int ROWS_SCORE = 5;
+	//public static final int WINNING_MOVE = 1000000000;
 	// public static final int LOSING_MOVE = 10000000;
-
-	public static final int RECUSION_DEPTH = 2;
 
 	/**
 	 * Gives the board a score. The higher the score the better the current
@@ -48,6 +56,23 @@ public class RecursiveAI extends AI {
 
 		for (Row r : rows) {
 			// kijk of hij winnend is
+			
+			if (r.getLength() >= 4)
+			{
+				if (r.getColor() == color)
+				{
+					score += WINNING_MOVE;
+					/*else
+					{
+						score += ROWS_SCORE * (r.getLength()+1) * (r.getLength()+1) * (r.getLength()+1);
+					}	*/
+				}
+				/*else
+				{
+					score += LOSING_MOVE;
+				}*/
+			}
+
 
 			if (r.getColor() == color) {
 				if (r.getLength() >= 4) {
@@ -62,6 +87,7 @@ public class RecursiveAI extends AI {
 			 * LOSING_MOVE; } score -= ROWS_SCORE * Math.pow(SCORE_GROUND,
 			 * r.getLength()); }
 			 */
+
 		}
 
 		return score;
@@ -79,23 +105,53 @@ public class RecursiveAI extends AI {
 	 *            the board
 	 * @return the best move
 	 */
-
-	private Position getRecusiveSet(int color, int depth, Board board) {
+	private PositionAI getRecusiveSet(int color, int depth, Board board) {
 		depth = depth - 1;
 
 		if (depth > 1) {
-			Position bestpos = new Position(-1, -1);
+			PositionAI bestpos = new PositionAI(-1, -1);
 
 			for (int y = 0; y <= 8; y++) {
 				for (int x = 0; x <= 8; x++) {
 
 					if (board.getTileXY(x, y).getColor() == 0) {
-						Position pos = new Position(x, y);
+
+						PositionAI pos = new PositionAI(x, y);
 
 						// plaats op het board
 						board.set(pos.getBlock(), pos.getTile(), color);
 
-						int score = getBoardScore(board, color) * depth;
+						//PTLog.log("AI", "Pos: "+board.getTileXY(x, y).setColor(0, true)+ ", pos " + board.getTileXY(x, y).getColor());
+						
+						// calculate score
+						
+						Position recursiveSet = getRecusiveSet(nextPlayerForColor(color), depth-1, board);
+						
+						board.set(recursiveSet.getBlock(), recursiveSet.getTile(), color);
+						
+						long score = getBoardScore(board, color) * depth * depth;
+						
+						// TODO: Doorgeven WINNEND / VERLIESEND, bij verliesend !bestpos bij winnnend !bestpos.
+						
+						/*if (recursiveSet != null)
+						{
+							pos.setScore(score + recursiveSet.getScore());
+						}
+						else
+						{
+							pos.setScore(score);
+						}
+						
+						//PTLog.log("AI", "Score : "+pos.getScore() + ", recursion depth " + (depth));
+						
+						if (pos.getScore() > bestpos.getScore())
+						{
+							bestpos = pos;
+							PTLog.log("AI", "bestmove "+bestpos.getScore()+" pos: "+bestpos.getX()+", "+bestpos.getY());
+							
+						}
+
+						int score = getBoardScore(board, color) * depth;*/
 
 						if (score > bestpos.getScore()) {
 							bestpos = pos;
@@ -106,14 +162,69 @@ public class RecursiveAI extends AI {
 						}
 
 						// maak de zet ongedaan
+
 						board.set(pos.getBlock(), pos.getTile(), 0);
+						board.set(recursiveSet.getBlock(), recursiveSet.getTile(), 0);
+						
+						// maak de zet ongedaan
+						//PTLog.log("AI", "Pos: "+board.getTileXY(x, y).setColor(0, true)+ ", pos " + board.getTileXY(x, y).getColor());
+						
+						
+						/*if (score >= bestpos.getScore())
+						{
+							bestpos = pos;
+							
+							Position nextMove = getRecusiveSet(nextPlayerForColor(color), depth - 1, board);
+							
+							if (nextMove != null)
+							{
+								pos.setScore(nextMove.getScore() + score);
+							}
+							else
+							{
+								pos.setScore(score);
+							}
+						}*/
+						/*
+						
+						pos.setScore(score);
+						
+						// winnend				
+						if (pos.getScore() >= WINNING_MOVE)
+						{
+							bestpos = pos;
+						}
+						else // kijk recursief
+						{
+							Position nextMove = getRecusiveSet(nextPlayerForColor(color), depth - 1, board);
+							
+							if (nextMove != null)
+							{
+								pos.setScore(nextMove.getScore()*depth + score);
+							}
+							else
+							{
+								pos.setScore(score);
+							}
+							
+							
+							if (pos.getScore() >= bestpos.getScore())
+							{
+								bestpos = pos;
+							}
+						}*/
+						
+						
 					}
 				}
 			}
 			return bestpos;
-		} else {
-			return new Position(0, 0, 0);
 		}
+		else
+		{
+			return new PositionAI(-1, -1);
+		}
+
 
 	}
 
@@ -158,7 +269,7 @@ public class RecursiveAI extends AI {
 	public void calculateSet(Set set) {
 		Board nB = this.board.deepCopy();
 
-		Position pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
+		PositionAI pos = getRecusiveSet(this.getColor(), RECUSION_DEPTH, nB);
 		PTLog.log("RecursiveAI",
 				"Calculated set: " + pos.getX() + ", " + pos.getY()
 						+ " score: " + pos.getScore());

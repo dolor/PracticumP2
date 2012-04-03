@@ -29,7 +29,7 @@ public class Tile {
 	 */
 	public boolean setColor(int color, boolean force)
 	{
-		if (!(1 <= color && color <= 4)) // als color niet tussen 1 en 4 is
+		if (!(0 <= color && color <= 4)) // als color niet tussen 1 en 4 is
 		{
 			return false;
 		}

@@ -269,7 +269,19 @@ public class Board {
 			}
 		}
 
-		return rows;
+		
+		ArrayList<Row> returnRows = new ArrayList<Row>();
+		
+		for (Row r : rows)
+		{
+			if (r.getLength() > 1)
+			{
+				returnRows.add(r);
+			}
+		}
+		
+		return returnRows;
+
 	}
 
 	public void setBlock(Block b, int block) {
