@@ -309,7 +309,7 @@ public class Network extends Observable implements Observer {
 	 */
 	public void turnBlock(int block, int rotation) {
 		String msg = String.format(Protocol.TURN_BLOCK + " %s %s",
-				letters[block], rotation == 1 ? "CW" : "CCW");
+				letters[block], rotation == 1 ? Protocol.CW : Protocol.CCW);
 		PTLog.log("Network", "sending: " + msg);
 		if (handler != null)
 			handler.sendString(msg);

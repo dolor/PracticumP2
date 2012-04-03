@@ -104,10 +104,14 @@ public class PlayerHandler implements Runnable {
 		String c = command.getCommand();
 
 		if (c.equals(Protocol.JOIN)) {
-			player.setName(command.getArgs()[0]);
-			name = "Handler_" + player.getName();
-			player.setNumberOfPlayers(Integer.parseInt(command.getArgs()[1]));
-			server.addPlayer(player);
+			if (Integer.parseInt(command.getArg(1)) == 0) {
+				sendMessage(Protocol.NO_CHALLENGE);
+			} else {
+				player.setName(command.getArgs()[0]);
+				name = "Handler_" + player.getName();
+				player.setNumberOfPlayers(Integer.parseInt(command.getArgs()[1]));
+				server.addPlayer(player);
+			}
 		}
 
 		else if (c.equals(Protocol.SET_TILE)) {
