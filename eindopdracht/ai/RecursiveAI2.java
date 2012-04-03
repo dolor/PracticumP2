@@ -103,10 +103,17 @@ public class RecursiveAI2 extends AI {
 					
 					// haal de uitkomst van de zet op					
 					int uitkomst = geefUitkomst(b, this.getColor()) ;
-
+					
+					
+					
 					if (uitkomst == this.WINNEND)
 					{
 						// als een zet winnend is, meteen returnen
+						return p;
+					}
+					// de eerst volgende zet voor de tegestander is bij deze positie winnend
+					else if (depth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(color)) == this.WINNEND)
+					{
 						return p;
 					}
 					else if (uitkomst == this.ONBESLIST && depth >= 1)

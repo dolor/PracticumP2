@@ -98,16 +98,17 @@ public class Board {
 					// voeg het toe aan de rij
 					r.addPosition(new Position(x, y));
 					r.setColor(color);
-					lastcolor = color;
 					
-				} else if (lastcolor == color && color != Color.EMPTY) {
+				} else if (lastcolor == color && color != Color.EMPTY) 
+				{
 					// zelfde kleur dus rij wordt een langer
 					r.addPosition(new Position(x, y));
-				} else if (color == Color.EMPTY && r.getLength() > 0) {
+				} else if (color == Color.EMPTY ) 
+				{
 					// einde van een rij gevonden dus sluit hem flink af
-					lastcolor = 0;
 					r = new Row();
 				}
+				lastcolor = color;
 			}
 		}
 		
@@ -135,6 +136,7 @@ public class Board {
 					lastcolor = 0;
 					r = new Row();
 				}
+				lastcolor = color;
 			}
 		}
 
@@ -167,6 +169,7 @@ public class Board {
 						lastcolor = 0;
 						r = new Row();
 					}
+					lastcolor = color;
 				}
 
 			}
@@ -190,12 +193,17 @@ public class Board {
 						// voeg het toe aan de rij
 						r.addPosition(new Position(x, y));
 						r.setColor(color);
-						lastcolor = color;
-					} else if (lastcolor == color) {
+					} else if (lastcolor == color && color != Color.EMPTY) {
 						// zelfde kleur dus rij wordt een langer
 						r.addPosition(new Position(x, y));
 					}
+					else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
+						//einde van een rij gevonden dus sluit hem voor de zekerheid af
+						r = new Row();
+					}
+					lastcolor = color;
 				}
+				
 			}
 		}
 
