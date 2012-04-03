@@ -11,7 +11,6 @@ public class PositionAI extends Position {
 		super(x, y);
 		this.score = 0;
 		this.depth = 0;
-		// TODO Auto-generated constructor stub
 	}
 
 	

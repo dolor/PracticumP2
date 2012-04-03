@@ -101,7 +101,6 @@ public class NewGameWindow extends JFrame implements DocumentListener,
 					.parseInt((String) lobbySizeBox.getSelectedItem());
 			boolean human = !aiButton.isSelected();
 			observer.join(name, size, human, aiType.getSelectedIndex());
-			// TODO implement an option to use an AI or not
 			observer.newGameFrameDismissed();
 			this.dispose();
 		}

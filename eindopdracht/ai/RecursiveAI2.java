@@ -15,7 +15,6 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		
 		this.players = players;
-		// TODO Auto-generated constructor stub
 	}
 
 	public static final int WINNEND = 1;
@@ -59,7 +58,6 @@ public class RecursiveAI2 extends AI {
 
 	@Override
 	public void calculateTurn(Turn turn) {
-		// TODO Auto-generated method stub
 		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.players);
 		r.calculateTurn(turn);		
 	}

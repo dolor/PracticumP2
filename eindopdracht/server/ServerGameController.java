@@ -269,6 +269,7 @@ public class ServerGameController extends Observable {
 	 * @param player
 	 */
 	public void playerLeft(Player player) {
+		PTLog.log(name, "THE PLAYER LEFT AND THIS METHOD WAS CALLED!!!?!?!?!?!!!!111");
 		// TODO implement
 	}
 
@@ -292,11 +293,6 @@ public class ServerGameController extends Observable {
 		else if (reason == ServerController.endDueToRemise)
 			PTLog.log(name, "Ending game because the players are out of moves");
 
-		if (reason != ServerController.endDueToWinner
-				&& reason != ServerController.endDueToRemise)
-		// TODO Dit weer weghalen
-
-		// PTLog.log(name, Protocol.END_GAME + " " + reason + " " + playerName);
 		this.netBroadcast(Protocol.END_GAME + " " + reason + " " + playerName);
 		this.netBroadcast(Protocol.QUIT_SERVER);
 		players.clear();
