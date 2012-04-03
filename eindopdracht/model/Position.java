@@ -10,7 +10,7 @@ public class Position {
 	int x;
 	int y;
 	int color;
-	int score;
+	long score;
 	
 	public Position(int x, int y)
 	{
@@ -40,7 +40,7 @@ public class Position {
 	 * @ensure getScore() >= 0 && getScore() <= 4
 	 * @return the score of a certain position (Only used in AI)
 	 */
-	public int getScore()
+	public long getScore()
 	{
 		return this.score;
 	}
@@ -48,7 +48,7 @@ public class Position {
 	 * @ensure this.getScore() == score
 	 * @param score the score of a certain position (Only used in AI)
 	 */
-	public void setScore(int score)
+	public void setScore(long score)
 	{
 		this.score = score;
 	}

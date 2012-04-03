@@ -15,6 +15,11 @@ public class TestBoard
 		while (doorgaan)
 		{
 			b.drawBoard();
+
+			for (Row r : b.getRows())
+			{
+				System.out.println("Rij: " + r.getLength());
+			}
 			
 			for (int winner : b.GetWinners())
 			{
