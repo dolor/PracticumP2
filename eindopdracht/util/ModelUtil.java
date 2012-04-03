@@ -8,7 +8,7 @@ public class ModelUtil {
 	 * Contains some static methods to convert model-related things. and stuff.
 	 */
 
-	private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
+	private static String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
 	
 	/**
 	 * Converts a letter to an integer index
@@ -40,7 +40,7 @@ public class ModelUtil {
 	 * @return
 	 */
 	public static int directionToInt(String direction) {
-		if (direction.equals("CW"))
+		if (direction.equals("cw"))
 			return Block.CW;
 		else
 			return Block.CCW;
@@ -52,9 +52,9 @@ public class ModelUtil {
 	 */
 	public static String intToDirection(int direction) {
 		if (direction == Block.CW)
-			return "CW";
+			return Protocol.CW;
 		else
-			return "CCW";
+			return Protocol.CCW;
 	}
 	
 	/**

@@ -109,14 +109,14 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else if (c.equals(Protocol.SET_TILE)) {
-			PTLog.log(name, "Received: SET_TILE " + command.getArg(0) + " " + command.getArg(1));
+//			PTLog.log(name, "Received: SET_TILE " + command.getArg(0) + " " + command.getArg(1));
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int tile = Integer.parseInt(command.getArg(1));
 			player.setTile(block, tile);
 		}
 
 		else if (c.equals(Protocol.TURN_BLOCK)) {
-			PTLog.log(name, "TURN_BLOCK");
+//			PTLog.log(name, "TURN_BLOCK");
 			int block = ModelUtil.letterToInt(command.getArg(0));
 			int direction = ModelUtil.directionToInt(command.getArg(1));
 			player.turnBlock(block, direction);
@@ -158,13 +158,15 @@ public class PlayerHandler implements Runnable {
 	public void sendMessage(String msg) {
 		//if (msg.contains("your_turn"))
 		//	PTLog.log(name, "YOUR_TURN");
-		try {
-			out.write(msg + "\n");
-			out.flush();
-		} catch (IOException e) {
-			PTLog.log(name,
-					"-[Error] error thrown in PlayerHandler sendMessage: " + e.getMessage());
-			//e.printStackTrace();
+		synchronized(out) {
+			try {
+				out.write(msg + "\n");
+				out.flush();
+			} catch (IOException e) {
+				PTLog.log(name,
+						"-[Error] error thrown in PlayerHandler sendMessage: " + e.getMessage());
+				//e.printStackTrace();
+			}
 		}
 	}
 

@@ -27,7 +27,7 @@ public class Network extends Observable implements Observer {
 	private String localPlayerName;
 	private Player localPlayer;
 
-	private static String[] letters = { "A", "B", "C", "D", "E", "F", "G", "H",
+	private static String[] letters = { "a", "b", "c", "d", "e", "f", "g", "h",
 			"I" };
 
 	/**
