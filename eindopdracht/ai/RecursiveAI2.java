@@ -118,7 +118,9 @@ public class RecursiveAI2 extends AI {
 						PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
 						p.setDepth(recursionDepth);
 						p.setColor(playerColor);
-						b.set(p.getBlock(), p.getTile(), Color.EMPTY);
+						b.drawBoard();
+						b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
+						
 						return p;
 						
 					}
@@ -128,7 +130,7 @@ public class RecursiveAI2 extends AI {
 						p.setDepth(recursionDepth);
 						b.drawBoard();
 						PTLog.log("RecursiveAI", "Block instant win of opponent, depth "+recursionDepth);
-						b.set(p.getBlock(), p.getTile(), Color.EMPTY);
+						b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
 						return p;
 					}
 					else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
