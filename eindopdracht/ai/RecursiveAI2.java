@@ -148,7 +148,8 @@ public class RecursiveAI2 extends AI {
 						{
 							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
 							{
-								returnPos = recPos;
+								//returnPos = recPos;
+								returnPos = p;
 							}
 						}
 
