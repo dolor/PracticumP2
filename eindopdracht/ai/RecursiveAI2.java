@@ -67,7 +67,7 @@ public class RecursiveAI2 extends AI {
 	{
 		Rotation returnRot = null;
 		
-		for (int block = 0; block <= 8, block++)
+		for (int block = 0; block <= 8; block++)
 		{
 			for (int rotation = 1; rotation <= 2; rotation++)
 			{
@@ -75,7 +75,7 @@ public class RecursiveAI2 extends AI {
 				
 				if (recursionDepth == 0)
 				{
-					return r;
+					return new Rotation(block, rotation);
 				}
 
 				b.turn(block, rotation);
