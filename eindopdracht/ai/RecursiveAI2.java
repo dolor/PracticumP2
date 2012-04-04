@@ -151,8 +151,6 @@ public class RecursiveAI2 extends AI {
 					}
 					b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
 					// maak de zet weer leeg;
-					
-
 				}
 			}
 		}
