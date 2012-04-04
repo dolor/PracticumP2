@@ -27,7 +27,7 @@ public class RecursiveAI2 extends AI {
 	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 7;
+	public static final int RECURSION_DEPTH = 3;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies
@@ -93,6 +93,11 @@ public class RecursiveAI2 extends AI {
 	public PositionAI getBestMove(Board b, int playerColor, int recursionDepth)
 	{
 		PositionAI returnPos = null;
+		
+		if (recursionDepth == 0)
+		{
+			return null;
+		}
 
 		for (int y = 0; y <= 8; y++)
 		{
@@ -115,10 +120,10 @@ public class RecursiveAI2 extends AI {
 					if (uitkomst == this.WINNEND)
 					{
 						// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
-						PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
+						//PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
 						p.setDepth(recursionDepth);
 						p.setColor(playerColor);
-						b.drawBoard();
+						//b.drawBoard();
 						b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
 						
 						return p;
@@ -149,6 +154,7 @@ public class RecursiveAI2 extends AI {
 						//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
 						
 					}
+
 					b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
 					// maak de zet weer leeg;
 					
@@ -162,7 +168,7 @@ public class RecursiveAI2 extends AI {
 	
 	@Override
 	public void calculateSet(Set set) {
-		
+		PTLog.log("RecursiveAI", "Start calculating best move");
 		Position pos = this.getBestMove(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
 		
 		set.setBlock(pos.getBlock());
