@@ -27,7 +27,7 @@ public class RecursiveAI2 extends AI {
 	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 3;
+	public static final int RECURSION_DEPTH = 2;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies
@@ -94,10 +94,7 @@ public class RecursiveAI2 extends AI {
 	{
 		PositionAI returnPos = null;
 		
-		if (recursionDepth == 0)
-		{
-			return null;
-		}
+		
 
 		for (int y = 0; y <= 8; y++)
 		{
@@ -108,6 +105,10 @@ public class RecursiveAI2 extends AI {
 					// kijk of de zet winnen is
 					PositionAI p = new PositionAI(x, y);
 					
+					if (recursionDepth == 0)
+					{
+						return p;
+					}
 
 					// plaats de zet
 					b.set(p.getBlock(), p.getTile(), playerColor, true);
