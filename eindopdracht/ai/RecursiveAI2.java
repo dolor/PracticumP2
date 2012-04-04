@@ -27,7 +27,7 @@ public class RecursiveAI2 extends AI {
 	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 2;
+	public static final int RECURSION_DEPTH = 3;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies
