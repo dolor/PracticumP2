@@ -23,7 +23,7 @@ public class RecursiveAI2 extends AI {
 	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 8;
+	public static final int RECURSION_DEPTH = 7;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies
@@ -101,7 +101,7 @@ public class RecursiveAI2 extends AI {
 					
 
 					// plaats de zet
-					b.set(p.getBlock(), p.getTile(), playerColor);
+					b.set(p.getBlock(), p.getTile(), playerColor, true);
 					
 					// haal de uitkomst van de zet op					
 					int uitkomst = geefUitkomst(b, playerColor) ;
@@ -122,7 +122,8 @@ public class RecursiveAI2 extends AI {
 					else if (recursionDepth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(playerColor)) == this.WINNEND)
 					{
 						p.setDepth(recursionDepth);
-						PTLog.log("RecursiveAI", "Block instant win of opponent");
+						b.drawBoard();
+						PTLog.log("RecursiveAI", "Block instant win of opponent, depth "+recursionDepth);
 						b.set(p.getBlock(), p.getTile(), Color.EMPTY);
 						return p;
 					}
@@ -130,20 +131,21 @@ public class RecursiveAI2 extends AI {
 					{
 
 						PositionAI recPos = getBestMove(b, nextPlayerForColor(playerColor), recursionDepth-1);
+
 						if (recPos != null)
 						{
-							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth())
+							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
 							{
 								returnPos = recPos;
 							}
 						}
-						
+
 						//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
 						
 					}
-					
+					b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
 					// maak de zet weer leeg;
-					b.set(p.getBlock(), p.getTile(), Color.EMPTY);
+					
 
 				}
 			}

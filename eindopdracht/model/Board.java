@@ -22,13 +22,18 @@ public class Board {
 	 * 
 	 * @return true if succesful, false if invalid
 	 */
-	public boolean set(int block, int tile, int color) {
+	public boolean set(int block, int tile, int color, boolean force) {
 		// System.out.printf("Block:"+block+" Tile:"+tile+" Color:"+color+" \n");
 		if (!(block >= 0 && block <= 8 && tile >= 0 && tile <= 8)) {
 			return false;
 		} else {
-			return blocks[block].getTile(tile).SetColor(color);
+			return blocks[block].getTile(tile).setColor(color, force);
 		}
+	}
+	
+	public boolean set(int block, int tile, int color)
+	{
+		return set(block, tile, color, false);
 	}
 
 	public boolean turn(int block, int rotation) {
