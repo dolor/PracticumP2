@@ -41,15 +41,15 @@ public class RecursiveAI2 extends AI {
 		
 		if (b.GetWinners().contains(color))
 		{
-			score = this.WINNEND;
+			score = WINNEND;
 		}
 		else if (b.GetWinners().size() > 0)
 		{
-			score = this.VERLIEZEND;
+			score = VERLIEZEND;
 		}
 		else
 		{
-			score = this.ONBESLIST;
+			score = ONBESLIST;
 		}
 		
 		/*if (score == this.WINNEND && color != this.getColor())
