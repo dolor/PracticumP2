@@ -7,6 +7,7 @@ import eindopdracht.ai.AI;
 import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
 import eindopdracht.ai.RecursiveAI;
+import eindopdracht.ai.RecursiveAI2;
 import eindopdracht.client.model.*;
 import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
@@ -41,7 +42,7 @@ public class AIPlayer extends Player {
 			this.ai = new IntelligentAI(this.getColor(), this.getGame()
 					.getBoard(), playerColors);
 		else
-			this.ai = new RecursiveAI(this.getColor(), this.getGame()
+			this.ai = new RecursiveAI2(this.getColor(), this.getGame()
 					.getBoard(), playerColors);
 
 	}

@@ -7,6 +7,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
 import eindopdracht.model.Color;
 import eindopdracht.model.Position;
+import eindopdracht.util.PTLog;
 
 public class RecursiveAI2 extends AI {
 
@@ -18,11 +19,11 @@ public class RecursiveAI2 extends AI {
 	}
 
 	public static final int WINNEND = 1;
-	public static final int VERLIEZEND = -1;
-	public static final int ONBESLIST = 0;
+	public static final int VERLIEZEND = 0;
+	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 5;
+	public static final int RECURSION_DEPTH = 8;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies
@@ -47,10 +48,11 @@ public class RecursiveAI2 extends AI {
 			score = this.ONBESLIST;
 		}
 		
-		if (color != this.getColor())
+		/*if (score == this.WINNEND && color != this.getColor())
 		{
-			score = 1 - score;
+			score = this.VERLIEZEND;
 		}
+		else if (score == thi)*/
 		
 		return score;
 	}
@@ -84,47 +86,59 @@ public class RecursiveAI2 extends AI {
 	}
 
 	
-	public PositionAI getBestMove(Board b, int color, int depth)
+	public PositionAI getBestMove(Board b, int playerColor, int recursionDepth)
 	{
-		PositionAI returnPos = new PositionAI(-1, -1);
-		returnPos.setDepth(-1);
+		PositionAI returnPos = null;
 
 		for (int y = 0; y <= 8; y++)
 		{
-			for (int x = 8; x >= 0; x--)
+			for (int x = 0; x <= 8; x++)
 			{
 				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // valkje = leeg
 				{
 					// kijk of de zet winnen is
 					PositionAI p = new PositionAI(x, y);
+					
 
 					// plaats de zet
-					b.set(p.getBlock(), p.getTile(), color);
+					b.set(p.getBlock(), p.getTile(), playerColor);
 					
 					// haal de uitkomst van de zet op					
-					int uitkomst = geefUitkomst(b, this.getColor()) ;
+					int uitkomst = geefUitkomst(b, playerColor) ;
 					
 					
 					
 					if (uitkomst == this.WINNEND)
 					{
-						// als een zet winnend is, meteen returnen
+						// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
+						PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
+						p.setDepth(recursionDepth);
+						p.setColor(playerColor);
+						b.set(p.getBlock(), p.getTile(), Color.EMPTY);
 						return p;
+						
 					}
 					// de eerst volgende zet voor de tegestander is bij deze positie winnend
-					else if (depth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(color)) == this.WINNEND)
+					else if (recursionDepth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(playerColor)) == this.WINNEND)
 					{
+						p.setDepth(recursionDepth);
+						PTLog.log("RecursiveAI", "Block instant win of opponent");
+						b.set(p.getBlock(), p.getTile(), Color.EMPTY);
 						return p;
 					}
-					else if (uitkomst == this.ONBESLIST && depth >= 1)
+					else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
 					{
 
-						PositionAI recPos = getBestMove(b, nextPlayerForColor(color), depth-1);
-						
-						if (returnPos.getDepth() > recPos.getDepth())
+						PositionAI recPos = getBestMove(b, nextPlayerForColor(playerColor), recursionDepth-1);
+						if (recPos != null)
 						{
-							returnPos = recPos;
+							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth())
+							{
+								returnPos = recPos;
+							}
 						}
+						
+						//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
 						
 					}
 					
@@ -141,10 +155,11 @@ public class RecursiveAI2 extends AI {
 	@Override
 	public void calculateSet(Set set) {
 		
-		Position pos = this.getBestMove(this.getBoard(), this.getColor(), RECURSION_DEPTH);
+		Position pos = this.getBestMove(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
 		
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
+		PTLog.log("RecursiveAI", "Move: "+pos.getX()+", "+pos.getY());
 	}
 
 }
