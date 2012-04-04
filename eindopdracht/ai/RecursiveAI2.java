@@ -16,6 +16,10 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		
 		this.players = players;
+		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
+				"I see...", "Hah, now i've got a genius plan!",
+				"Did you seriously think that was going to work?",
+				"We'll see.", "Hah!", "I see what you did there...", "Pff.", "^^" };
 	}
 
 	public static final int WINNEND = 1;
