@@ -30,7 +30,7 @@ public class Rotation {
 	
 	public int getRotation()
 	{
-		return this.getRotation();
+		return this.rotation;
 	}
 
 	public void setColor(int color) {
