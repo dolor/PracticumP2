@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
+import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 import eindopdracht.model.Color;
 import eindopdracht.model.Position;
@@ -62,10 +63,94 @@ public class RecursiveAI2 extends AI {
 	}
 	
 
+	public Rotation giveBestRotation(Board b, int playerColor, int recursionDepth)
+	{
+		Rotation returnRot = null;
+		
+		for (int block = 0; block <= 8, block++)
+		{
+			for (int rotation = 1; rotation <= 2; rotation++)
+			{
+				
+				
+				if (recursionDepth == 0)
+				{
+					return r;
+				}
+
+				b.turn(block, rotation);
+				
+				Rotation currentRot = new Rotation(block, rotation);
+				
+				// haal de uitkomst van de zet op					
+				int uitkomst = geefUitkomst(b, playerColor) ;
+				
+				
+				
+				if (uitkomst == this.WINNEND)
+				{
+					// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
+					//PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
+					currentRot.setDepth(recursionDepth);
+					currentRot.setColor(playerColor);
+					//b.drawBoard();
+					
+					// draai het blok terug
+					b.turn(block, Block.getOtherRotation(rotation));
+					
+					return currentRot;
+					
+				}
+				// de eerst volgende zet voor de tegestander is bij deze positie winnend
+				else if (recursionDepth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(playerColor)) == this.WINNEND)
+				{
+					currentRot.setDepth(recursionDepth);
+					currentRot.setColor(playerColor);
+					//b.drawBoard();
+					
+					// draai het blok terug
+					b.turn(block, Block.getOtherRotation(rotation));
+					
+					return currentRot;
+				}
+				else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
+				{
+
+					//PositionAI recPos = getBestMove(b, nextPlayerForColor(playerColor), recursionDepth-1);
+
+					if (returnRot == null)
+					{
+						/*if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
+						{
+							//returnPos = recPos;
+							returnPos = p;
+						}*/
+						returnRot = currentRot;
+					}
+
+					//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
+					
+				}
+
+				// draai het blok weer terug
+				b.turn(block, Block.getOtherRotation(rotation));
+				
+				
+			}
+		}
+		return returnRot;
+	}
 	@Override
 	public void calculateTurn(Turn turn) {
-		RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.players);
-		r.calculateTurn(turn);		
+		/*RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.players);
+		r.calculateTurn(turn);*/
+		PTLog.log("RecursiveAI", "Start calculating best rotation");
+		Rotation r = giveBestRotation(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
+		
+		turn.setBlock(r.getBlock());
+		turn.setRotation(r.getRotation());
+		
+		
 	}
 	
 	/**
