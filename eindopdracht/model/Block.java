@@ -18,6 +18,18 @@ public class Block {
 		}
 	}
 	
+	public static int getOtherRotation(int rotation)
+	{
+		if (rotation == CW)
+		{
+			return CCW;
+		}
+		else
+		{
+			return CW;
+		}
+	}
+	
 	/**
 	 * Rotate the Block, counterclockwise or clockwise;
 	 * @require 1 <= rotation <= 2
