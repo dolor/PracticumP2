@@ -22,7 +22,7 @@ public class AIPlayer extends Player {
 	public static int intelligentAI = 1;
 	public static int recursiveAI = 2;
 
-	public static int chatChance = 3; // Chance in percentage of chatting
+	public static int chatChance = 2; // Chance in percentage of chatting
 
 	public AIPlayer(int aiType) {
 		this.setLocal(true);
