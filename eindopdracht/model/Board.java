@@ -77,7 +77,7 @@ public class Board {
 		for (Row r : getRows()) {
 			if (r.getLength() >= 5) {
 				//PTLog.log("Board", "Found a winner: " + r.getColor());
-				System.out.println(r.toString());
+				//System.out.println(r.toString());
 				winners.add(r.getColor());
 			}
 		}
