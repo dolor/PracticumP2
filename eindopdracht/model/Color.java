@@ -28,7 +28,7 @@ public class Color {
 		case GREEN:
 			return java.awt.Color.green;
 		case YELLOW:
-			return java.awt.Color.yellow;
+			return java.awt.Color.black;
 		default:
 			return java.awt.Color.white;
 		}
