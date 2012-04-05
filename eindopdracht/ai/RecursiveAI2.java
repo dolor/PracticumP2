@@ -181,7 +181,7 @@ public class RecursiveAI2 extends AI {
 		
 		
 
-		for (int y = 0; y <= 8; y++)
+		for (int y = 8; y >= 0; y--)
 		{
 			for (int x = 0; x <= 8; x++)
 			{
