@@ -44,7 +44,7 @@ public class RecursiveAI2 extends AI {
 		{
 			score = WINNEND;
 		}
-		else if winners.size() > 0)
+		else if ( winners.size() > 0)
 		{
 			score = VERLIEZEND;
 		}
