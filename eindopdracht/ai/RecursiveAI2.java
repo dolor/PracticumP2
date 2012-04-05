@@ -17,10 +17,10 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		
 		this.players = players;
-		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
-				"I see...", "Hah, now i've got a genius plan!",
-				"Did you seriously think that was going to work?",
-				"We'll see.", "Hah!", "I see what you did there...", "Pff.", "^^" };
+		this.chatLines = new String[] { "Hahaha, your going down mate!", "HAAAAA! GAAAAAAAAY",
+						"You blocked me on facebook, and now you're going to die!",
+				 "Hah!" , "Not bad!"};
+		
 	}
 
 	public static final int WINNEND = 1;
