@@ -1,11 +1,19 @@
 package eindopdracht.model;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
+
 import eindopdracht.model.Tile;
 import eindopdracht.util.PTLog;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Board {
 	public static final int DIM = 3;
+	protected String stringValue;
+	TreeMap<String, ArrayList<Integer>> hashMap;
 
 	Block[] blocks;
 
@@ -15,6 +23,8 @@ public class Board {
 		for (int i = 0; i <= Board.DIM * Board.DIM - 1; i++) {
 			blocks[i] = new Block();
 		}
+		this.hashMap = new TreeMap<String, ArrayList<Integer>>();
+		this.calculateHash();
 	}
 
 	/**
@@ -27,20 +37,27 @@ public class Board {
 		if (!(block >= 0 && block <= 8 && tile >= 0 && tile <= 8)) {
 			return false;
 		} else {
-			return blocks[block].getTile(tile).setColor(color, force);
+
+			boolean valid = blocks[block].getTile(tile).setColor(color, force);
+			this.calculateHash();
+			return valid;
 		}
 	}
 	
 	public boolean set(int block, int tile, int color)
 	{
-		return set(block, tile, color, false);
+		boolean valid = set(block, tile, color, false);
+		this.calculateHash();
+		return valid;
 	}
 
 	public boolean turn(int block, int rotation) {
 		if (!(block >= 0 && block <= 8 && rotation >= 1 && rotation <= 2)) {
 			return false;
 		} else {
-			return blocks[block].Turn(rotation);
+			boolean valid = blocks[block].Turn(rotation);
+			this.calculateHash();
+			return valid;
 		}
 	}
 
@@ -71,18 +88,22 @@ public class Board {
 	 * @return
 	 */
 	public ArrayList<Integer> GetWinners() {
-		// ga alle rijen af
-		ArrayList<Integer> winners = new ArrayList<Integer>();
+		if (!hashMap.containsKey(this.getHash())) {
+			// ga alle rijen af
+			ArrayList<Integer> winners = new ArrayList<Integer>();
 
-		for (Row r : getRows()) {
-			if (r.getLength() >= 5) {
-				//PTLog.log("Board", "Found a winner: " + r.getColor());
-				//System.out.println(r.toString());
-				winners.add(r.getColor());
+			for (Row r : getRows()) {
+				if (r.getLength() >= 5) {
+					//PTLog.log("Board", "Found a winner: " + r.getColor());
+					//System.out.println(r.toString());
+					winners.add(r.getColor());
+				}
 			}
+			hashMap.put(this.getHash(), winners);
+			return winners;
+		} else {
+			return (hashMap.get(this.getHash()));
 		}
-
-		return winners;
 	}
 
 	public ArrayList<Row> getRows() {
@@ -261,7 +282,6 @@ public class Board {
 			System.out.println();
 
 		}
-
 	}
 
 	public Board deepCopy() {
@@ -271,5 +291,41 @@ public class Board {
 		}
 
 		return b;
+	}
+	
+	public void calculateHash() {
+		Position pos = new Position(0, 0);
+		StringBuffer newValue = new StringBuffer();
+		for (int y = 0; y < DIM * DIM; y++) {
+			for (int x = 0; x < DIM * DIM; x++) {
+				pos.x = x;
+				pos.y = y;
+				
+				newValue.append(blocks[pos.getBlock()].getTile(pos.getTile()).getColor());
+			}
+		}
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA");
+		} catch (NoSuchAlgorithmException e) {System.out.println("ERROR NO SUCH ALGORITHM");}
+		byte[] hashBytes = md.digest(newValue.toString().getBytes());
+		BigInteger bigInt = new BigInteger(1,hashBytes);
+		String hashtext = bigInt.toString(16);
+		stringValue = hashtext;
+	}
+	
+	/**
+	 * 
+	 * @return the hash code of the current board state
+	 * @ensure the code is always unique for any given board state
+	 */
+	public String getHash() {
+		return stringValue;
+	}
+	
+	@Override
+	public String toString() {
+		System.out.println("StringValue: " + stringValue);
+		return stringValue;
 	}
 }

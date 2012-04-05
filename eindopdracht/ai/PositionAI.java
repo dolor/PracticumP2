@@ -18,6 +18,7 @@ public class PositionAI extends Position {
 	{
 		return this.depth;
 	}
+	
 	public void setDepth(int depth)
 	{
 		this.depth = depth;

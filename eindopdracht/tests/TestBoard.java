@@ -42,6 +42,8 @@ public class TestBoard
 						int color = Integer.parseInt(argumenten[3]);
 						
 						b.getTileXY(x, y).setColor(color, true);
+						b.calculateHash();
+						System.out.println(b.getHash());
 					}
 					else if (argumenten[0].equals("t"))
 					{
@@ -49,6 +51,8 @@ public class TestBoard
 						int rotation = Integer.parseInt(argumenten[2]);
 						
 						b.turn(block, rotation);
+						b.calculateHash();
+						System.out.println(b.toString());
 					}
 					
 				}

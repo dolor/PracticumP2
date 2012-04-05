@@ -1,6 +1,7 @@
 package eindopdracht.ai;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
@@ -13,6 +14,7 @@ import eindopdracht.util.PTLog;
 public class RecursiveAI2 extends AI {
 
 	ArrayList<Integer> players;
+	
 	public RecursiveAI2(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
 		
@@ -178,7 +180,12 @@ public class RecursiveAI2 extends AI {
 	public PositionAI getBestMove(Board b, int playerColor, int recursionDepth)
 	{
 		PositionAI returnPos = null;
+		PositionAI p = new PositionAI(0, 0);
 		
+		if (recursionDepth == 0)
+		{
+			return new PositionAI(0, 0);
+		}
 		
 
 		for (int y = 0; y <= 8; y++)
@@ -188,13 +195,9 @@ public class RecursiveAI2 extends AI {
 				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // valkje = leeg
 				{
 					// kijk of de zet winnen is
-					PositionAI p = new PositionAI(x, y);
+					p.setX(x);
+					p.setY(y);
 					
-					if (recursionDepth == 0)
-					{
-						return p;
-					}
-
 					// plaats de zet
 					b.set(p.getBlock(), p.getTile(), playerColor, true);
 					

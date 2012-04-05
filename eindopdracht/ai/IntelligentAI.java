@@ -13,7 +13,7 @@ public class IntelligentAI extends AI {
 	
 	IntelligentAI otherplayersAI;
 	
-	private static int sleepTime = 15;
+	private static int sleepTime = 0;
 	// Used because these dumb AIs are so fast there gets a race condition in
 	// the network. Shouldn't be necessary with the recursive AI
 

@@ -230,8 +230,8 @@ public class ServerPlayer implements Observer {
 				} else {
 					// Set has to be executed, set to Setting
 					this.setState(SETTING);
-					try {Thread.sleep(80);}
-					catch (InterruptedException e){e.printStackTrace();}
+					//try {Thread.sleep(80);}
+					//catch (InterruptedException e){e.printStackTrace();}
 					handler.sendMessage(Protocol.YOUR_TURN);
 				}
 			}
