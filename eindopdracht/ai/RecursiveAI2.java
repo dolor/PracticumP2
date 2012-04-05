@@ -39,12 +39,12 @@ public class RecursiveAI2 extends AI {
 	public int geefUitkomst(Board b, int color)
 	{
 		int score;
-		
-		if (b.GetWinners().contains(color))
+		ArrayList<Integer> winners = b.GetWinners();
+		if (winners.contains(color))
 		{
 			score = WINNEND;
 		}
-		else if (b.GetWinners().size() > 0)
+		else if winners.size() > 0)
 		{
 			score = VERLIEZEND;
 		}
