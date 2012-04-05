@@ -19,10 +19,10 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		
 		this.players = players;
-		this.chatLines = new String[] { "Well well.", "Not bad.", "...",
-				"I see...", "Hah, now i've got a genius plan!",
-				"Did you seriously think that was going to work?",
-				"We'll see.", "Hah!", "I see what you did there...", "Pff.", "^^" };
+		this.chatLines = new String[] { "Hahaha, your going down mate!", "HAAAAA! GAAAAAAAAY",
+						"You blocked me on facebook, and now you're going to die!",
+				 "Hah!" , "Not bad!"};
+		
 	}
 
 	public static final int WINNEND = 1;
@@ -41,12 +41,12 @@ public class RecursiveAI2 extends AI {
 	public int geefUitkomst(Board b, int color)
 	{
 		int score;
-		
-		if (b.GetWinners().contains(color))
+		ArrayList<Integer> winners = b.GetWinners();
+		if (winners.contains(color))
 		{
 			score = WINNEND;
 		}
-		else if (b.GetWinners().size() > 0)
+		else if ( winners.size() > 0)
 		{
 			score = VERLIEZEND;
 		}
@@ -188,7 +188,7 @@ public class RecursiveAI2 extends AI {
 		}
 		
 
-		for (int y = 0; y <= 8; y++)
+		for (int y = 8; y >= 0; y--)
 		{
 			for (int x = 0; x <= 8; x++)
 			{
