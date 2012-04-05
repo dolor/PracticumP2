@@ -8,6 +8,7 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
+import eindopdracht.util.PTLog;
 
 public class IntelligentAI extends AI {
 	
@@ -287,10 +288,6 @@ public class IntelligentAI extends AI {
 		r.calculateTurn(turn);
 	}
 	
-	private void printLine(String line)
-	{
-		System.out.println("AI:\t\t"+line);
-	}
 	
 	public ArrayList<IntelligentSet> getOptions()
 	{
@@ -321,7 +318,7 @@ public class IntelligentAI extends AI {
 					if (newBoard.GetWinners().contains(this.getColor()))
 					{
 						s.setInstantWin();
-						printLine("Player " + this.getColor() + ", Instant win detected at X: "+x+", Y: "+y);
+						PTLog.log("IntelligentAI", "Player " + this.getColor() + ", Instant win detected at X: "+x+", Y: "+y);
 					}					
 
 					// CENTER_CENTER
@@ -391,9 +388,9 @@ public class IntelligentAI extends AI {
 			}
 		}
 		Position pos = pick.getPosition();
-		this.printLine("Picked score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
-		this.printLine("X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
-		 
+		PTLog.log("IntelligentAI", "Picked score: "+pick.getScore()+", OtherPlayerMove: "+pick.isOtherPlayerMove());
+		PTLog.log("IntelligentAI", "X "+pos.getX()+", Y "+pos.getY()+", BLOCK "+pos.getBlock()+", TILE "+pos.getTile());
+		
 		// stel pick in in set
 		set.setBlock(pick.getPosition().getBlock());
 		set.setTile(pick.getPosition().getTile());
