@@ -23,6 +23,7 @@ import eindopdracht.client.GameController;
 import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
+import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
 import eindopdracht.model.Command;
@@ -161,7 +162,8 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 				// player
 				window.setStatus("Your Turn");
 				this.currentTurn = turn;
-				this.setBlockStates(BlockPanel.TURNING);
+				if (!game.getLocalPlayer().getClass().equals(AIPlayer.class))
+					this.setBlockStates(BlockPanel.TURNING);
 			} else if (turn.getBlock() >= 0 && turn.getRotation() >= 1 && turn.getRotation() <= 2){
 				window.setStatus("Waiting...");
 				int updatedBlock = turn.getBlock();
