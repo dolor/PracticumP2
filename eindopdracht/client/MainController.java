@@ -31,6 +31,7 @@ public class MainController extends Observable implements Observer {
 	private int aiType;
 	private int numberOfReplays;
 	private int numberOfWins;
+	private int aiDepth;
 
 	public MainController() {
 		PentagoXLWindow frame = new PentagoXLWindow(this);
@@ -81,6 +82,7 @@ public class MainController extends Observable implements Observer {
 		lobbySize = players;
 		this.humanPlayer = humanPlayer;
 		this.aiType = aiType;
+		this.aiDepth = aiDepth;
 		
 		PTLog.log("MainController", "Joining as " + name + " in a lobby with " + players
 				+ " players max");
@@ -93,6 +95,7 @@ public class MainController extends Observable implements Observer {
 		localPlayer.setName(name);
 
 		if (network != null) {
+			network.addObserver(localPlayer);
 			network.join(name, players);
 		}
 	}
@@ -102,7 +105,7 @@ public class MainController extends Observable implements Observer {
 	 */
 	public void restart() {
 		this.connect(host, port);
-		this.join(playerName, lobbySize, humanPlayer, aiType);
+		this.join(playerName, lobbySize, humanPlayer, aiType, aiDepth);
 	}
 
 	/**
@@ -151,7 +154,6 @@ public class MainController extends Observable implements Observer {
 			Command command = (Command) object;
 			
 			if (command.getCommand().equals(Protocol.START)) {
-				// this.playerList.setText("");
 				String[] p = command.getArgs();
 				this.startGame(p);
 			}
