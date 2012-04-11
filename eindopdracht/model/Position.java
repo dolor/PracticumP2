@@ -66,6 +66,10 @@ public class Position {
 		this.y = y;
 	}
 	
+	/**
+	 * Gives the block number based on the X and Y coordinates.
+	 * @return block number of this position.
+	 */
 	public int getBlock()
 	{
 		// kijk welk block het is
@@ -74,7 +78,10 @@ public class Position {
 		
 		return BlockRow * 3 + BlockCol;
 	}
-	
+	/**
+	 * Gives the tile number based on the X and Y coordinates.
+	 * @return tile number of this position.
+	 */
 	public int getTile()
 	{
 		int TileCol = x % 3;

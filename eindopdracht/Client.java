@@ -6,8 +6,6 @@ import eindopdracht.client.MainController;
 import eindopdracht.client.gui.PentagoXLWindow;
 
 	// TODO: AI crasht als de server niet bestaat.
-
-	// TODO: Geen lege chat versturen
 	// TODO: Exit knop werkt niet
 
 public class Client {

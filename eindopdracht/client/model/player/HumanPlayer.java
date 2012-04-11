@@ -55,28 +55,16 @@ public class HumanPlayer extends Player{
 		if (arg.getClass().equals(Command.class)) {
 			Command command = (Command)arg;
 			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
-			//	PTLog.log(name, "JUST GOT MY TURN");
 				game.giveSet();
 			}
 		}
-		/*if (arg.getClass().equals(Set.class) && ((Set)arg).getPlayer().equals(this)) {
-			this.makeSet((Set)arg);
-		}*/
-		
-	/*	else if (arg.getClass().equals(Turn.class)) {
-			Turn turn = (Turn) arg;
-			if (turn.getPlayer().equals(this) && !turn.isExecuted()
-					&& turn.getValid()) {
-				// The turn is for this player and should still be executed
-				bordGUI.
-			}
-		}*/
 	}
 	
 	/**
 	 * Ask his hint-AI to tell what he would do
 	 */
 	public void requestHint() {
+		PTLog.log(name, "Requesting a hint");
 		if (this.getState() == Player.SETTING) {
 			Set set = new Set(this);
 			hintAI.calculateSet(set);

@@ -25,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import eindopdracht.client.gui.PentagoXLWindow;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
 import eindopdracht.model.Position;
@@ -65,6 +67,9 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public static int TURNING = 2;
 
 	private Dimension previousSize;
+	
+	private int settingHint = -1;
+	private int turningHint = -1;
 
 	/**
 	 * Create a new BlockView
@@ -269,6 +274,35 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public void hideRotateButtons() {
 		this.remove(cwButton);
 		this.remove(ccwButton);
+	}
+	
+	/**
+	 * Shows a hint for a set on the board
+	 * @param set with the hint
+	 */
+	public void showSetHint(Set set) {
+		settingHint = set.getTile();
+		this.repaint();
+	}
+	
+	/**
+	 * Shows a hint for a turn on the board
+	 * @param turn with the hint
+	 */
+	public void showRotateHint(Turn turn) {
+		
+	}
+	
+	public void resetHints() {
+		if (settingHint != -1)
+		{
+			settingHint = -1;
+			this.repaint();
+		}
+		else if (turningHint != -1)
+		{
+			//Reset turning hint
+		}
 	}
 
 	/**

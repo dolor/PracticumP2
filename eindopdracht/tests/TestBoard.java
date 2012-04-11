@@ -66,9 +66,9 @@ public class TestBoard
 			}
 			
 			
-			if (b.GetWinners().size() > 0) {
+			if (b.getWinners().size() > 0) {
 				doorgaan = false;
-				for (int winner : b.GetWinners())
+				for (int winner : b.getWinners())
 				{
 					PTLog.log("TestBoard", "Winner : "+winner);
 				}

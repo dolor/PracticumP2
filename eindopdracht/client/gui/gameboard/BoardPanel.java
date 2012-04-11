@@ -211,7 +211,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * Resets all shown hints
 	 */
 	public void resetHints() {
-		
+		PTLog.log("Board", "Resetting hints");
 	}
 	
 	/**
@@ -266,7 +266,8 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * @ensure will be shown on the view
 	 */
 	public void showSetHint(Set set) {
-		
+		PTLog.log("Board", "Showing hint: " + set.toString());
+		blocks.get(set.getBlock()).showSetHint(set);
 	}
 
 	/**
@@ -276,7 +277,8 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * @ensure will be shown on the view
 	 */
 	public void showRotateHint(Turn turn) {
-		
+		PTLog.log("Board", "Showing hint: " + turn.toString());
+		blocks.get(turn.getBlock()).showRotateHint(turn);
 	}
 
 	@Override

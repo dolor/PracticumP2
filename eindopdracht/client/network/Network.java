@@ -76,9 +76,6 @@ public class Network extends Observable implements Observer {
 		// Turn the block
 		else if (command.getCommand().equals(Protocol.TURN_BLOCK)) {
 			String playerName = command.getArg(2);
-			// PTLog.log("Network", "Player " + playerName + " turned a block" +
-			// command.getArg(0) + " " + command.getArg(1));
-			//PTLog.log("Network", "TURN_BLOCK " + playerName);
 
 			for (NetworkPlayer player : networkPlayers) {
 				if (player.getName().equals(playerName)) {
@@ -95,27 +92,15 @@ public class Network extends Observable implements Observer {
 		// Set the tile
 		else if (command.getCommand().equals(Protocol.SET_TILE)) {
 			String playerName = command.getArg(2);
-			// PTLog.log("Network", "Player " + playerName + " set a tile: " +
-			// command.getArg(0) + " " + command.getArg(1));
-			/*if (playerName.equals(localPlayer.getName())) {
-				//The set had been performed, now TURN!
-				Turn turn = new Turn(localPlayer);
-				localPlayer.setState(Player.TURNING);
-
-				this.setChanged();
-				this.notifyObservers(turn);
-			} else {*/
-			//PTLog.log("Network", "SET_TILE " + command.getArg(0) + " " + command.getArg(1) + " " + command.getArg(2));
-				for (NetworkPlayer player : networkPlayers) {
-					if (player.getName().equals(playerName)) {
-						Set set = new Set(player);
-						set.setBlock(ModelUtil.letterToInt(command.getArg(0)));
-						set.setTile(Integer.parseInt(command.getArg(1)));
-
-						player.performSet(set);
-					}
+			for (NetworkPlayer player : networkPlayers) {
+				if (player.getName().equals(playerName)) {
+					Set set = new Set(player);
+					set.setBlock(ModelUtil.letterToInt(command.getArg(0)));
+					set.setTile(Integer.parseInt(command.getArg(1)));
+					
+					player.performSet(set);
 				}
-			//}
+			}
 		}
 
 		// Start a new game
@@ -126,7 +111,6 @@ public class Network extends Observable implements Observer {
 
 		// Give the turn to the localplayer
 		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
-			//PTLog.log("Network", "YOUR_TURN");
 			this.setChanged();
 			this.notifyObservers(command);
 		}
@@ -140,7 +124,6 @@ public class Network extends Observable implements Observer {
 		else if (command.getCommand().equals(Protocol.END_GAME)) {
 			// Game was quit from the server-side
 			PTLog.log("Network", command.toString());
-			//PTLog.log("Network", "Game was ended by server");
 			this.setChanged();
 			this.notifyObservers(command);
 		}
@@ -299,7 +282,6 @@ public class Network extends Observable implements Observer {
 	public void setTile(int block, int tile) {
 		String msg = String.format(Protocol.SET_TILE + " " + letters[block]
 				+ " " + tile);
-		PTLog.log("Network", "sending: " + msg);
 		if (handler != null)
 			handler.sendString(msg);
 		else

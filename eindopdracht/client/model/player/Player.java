@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import eindopdracht.client.GameController;
+import eindopdracht.util.PTLog;
 
 public class Player implements Observer  {
 	protected int color;
@@ -57,6 +58,7 @@ public class Player implements Observer  {
 	}
 	public void setState(int state)
 	{
+		PTLog.log(name, "State set to " + state);
 		if (state >= 0 && state <= 2)
 		{
 			this.state = state;

@@ -1,7 +1,9 @@
 package eindopdracht.model;
 
 public class Tile {
-	
+	/**
+	 * @invariant color >= 0 && color <= 4
+	 */
 	int color;
 	public Tile()
 	{
@@ -13,7 +15,7 @@ public class Tile {
 		this.color = color;
 	}
 
-	public boolean SetColor(int color)
+	public boolean setColor(int color)
 	{
 		return setColor(color, false);
 	}
@@ -57,7 +59,11 @@ public class Tile {
 	{
 		return this.color;
 	}
-	
+	/**
+	 * Returns a deepcopy of this tile
+	 * @ensure deepCopy().getColor() == this.getColor()
+	 * @return copy of this tile
+	 */
 	public Tile deepCopy()
 	{
 		return new Tile(this.getColor());

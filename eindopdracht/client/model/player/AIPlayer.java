@@ -66,9 +66,11 @@ public class AIPlayer extends Player {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		PTLog.log(name, "Received a command!");
 		if (arg.getClass().equals(Command.class)) {
 			Command command = (Command) arg;
 			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				PTLog.log(name, "GOT THE TURN");
 				game.giveSet();
 			}
 		}
@@ -76,7 +78,7 @@ public class AIPlayer extends Player {
 		if (arg.getClass().equals(Set.class)) {
 			Set set = (Set) arg;
 			if (set.getPlayer().equals(this) && !set.isExecuted()
-					&& set.getValid() && !game.getBoard().GameOver()) {
+					&& set.getValid() && !game.getBoard().gameOver()) {
 				// The set is for this player and should still be executed
 				ai.calculateSet(set);
 				game.set(set);
@@ -87,7 +89,7 @@ public class AIPlayer extends Player {
 		else if (arg.getClass().equals(Turn.class)) {
 			Turn turn = (Turn) arg;
 			if (turn.getPlayer().equals(this) && !turn.isExecuted()
-					&& turn.getValid() && !game.getBoard().GameOver()) {
+					&& turn.getValid() && !game.getBoard().gameOver()) {
 				// The turn is for this player and should still be executed
 				ai.calculateTurn(turn);
 				game.turn(turn);

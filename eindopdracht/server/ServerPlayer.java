@@ -14,7 +14,6 @@ public class ServerPlayer implements Observer {
 	private int preferredNumberOfPlayers;
 	private Lobby lobby;
 	private ServerGameController game;
-	private ServerController server;
 	int state;
 	private int color;
 	private PlayerHandler handler;
@@ -30,9 +29,8 @@ public class ServerPlayer implements Observer {
 	 * 
 	 * @param handler
 	 */
-	public ServerPlayer(PlayerHandler handler, ServerController server) {
+	public ServerPlayer(PlayerHandler handler) {
 		this.handler = handler;
-		this.server = server;
 	}
 
 	/**
@@ -62,8 +60,6 @@ public class ServerPlayer implements Observer {
 	 * @ensure the message is sent to the hooked player
 	 */
 	public void sendMessage(String message) {
-		if (!message.contains("set_tile") && !message.contains("turn_block") && !message.contains("chat"))
-			PTLog.log(name, message);
 		handler.sendMessage(message);
 	}
 
