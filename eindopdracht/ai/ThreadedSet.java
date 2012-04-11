@@ -5,6 +5,7 @@ import eindopdracht.model.Color;
 import eindopdracht.model.Position;
 import eindopdracht.util.PTLog;
 
+//TODO: klasse verwijderen bij uiteindelijke inlevering
 public class ThreadedSet extends Thread{
 
 	Board board;
