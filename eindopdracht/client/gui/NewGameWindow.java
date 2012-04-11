@@ -24,6 +24,7 @@ public class NewGameWindow extends JFrame implements DocumentListener,
 	private JComboBox lobbySizeBox;
 	private JCheckBox aiButton;
 	private JComboBox aiType;
+	private JTextField aiDepth;
 	private JButton cancelButton;
 	private JButton okayButton;
 	private PentagoXLWindow observer;
@@ -75,6 +76,12 @@ public class NewGameWindow extends JFrame implements DocumentListener,
 		aiType.setEnabled(false);
 		aiType.setSelectedIndex(2);
 		this.add(aiType);
+		
+		this.add(new JLabel("AI Depth"));
+		aiDepth = new JTextField(2);
+		aiDepth.setText("3");
+		aiDepth.getDocument().addDocumentListener(this);
+		this.add(aiDepth);
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
@@ -99,8 +106,9 @@ public class NewGameWindow extends JFrame implements DocumentListener,
 			name.replaceAll("\n", "_");
 			int size = Integer
 					.parseInt((String) lobbySizeBox.getSelectedItem());
+			int depth = Integer.parseInt(aiDepth.getText());
 			boolean human = !aiButton.isSelected();
-			observer.join(name, size, human, aiType.getSelectedIndex());
+			observer.join(name, size, human, aiType.getSelectedIndex(), depth);
 			observer.newGameFrameDismissed();
 			this.dispose();
 		}
@@ -118,7 +126,15 @@ public class NewGameWindow extends JFrame implements DocumentListener,
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		if (!nameTextField.getText().isEmpty()) {
-			okayButton.setEnabled(true);
+			try {
+				int d = Integer.parseInt(aiDepth.getText());
+				if (d > 0)
+					okayButton.setEnabled(true);
+				else
+					okayButton.setEnabled(false);
+			} catch(NumberFormatException e) {
+				okayButton.setEnabled(false);
+			}
 		} else {
 			okayButton.setEnabled(false);
 		}

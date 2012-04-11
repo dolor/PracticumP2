@@ -76,7 +76,7 @@ public class MainController extends Observable implements Observer {
 	 *            start as a player if true, starts an AI if false
 	 * @require aiType: 0->random, 1->intelligent, 2-> recursive
 	 */
-	public void join(String name, int players, boolean humanPlayer, int aiType) {
+	public void join(String name, int players, boolean humanPlayer, int aiType, int aiDepth) {
 		playerName = name;
 		lobbySize = players;
 		this.humanPlayer = humanPlayer;
@@ -87,9 +87,9 @@ public class MainController extends Observable implements Observer {
 		if (!humanPlayer)
 			PTLog.log("MainController", "Starting with AI type " + aiType);
 		if (humanPlayer)
-			localPlayer = new HumanPlayer();
+			localPlayer = new HumanPlayer(aiDepth);
 		else
-			localPlayer = new AIPlayer(aiType);
+			localPlayer = new AIPlayer(aiType, aiDepth);
 		localPlayer.setName(name);
 
 		if (network != null) {

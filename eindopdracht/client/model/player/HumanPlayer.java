@@ -9,6 +9,7 @@ import java.util.Observable;
 import eindopdracht.ai.AI;
 import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
+import eindopdracht.ai.RecursiveAI2;
 import eindopdracht.client.gui.gameboard.BoardPanel;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
@@ -21,9 +22,11 @@ public class HumanPlayer extends Player{
 	
 	private AI hintAI;
 	private BoardPanel bordGUI;
+	private int aiDepth;
 	
-	public HumanPlayer() {
+	public HumanPlayer(int aiDepth) {
 		this.setLocal(true);
+		this.aiDepth = aiDepth;
 	}
 	
 	/**
@@ -35,7 +38,7 @@ public class HumanPlayer extends Player{
 		for (Player player:players) {
 			playerColors.add(player.getColor());
 		}
-		this.hintAI = new IntelligentAI(this.getColor(), this.getGame().getBoard(), playerColors);
+		this.hintAI = new RecursiveAI2(this.getColor(), this.getGame().getBoard(), playerColors, aiDepth);
 	}
 	
 	/**
