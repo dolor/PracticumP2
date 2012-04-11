@@ -30,6 +30,7 @@ public class MainController extends Observable implements Observer {
 	private boolean humanPlayer;
 	private int aiType;
 	private int numberOfReplays;
+	private int numberOfWins;
 
 	public MainController() {
 		PentagoXLWindow frame = new PentagoXLWindow(this);
@@ -169,16 +170,19 @@ public class MainController extends Observable implements Observer {
 				if (this.numberOfReplays > 0) {
 					PTLog.log("MainController", "Going to play " + numberOfReplays + " more games");
 					this.numberOfReplays--;
-					//try {
-					//	Thread.sleep(1000);
-					//} catch (InterruptedException e){}
+					PTLog.log("MainController", "Already won " + numberOfWins + " Games!");
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e){}
 					this.restart();
 				}
 			}
 			
 			else if (command.getCommand().equals(Protocol.END_GAME)) {
-				//this.disconnect();
-				
+				if (Integer.parseInt(command.getArg(0)) == 1) {
+					if (command.getArg(1).equals(this.localPlayer.getName()))
+						numberOfWins++;
+				}
 			}
 			
 		} else if (object.getClass().equals(GameController.class)) {

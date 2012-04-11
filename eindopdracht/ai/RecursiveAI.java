@@ -251,10 +251,10 @@ public class RecursiveAI extends AI {
 
 	@Override
 	public void calculateTurn(Turn turn) {
-		try {
+		/*try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
-		}
+		}*/
 
 		// kies een willekeurig blok
 		int block = (int) Math.round(Math.random() * 8);
