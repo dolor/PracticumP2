@@ -180,23 +180,17 @@ public class RecursiveAI2 extends AI {
 	public PositionAI getBestMove(Board b, int playerColor, int recursionDepth)
 	{
 		PositionAI returnPos = null;
-		PositionAI p = new PositionAI(0, 0);
-		
-		if (recursionDepth == 0)
-		{
-			return new PositionAI(0, 0);
-		}
-		
-
 		for (int y = 8; y >= 0; y--)
 		{
 			for (int x = 0; x <= 8; x++)
 			{
 				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // valkje = leeg
 				{
-					// kijk of de zet winnen is
-					p.setX(x);
-					p.setY(y);
+					PositionAI p = new PositionAI(x, y);
+					if (recursionDepth == 0)
+					{
+						return p;
+					}
 					
 					// plaats de zet
 					b.set(p.getBlock(), p.getTile(), playerColor, true);

@@ -95,7 +95,7 @@ public class Board {
 			for (Row r : getRows()) {
 				if (r.getLength() >= 5) {
 					//PTLog.log("Board", "Found a winner: " + r.getColor());
-					//System.out.println(r.toString());
+					
 					winners.add(r.getColor());
 				}
 			}
@@ -225,6 +225,7 @@ public class Board {
 					}
 					else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
 						//einde van een rij gevonden dus sluit hem voor de zekerheid af
+						lastcolor = 0;
 						r = new Row();
 					}
 					lastcolor = color;

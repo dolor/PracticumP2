@@ -152,7 +152,7 @@ public class PlayerHandler implements Runnable {
 		}
 
 		else {
-			PTLog.log(name, "Unrecognized command received!");
+			PTLog.log(name, "Unrecognized command received: " + command.toString());
 		}
 	}
 
