@@ -2,6 +2,9 @@ package eindopdracht;
 
 import eindopdracht.util.PTLog;
 
+/**
+ * Starts the server
+ */
 public class Server {
 	// TODO: quit sturen als de server afgesloten wordt met control-c
 
