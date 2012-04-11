@@ -66,9 +66,11 @@ public class AIPlayer extends Player {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		PTLog.log(name, "Received a command!");
 		if (arg.getClass().equals(Command.class)) {
 			Command command = (Command) arg;
 			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				PTLog.log(name, "GOT THE TURN");
 				game.giveSet();
 			}
 		}

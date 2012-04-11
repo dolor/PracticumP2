@@ -1,6 +1,7 @@
 package eindopdracht.server.network;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Network {
 		ServerSocket socket = null;
 		
 	    socket = new ServerSocket(port);
-	    
+
 	    PTLog.log("Network", "Port " + port + " opened, awaiting connection...");
 
 		boolean tryConnection = true;
