@@ -171,8 +171,10 @@ public class RecursiveAI2 extends AI {
 				{
 
 					PositionAI p = new PositionAI(x, y);
+					
 					if (recursionDepth == 0)
 					{
+						p.setDepth(recursionDepth);
 						return p;
 					}
 
