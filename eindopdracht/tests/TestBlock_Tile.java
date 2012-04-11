@@ -7,25 +7,25 @@ public class TestBlock_Tile {
 		
 		Block block = new Block();
 		
-		block.getTile(1).SetColor(Color.RED);
-		block.getTile(2).SetColor(Color.GREEN);
-		block.getTile(3).SetColor(Color.RED);
-		block.getTile(4).SetColor(Color.BLUE);
-		block.getTile(5).SetColor(Color.YELLOW);
-		block.getTile(6).SetColor(Color.GREEN);
-		block.getTile(7).SetColor(Color.BLUE);
-		block.getTile(8).SetColor(Color.YELLOW);
-		block.getTile(0).SetColor(Color.BLUE);
+		block.getTile(1).setColor(Color.RED);
+		block.getTile(2).setColor(Color.GREEN);
+		block.getTile(3).setColor(Color.RED);
+		block.getTile(4).setColor(Color.BLUE);
+		block.getTile(5).setColor(Color.YELLOW);
+		block.getTile(6).setColor(Color.GREEN);
+		block.getTile(7).setColor(Color.BLUE);
+		block.getTile(8).setColor(Color.YELLOW);
+		block.getTile(0).setColor(Color.BLUE);
 		
-		block.DrawBlock();
+		block.drawBlock();
 		System.out.println("--------");
 		block.Turn(Block.CW);
 		
-		block.DrawBlock();
+		block.drawBlock();
 		System.out.println("--------");
 		block.Turn(Block.CCW);
 		
-		block.DrawBlock();
+		block.drawBlock();
 		
 	}
 

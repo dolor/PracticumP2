@@ -173,7 +173,7 @@ public class GameController extends Observable {
 												// uitgevoerd
 
 					// deel een nieuwe turn uit
-					if (!board.GameOver() && set.getPlayer().equals(localPlayer))
+					if (!board.gameOver() && set.getPlayer().equals(localPlayer))
 						this.giveTurn();
 
 				} else {
@@ -213,7 +213,7 @@ public class GameController extends Observable {
 	}
 
 	public boolean gameEnded() {
-		if (board.GetWinners().size() > 0) {
+		if (board.getWinners().size() > 0) {
 			//this.endGame(endDueToWinner);
 			return true;
 		} else

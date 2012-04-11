@@ -29,8 +29,11 @@ public class Board {
 
 	/**
 	 * Perform the set on this board
-	 * 
-	 * @return true if succesful, false if invalid
+	 * @param block the block on which the tile is located
+	 * @param tile the tile on which the set has to be preformed
+	 * @param color the color which has to be set on the tile
+	 * @force force the set
+	 * @return true if succesfull, false if invalid
 	 */
 	public boolean set(int block, int tile, int color, boolean force) {
 		// System.out.printf("Block:"+block+" Tile:"+tile+" Color:"+color+" \n");
@@ -50,6 +53,12 @@ public class Board {
 		this.calculateHash();
 		return valid;
 	}
+	/**
+	 * Turn a block on the board
+	 * @param block block that has to be returned
+	 * @param rotation the rotation direction CW / CCW
+	 * @return
+	 */
 
 	public boolean turn(int block, int rotation) {
 		if (!(block >= 0 && block <= 8 && rotation >= 1 && rotation <= 2)) {
@@ -66,12 +75,10 @@ public class Board {
 	}
 
 	/**
-	 * Kijkt naar het board als geheel met een x van 0 8 en een y van 0 tot 8
-	 * 0,0 is bovenin
-	 * 
+	 * Gives a tile based on X and Y positions not block and tile
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return correct tile based on X and Y positions
 	 */
 
 	public Tile getTileXY(int x, int y) {
@@ -82,12 +89,11 @@ public class Board {
 	}
 
 	/**
-	 * board weet alleen of er 5 op een rij is of niet. Het aantal knikkers
-	 * controlleert game
+	 * Gives a list of colors of the winners (if any).
 	 * 
-	 * @return
+	 * @return List of winners
 	 */
-	public ArrayList<Integer> GetWinners() {
+	public ArrayList<Integer> getWinners() {
 		if (!hashMap.containsKey(this.getHash())) {
 			// ga alle rijen af
 			ArrayList<Integer> winners = new ArrayList<Integer>();
@@ -105,7 +111,10 @@ public class Board {
 			return (hashMap.get(this.getHash()));
 		}
 	}
-
+	/**
+	 * Gives all the "rows" on the board. Rows are defined as a sequence of tiles with the same color
+	 * @return alle the rows on the board
+	 */
 	public ArrayList<Row> getRows() {
 		ArrayList<Row> rows = new ArrayList<Row>();
 
@@ -249,6 +258,13 @@ public class Board {
 
 	}
 
+	/**
+	 * Set a block
+	 * @param b the block
+	 * @param block the position of the block
+	 * @require b != null
+	 * @ensure this.getBlock() == b
+	 */
 	public void setBlock(Block b, int block) {
 		this.blocks[block] = b;
 	}
@@ -257,8 +273,12 @@ public class Board {
 		return this.blocks[block];
 	}
 
-	public boolean GameOver() {
-		return !GetWinners().isEmpty(); // als de lijst niet leeg is is er een
+	/**
+	 * Is the game over
+	 * @return true if game is over, false if games is not yet over
+	 */
+	public boolean gameOver() {
+		return !getWinners().isEmpty(); // als de lijst niet leeg is is er een
 										// winner en dus game over
 	}
 
@@ -285,6 +305,12 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Gives a copy of the board
+	 * @ensure this.getTile(n) == deepCopy.getTile(n)
+	 * @ensure this.getBlock(n) == deepCopy.getBlock(n)
+	 * @return copy of this board
+	 */
 	public Board deepCopy() {
 		Board b = new Board();
 		for (int i = 0; i <= 8; i++) {
@@ -294,6 +320,7 @@ public class Board {
 		return b;
 	}
 	
+	//TODO: Erik kan je hier javadock in stoppen?
 	public void calculateHash() {
 		Position pos = new Position(0, 0);
 		StringBuffer newValue = new StringBuffer();
@@ -316,7 +343,7 @@ public class Board {
 	}
 	
 	/**
-	 * 
+	 * Returns a calculated hash of the boards state
 	 * @return the hash code of the current board state
 	 * @ensure the code is always unique for any given board state
 	 */

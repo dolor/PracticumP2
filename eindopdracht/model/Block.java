@@ -18,6 +18,13 @@ public class Block {
 		}
 	}
 	
+	/**
+	 * Gives the opposite rotation of the one given
+	 * @param rotation CW / CCW
+	 * @require rotation == this.CW || rotation == this.CCW
+	 * @ensure getOtherRotation() == this.CCW || getOtherRotation == this.CW
+	 * @return the opposite rotation of the given rotation
+	 */
 	public static int getOtherRotation(int rotation)
 	{
 		if (rotation == CW)
@@ -99,8 +106,10 @@ public class Block {
 		tiles[tile] = t;
 	}
 	
-	// for debug purposes
-	public void DrawBlock()
+	/**
+	 * Prints the Block as a string to System.out
+	 */
+	public void drawBlock()
 	{
 		for (int i = 0; i <= 2; i++)
 		{

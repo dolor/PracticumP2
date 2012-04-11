@@ -20,7 +20,7 @@ public class Row {
 	}
 	
 	/**
-	 * @require getColor() > 0 && getColor() <= 4
+	 * @require getColor() >= 0 && getColor() <= 4
 	 * @return the color of the positions in this row
 	 */
 	public int getColor()

@@ -18,7 +18,7 @@ public class IntelligentAI extends AI {
 	// Used because these dumb AIs are so fast there gets a race condition in
 	// the network. Shouldn't be necessary with the recursive AI
 
-	public IntelligentAI(int color, Board board, ArrayList<Integer> players) { // TODO: ANDERE SPELERS DOORGEVEN
+	public IntelligentAI(int color, Board board, ArrayList<Integer> players) {
 		super(color, board, players);
 		
 		
@@ -315,7 +315,7 @@ public class IntelligentAI extends AI {
 					newBoard.set(pos.getBlock(), pos.getTile(), this.getColor());
 
 					// INSTANT_WIN
-					if (newBoard.GetWinners().contains(this.getColor()))
+					if (newBoard.getWinners().contains(this.getColor()))
 					{
 						s.setInstantWin();
 						PTLog.log("IntelligentAI", "Player " + this.getColor() + ", Instant win detected at X: "+x+", Y: "+y);

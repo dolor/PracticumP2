@@ -199,11 +199,11 @@ public class ServerGameController extends Observable {
 	 * @ensure true if the game ended
 	 */
 	public boolean gameEnded() {
-		if (board.GameOver()) {
+		if (board.gameOver()) {
 			PTLog.log(name, "Game has winner");
 			String gameOverString = new String(Protocol.END_GAME + " "
 					+ ServerController.endDueToWinner);
-			for (Integer playerColor : board.GetWinners()) {
+			for (Integer playerColor : board.getWinners()) {
 				for (ServerPlayer player : players) {
 					if (player.getColor() == playerColor) {
 						gameOverString = gameOverString + " "
