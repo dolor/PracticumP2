@@ -196,18 +196,30 @@ public class RecursiveAI2 extends AI {
 						return p;
 						
 					}
-					// de eerst volgende zet voor de tegestander is bij deze positie winnend
-					else if (recursionDepth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(playerColor)) == this.WINNEND)
+					
+					
+					// Als de recursiediepte de eerste is. Kijk of je een zet kan blokkeren
+					if (recursionDepth == RECURSION_DEPTH )
 					{
-						p.setDepth(recursionDepth);
-						b.drawBoard();
-						PTLog.log("RecursiveAI", "Block instant win of opponent, depth "+recursionDepth);
-						b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
-						return p;
+						// kijk of de volgende speler kan winnen
+						int nextPlayer = nextPlayerForColor(playerColor);
+						b.set(p.getBlock(), p.getTile(), nextPlayer, true);
+						if (geefUitkomst(b, nextPlayer) == this.WINNEND)
+						{
+							p.setDepth(recursionDepth);
+							PTLog.log("RecursiveAI", "Block instant win of opponent, depth "+recursionDepth);
+							
+							// haal de zet weer weg.
+							b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
+							
+							// return de blokkerende zet
+							return p;
+						}
 					}
-					else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
+					
+					if (uitkomst == this.ONBESLIST)
 					{
-
+						b.set(p.getBlock(), p.getTile(), playerColor, true);
 						PositionAI recPos = getBestMove(b, nextPlayerForColor(playerColor), recursionDepth-1);
 
 						if (recPos != null)
@@ -215,6 +227,7 @@ public class RecursiveAI2 extends AI {
 							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
 							{
 								//returnPos = recPos;
+								p.setDepth(recPos.getDepth());
 								returnPos = p;
 							}
 						}
@@ -236,10 +249,10 @@ public class RecursiveAI2 extends AI {
 	public void calculateSet(Set set) {
 		PTLog.log("RecursiveAI", "Start calculating best move");
 		Position pos = this.getBestMove(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
-		
+		PTLog.log("RecursiveAI", "Move: "+pos.getX()+", "+pos.getY());
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
-		PTLog.log("RecursiveAI", "Move: "+pos.getX()+", "+pos.getY());
+		
 	}
 
 }
