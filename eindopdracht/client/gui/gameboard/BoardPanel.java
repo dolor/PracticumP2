@@ -41,10 +41,13 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	public static int dimension = 3;
 	private static int minimumSize = 300;
 	
+	private int blockShowingHint;
+	
 	/**
 	 * Create a new bord view
 	 */
 	public BoardPanel(PentagoXLWindow window) {
+		blockShowingHint = -1;
 		this.window = window;
 		this.loadImages();
 		this.buildGUI();
@@ -121,8 +124,8 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		// Should only be updated by the broadcasted sets and turns. Bordpanel
 		// should either be
 		// enabled for setting/turning or update what it looks like
-
 		if (object.getClass().equals(Set.class)) {
+			this.resetHints();
 			
 			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);
@@ -147,6 +150,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		}
 
 		else if (object.getClass().equals(Turn.class)) {
+			this.resetHints();
 			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);
 			
@@ -211,7 +215,10 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 * Resets all shown hints
 	 */
 	public void resetHints() {
-		PTLog.log("Board", "Resetting hints");
+		if (blockShowingHint != -1) {
+			PTLog.log("Board", "Resetting hints");
+			blocks.get(blockShowingHint).resetHints();
+		}
 	}
 	
 	/**
@@ -267,6 +274,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 */
 	public void showSetHint(Set set) {
 		PTLog.log("Board", "Showing hint: " + set.toString());
+		blockShowingHint = set.getBlock();
 		blocks.get(set.getBlock()).showSetHint(set);
 	}
 
@@ -278,6 +286,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 	 */
 	public void showRotateHint(Turn turn) {
 		PTLog.log("Board", "Showing hint: " + turn.toString());
+		blockShowingHint = turn.getBlock();
 		blocks.get(turn.getBlock()).showRotateHint(turn);
 	}
 
