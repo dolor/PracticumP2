@@ -64,7 +64,7 @@ public class RecursiveAI2 extends AI {
 	 * @param recursionDepth the current recursion depth
 	 * @return the best rotation on this board
 	 */
-	public Rotation giveBestRotation(Board b, int playerColor, int recursionDepth)
+	public Rotation giveBestRotation(Board b, int playerColor)
 	{
 		Rotation returnRot = null;
 		
@@ -73,11 +73,6 @@ public class RecursiveAI2 extends AI {
 			for (int rotation = 1; rotation <= 2; rotation++)
 			{
 				
-				
-				if (recursionDepth == 0)
-				{
-					return new Rotation(block, rotation);
-				}
 
 				b.turn(block, rotation);
 				
@@ -85,13 +80,10 @@ public class RecursiveAI2 extends AI {
 				
 				// haal de uitkomst van de zet op					
 				int uitkomst = geefUitkomst(b, playerColor) ;
-				
-				
-				
+								
 				if (uitkomst == this.WINNEND)
 				{
 					// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
-					currentRot.setDepth(recursionDepth);
 					currentRot.setColor(playerColor);
 					
 					// draai het blok terug
@@ -100,18 +92,7 @@ public class RecursiveAI2 extends AI {
 					return currentRot;
 					
 				}
-				// de eerst volgende zet voor de tegestander is bij deze positie winnend
-				else if (recursionDepth == RECURSION_DEPTH && geefUitkomst(b, nextPlayerForColor(playerColor)) == this.WINNEND)
-				{
-					currentRot.setDepth(recursionDepth);
-					currentRot.setColor(playerColor);
-					
-					// draai het blok terug
-					b.turn(block, Block.getOtherRotation(rotation));
-					
-					return currentRot;
-				}
-				else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
+				else if (uitkomst == this.ONBESLIST)
 				{
 					if (returnRot == null)
 					{
@@ -121,8 +102,6 @@ public class RecursiveAI2 extends AI {
 
 				// draai het blok weer terug
 				b.turn(block, Block.getOtherRotation(rotation));
-				
-				
 			}
 		}
 		return returnRot;
@@ -132,7 +111,7 @@ public class RecursiveAI2 extends AI {
 	@Override
 	public void calculateTurn(Turn turn) {
 		PTLog.log("RecursiveAI", "Start calculating best rotation");
-		Rotation r = giveBestRotation(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
+		Rotation r = giveBestRotation(this.getBoard().deepCopy(), this.getColor());
 		
 		turn.setBlock(r.getBlock());
 		turn.setRotation(r.getRotation());		
