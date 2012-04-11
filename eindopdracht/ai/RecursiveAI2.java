@@ -54,17 +54,16 @@ public class RecursiveAI2 extends AI {
 		{
 			score = ONBESLIST;
 		}
-		
-		/*if (score == this.WINNEND && color != this.getColor())
-		{
-			score = this.VERLIEZEND;
-		}
-		else if (score == thi)*/
-		
 		return score;
 	}
 	
-
+	/**
+	 * Gives the best possible rotation for this current board.
+	 * @param b the current board
+	 * @param playerColor the current player
+	 * @param recursionDepth the current recursion depth
+	 * @return the best rotation on this board
+	 */
 	public Rotation giveBestRotation(Board b, int playerColor, int recursionDepth)
 	{
 		Rotation returnRot = null;
@@ -92,10 +91,8 @@ public class RecursiveAI2 extends AI {
 				if (uitkomst == this.WINNEND)
 				{
 					// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
-					//PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
 					currentRot.setDepth(recursionDepth);
 					currentRot.setColor(playerColor);
-					//b.drawBoard();
 					
 					// draai het blok terug
 					b.turn(block, Block.getOtherRotation(rotation));
@@ -108,7 +105,6 @@ public class RecursiveAI2 extends AI {
 				{
 					currentRot.setDepth(recursionDepth);
 					currentRot.setColor(playerColor);
-					//b.drawBoard();
 					
 					// draai het blok terug
 					b.turn(block, Block.getOtherRotation(rotation));
@@ -117,21 +113,10 @@ public class RecursiveAI2 extends AI {
 				}
 				else if (uitkomst == this.ONBESLIST && recursionDepth >= 1)
 				{
-
-					//PositionAI recPos = getBestMove(b, nextPlayerForColor(playerColor), recursionDepth-1);
-
 					if (returnRot == null)
 					{
-						/*if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
-						{
-							//returnPos = recPos;
-							returnPos = p;
-						}*/
 						returnRot = currentRot;
-					}
-
-					//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
-					
+					}			
 				}
 
 				// draai het blok weer terug
@@ -142,25 +127,22 @@ public class RecursiveAI2 extends AI {
 		}
 		return returnRot;
 	}
+	
+	
 	@Override
 	public void calculateTurn(Turn turn) {
-		/*RandomAI r = new RandomAI(this.getColor(), this.getBoard(), this.players);
-		r.calculateTurn(turn);*/
 		PTLog.log("RecursiveAI", "Start calculating best rotation");
 		Rotation r = giveBestRotation(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
 		
 		turn.setBlock(r.getBlock());
-		turn.setRotation(r.getRotation());
-		
-		
+		turn.setRotation(r.getRotation());		
 	}
 	
 	/**
 	 * Determines which color would be player after the given color
 	 * 
-	 * @param color
-	 *            current player
-	 * @return next player
+	 * @param color of current player
+	 * @return color of next player
 	 */
 	public int nextPlayerForColor(int color) {
 		for (int player : this.players) {
@@ -180,8 +162,9 @@ public class RecursiveAI2 extends AI {
 	public PositionAI getBestMove(Board b, int playerColor, int recursionDepth)
 	{
 		PositionAI returnPos = null;
-		PositionAI p = new PositionAI(0, 0);
+		PositionAI p;
 		
+		// recursion depth == 0, einde recursie
 		if (recursionDepth == 0)
 		{
 			return new PositionAI(0, 0);
@@ -195,8 +178,7 @@ public class RecursiveAI2 extends AI {
 				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // valkje = leeg
 				{
 					// kijk of de zet winnen is
-					p.setX(x);
-					p.setY(y);
+					p = new PositionAI(x, y);
 					
 					// plaats de zet
 					b.set(p.getBlock(), p.getTile(), playerColor, true);
@@ -205,16 +187,13 @@ public class RecursiveAI2 extends AI {
 					int uitkomst = geefUitkomst(b, playerColor) ;
 					
 					
-					
+					// return deze positie als we aan het winnen zijn
 					if (uitkomst == this.WINNEND)
 					{
 						// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
-						//PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
 						p.setDepth(recursionDepth);
 						p.setColor(playerColor);
-						//b.drawBoard();
 						b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
-						
 						return p;
 						
 					}
@@ -240,13 +219,11 @@ public class RecursiveAI2 extends AI {
 								returnPos = p;
 							}
 						}
-
-						//PTLog.log("RecursiveAI", "recPos: "+recPos.getDepth()+" returnPos: "+returnPos.getDepth());
-						
 					}
-
-					b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
+					
 					// maak de zet weer leeg;
+					b.set(p.getBlock(), p.getTile(), Color.EMPTY, true);
+					
 					
 
 				}
