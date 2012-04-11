@@ -1,7 +1,9 @@
 package eindopdracht.model;
 
 public class Tile {
-	
+	/**
+	 * @invariant color >= 0 && color <= 4
+	 */
 	int color;
 	public Tile()
 	{

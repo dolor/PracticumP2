@@ -1,7 +1,12 @@
 Server:
+De Server wordt gestart met de commandline. Men dient naar de directory voor eindopdracht te gaan
+en het volgende uit te voeren:
+java eindopdracht.Server
 
-Server wordt gestart met in de commandline java eindopdracht.Server gevolgt door het poortnummer
+Een Server zal nu draaien op poort 8888. Men kan het poortnummer ook wijzigen door het volgende uit te voeren
+java eindopdracht.Server <poortnummer>
 
 Client:
-
-Client wordt gestart met in de commandline java eindopdracht.Client
+De Client wordt gestart met de commandline. Men dient naar de directory voor eindopdracht te gaan
+en het volgende uit te voeren:
+java eindopdracht.Client
