@@ -1,8 +1,10 @@
 package eindopdracht.client.gui.gameboard;
 
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -19,12 +21,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import eindopdracht.client.gui.PentagoXLWindow;
+import eindopdracht.client.model.Set;
+import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
 import eindopdracht.model.Position;
@@ -65,6 +70,9 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public static int TURNING = 2;
 
 	private Dimension previousSize;
+	
+	private int settingHint = -1;
+	private int turningHint = -1;
 
 	/**
 	 * Create a new BlockView
@@ -147,6 +155,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		cwButton = new JButton();
 		cwButton.setIcon(new ImageIcon(cwImage));
 		cwButton.setOpaque(false);
+		cwButton.setBorder(BorderFactory.createLineBorder(java.awt.Color.RED, 4));
 		cwButton.setBorderPainted(false);
 		cwButton.setContentAreaFilled(false);
 		cwButton.addActionListener(this);
@@ -156,6 +165,7 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 		ccwButton = new JButton();
 		ccwButton.setIcon(new ImageIcon(ccwImage));
 		ccwButton.setOpaque(false);
+		ccwButton.setBorder(BorderFactory.createLineBorder(java.awt.Color.RED, 4));
 		ccwButton.setBorderPainted(false);
 		ccwButton.setContentAreaFilled(false);
 		ccwButton.addActionListener(this);
@@ -214,7 +224,6 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 			this.hideRotateButtons();
 		}
 		this.state = state;
-		// this.repaint();
 	}
 
 	/**
@@ -269,6 +278,45 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 	public void hideRotateButtons() {
 		this.remove(cwButton);
 		this.remove(ccwButton);
+	}
+	
+	/**
+	 * Shows a hint for a set on the board
+	 * @param set with the hint
+	 */
+	public void showSetHint(Set set) {
+		settingHint = set.getTile();
+		this.repaint();
+	}
+	
+	/**
+	 * Shows a hint for a turn on the board
+	 * @param turn with the hint
+	 */
+	public void showRotateHint(Turn turn) {
+		turningHint = turn.getRotation();
+		if (turningHint == Block.CW) {
+			cwButton.setBorderPainted(true);
+		} else if (turningHint == Block.CCW){
+			ccwButton.setBorderPainted(true);
+		}
+	}
+	
+	public void resetHints() {
+		if (settingHint != -1)
+		{
+			settingHint = -1;
+			this.repaint();
+		}
+		else if (turningHint != -1)
+		{
+			if (turningHint == Block.CW) {
+				cwButton.setBorderPainted(false);
+			} else if (turningHint == Block.CCW){
+				ccwButton.setBorderPainted(false);
+			}
+			turningHint = -1;
+		}
 	}
 
 	/**
@@ -381,6 +429,16 @@ public class BlockPanel extends JPanel implements MouseMotionListener,
 				g.drawImage(ballImage, p.x - size / 2, p.y - size / 2, size,
 						size, null);
 			}
+		}
+		
+		//If necessary, paint the set hint
+		if (settingHint != -1)
+		{
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setColor(java.awt.Color.RED);
+			g2.setStroke(new BasicStroke(4));
+			int bs = this.getSizeOfBall();
+			g2.drawOval(this.getPositionForBall(settingHint).x - bs/2, this.getPositionForBall(settingHint).y - bs/2, bs, bs);
 		}
 	}
 

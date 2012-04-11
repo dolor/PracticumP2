@@ -229,6 +229,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 		} else if (e.getSource().getClass().equals(JMenuItem.class)
 				&& ((JMenuItem) e.getSource()).getText().equals("Exit")) {
 			mc.exit();
+			this.dispose();
 		} else if (e.getSource().equals(hintButton)) {
 			mc.requestHint();
 		}
@@ -297,6 +298,7 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 
 			// The hint button should only be enabled for a human player
 			if (game.getLocalPlayer().getClass().equals(HumanPlayer.class)) {
+				System.out.println("Hint button enabled!");
 				hintButton.setEnabled(true);
 				((HumanPlayer) game.getLocalPlayer()).setBordPanel(bord);
 			}

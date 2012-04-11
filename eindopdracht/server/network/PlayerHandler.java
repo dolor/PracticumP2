@@ -16,7 +16,7 @@ import eindopdracht.util.Protocol;
 
 public class PlayerHandler implements Runnable {
 	private ServerPlayer player;
-	private Socket socket; // Not currently used
+	private Socket socket;
 	protected BufferedReader in;
 	protected BufferedWriter out;
 	private ServerController server;
@@ -39,7 +39,7 @@ public class PlayerHandler implements Runnable {
 		this.name = "Handler_Empty";
 		this.server = server;
 		this.socket = socket;
-		this.player = new ServerPlayer(this, server);
+		this.player = new ServerPlayer(this);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(
 				socket.getOutputStream()));
