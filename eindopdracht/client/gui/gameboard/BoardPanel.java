@@ -125,6 +125,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		// should either be
 		// enabled for setting/turning or update what it looks like
 		if (object.getClass().equals(Set.class)) {
+			PTLog.log("Board", "Received: " + object.toString());
 			this.resetHints();
 			
 			//Disable the blocks
@@ -150,6 +151,7 @@ public class BoardPanel extends JPanel implements Observer, ComponentListener{
 		}
 
 		else if (object.getClass().equals(Turn.class)) {
+			PTLog.log("Board", "Received: " + object.toString());
 			this.resetHints();
 			//Disable the blocks
 			this.setBlockStates(BlockPanel.DISABLED);

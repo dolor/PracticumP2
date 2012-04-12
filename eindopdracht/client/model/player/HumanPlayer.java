@@ -58,6 +58,7 @@ public class HumanPlayer extends Player{
 		if (arg.getClass().equals(Command.class)) {
 			Command command = (Command)arg;
 			if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+				PTLog.log(name, "Now taking the TURN");
 				game.giveSet();
 			}
 		}
