@@ -28,9 +28,10 @@ public class TestAI {
 			players.add(Color.RED);
 			players.add(Color.BLUE);
 			
+			printLN(players.toString());
 			
 			
-			RecursiveAI2 recursive = new RecursiveAI2(Color.RED,board, players, RECURSION_DEPTH);
+			RecursiveAI2 recursive = new RecursiveAI2(Color.RED, board, players, RECURSION_DEPTH);
 			RandomAI random = new RandomAI(Color.BLUE, board, players);
 			
 			while(!board.gameOver())
