@@ -4,6 +4,11 @@ import eindopdracht.ai.IntelligentAI;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
 
+/**
+ * Container class for some information the intelligentAI needs.
+ * @author mickvdv
+ *
+ */
 public class IntelligentSet {
 
 	int score;

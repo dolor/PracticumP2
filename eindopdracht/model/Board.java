@@ -50,7 +50,6 @@ public class Board {
 	public boolean set(int block, int tile, int color)
 	{
 		boolean valid = set(block, tile, color, false);
-		this.calculateHash();
 		return valid;
 	}
 	/**
@@ -90,7 +89,6 @@ public class Board {
 
 	/**
 	 * Gives a list of colors of the winners (if any).
-	 * 
 	 * @return List of winners
 	 */
 	public ArrayList<Integer> getWinners() {
@@ -113,7 +111,7 @@ public class Board {
 	}
 	/**
 	 * Gives all the "rows" on the board. Rows are defined as a sequence of tiles with the same color
-	 * @return alle the rows on the board
+	 * @return al rows on the board
 	 */
 	public ArrayList<Row> getRows() {
 		ArrayList<Row> rows = new ArrayList<Row>();
@@ -274,7 +272,8 @@ public class Board {
 	}
 
 	/**
-	 * Is the game over
+	 * Is the game over.
+	 * @ensure getWinners.size() > 0 => !gameOver()
 	 * @return true if game is over, false if games is not yet over
 	 */
 	public boolean gameOver() {

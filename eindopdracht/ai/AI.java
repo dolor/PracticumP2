@@ -6,6 +6,10 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.model.*;
 import eindopdracht.util.PTLog;
 
+
+/**
+ * Abstract class for the AI. All possible AI options extend this class.
+ */
 public abstract class AI {
 
 	int color;
