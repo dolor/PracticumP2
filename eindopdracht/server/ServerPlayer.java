@@ -6,7 +6,6 @@ import java.util.Observer;
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
 import eindopdracht.server.network.PlayerHandler;
-import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;
 
 public class ServerPlayer implements Observer {

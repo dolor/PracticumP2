@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import eindopdracht.ai.AI;
-import eindopdracht.ai.IntelligentAI;
-import eindopdracht.ai.RandomAI;
 import eindopdracht.ai.RecursiveAI2;
 import eindopdracht.client.gui.gameboard.BoardPanel;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
-import eindopdracht.model.Board;
 import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
 import eindopdracht.util.Protocol;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
-import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.model.Position;
 import eindopdracht.model.Row;

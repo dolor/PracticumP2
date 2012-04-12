@@ -1,7 +1,6 @@
 package eindopdracht.tests;
 
 import eindopdracht.client.MainController;
-import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.util.PTLog;
 
 public class TestClient {

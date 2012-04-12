@@ -6,7 +6,6 @@ import java.util.Observable;
 import eindopdracht.ai.AI;
 import eindopdracht.ai.IntelligentAI;
 import eindopdracht.ai.RandomAI;
-import eindopdracht.ai.RecursiveAI;
 import eindopdracht.ai.RecursiveAI2;
 import eindopdracht.client.model.*;
 import eindopdracht.model.Command;

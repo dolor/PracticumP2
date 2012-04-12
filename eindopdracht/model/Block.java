@@ -1,7 +1,5 @@
 package eindopdracht.model;
 
-import eindopdracht.util.PTLog;
-
 
 
 public class Block {

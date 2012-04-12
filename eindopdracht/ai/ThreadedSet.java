@@ -62,7 +62,7 @@ public class ThreadedSet extends Thread{
 
 
 
-				if (uitkomst == ai.WINNEND)
+				if (uitkomst == RecursiveAI2.WINNEND)
 				{
 					// als een zet winnend is, meteen returnen, zet de diepte van de victorie op p
 					//PTLog.log("RecursiveAI", "Winning move at "+x+","+y);
@@ -75,7 +75,7 @@ public class ThreadedSet extends Thread{
 					return;
 				}
 				// de eerst volgende zet voor de tegestander is bij deze positie winnend
-				else if (recursionDepth == ai.RECURSION_DEPTH && ai.geefUitkomst(board, ai.nextPlayerForColor(playerColor)) == ai.WINNEND)
+				else if (recursionDepth == ai.RECURSION_DEPTH && ai.geefUitkomst(board, ai.nextPlayerForColor(playerColor)) == RecursiveAI2.WINNEND)
 				{
 					p.setDepth(recursionDepth);
 					board.drawBoard();
@@ -84,7 +84,7 @@ public class ThreadedSet extends Thread{
 					bestMove = p;
 					return;
 				}
-				else if (uitkomst == ai.ONBESLIST && recursionDepth >= 1)
+				else if (uitkomst == RecursiveAI2.ONBESLIST && recursionDepth >= 1)
 				{
 
 					PositionAI recPos = getBestMove(board, ai.nextPlayerForColor(playerColor), recursionDepth-1);

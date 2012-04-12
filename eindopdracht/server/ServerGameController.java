@@ -5,7 +5,6 @@ import java.util.Observable;
 
 import eindopdracht.server.model.Set;
 import eindopdracht.server.model.Turn;
-import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
 import eindopdracht.util.ModelUtil;
 import eindopdracht.util.PTLog;

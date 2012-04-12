@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -16,7 +15,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import eindopdracht.client.GameController;
@@ -26,11 +24,13 @@ import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.model.Block;
 import eindopdracht.model.Board;
-import eindopdracht.model.Command;
 import eindopdracht.util.PTLog;
-import eindopdracht.util.Protocol;
 
 public class BoardPanel extends JPanel implements Observer, ComponentListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1444660402200755070L;
 	private BufferedImage backgroundImg;
 	private ArrayList<BlockPanel> blocks;
 	public GameController game;

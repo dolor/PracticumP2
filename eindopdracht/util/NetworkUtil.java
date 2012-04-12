@@ -22,7 +22,6 @@ public class NetworkUtil {
 			}
 		} else {
 			String[] numStrings = host.split("\\.");
-			byte[] addressBytes = new byte[4];
 			// Loop through the bytes
 			if (numStrings.length == 4) {
 				for (int i = 0; i < 4; i++) {

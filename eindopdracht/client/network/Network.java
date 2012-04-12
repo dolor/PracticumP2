@@ -3,16 +3,10 @@ package eindopdracht.client.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
-
-import eindopdracht.client.GameController;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.NetworkPlayer;
@@ -24,9 +18,6 @@ public class Network extends Observable implements Observer {
 
 	private ConnectionHandler handler;
 	private ArrayList<NetworkPlayer> networkPlayers;
-	private String localPlayerName;
-	private Player localPlayer;
-
 	private static String[] letters = { "A", "B", "C", "D", "E", "F", "G", "H",
 			"I" };
 
@@ -57,7 +48,6 @@ public class Network extends Observable implements Observer {
 	 * @param player
 	 */
 	public void setLocalPlayer(Player player) {
-		this.localPlayer = player;
 	}
 
 	/**

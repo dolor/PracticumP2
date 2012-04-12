@@ -7,10 +7,8 @@ import java.util.ArrayList;
 
 import eindopdracht.ai.RecursiveAI;
 import eindopdracht.client.model.Set;
-import eindopdracht.client.model.Turn;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.model.Board;
-import eindopdracht.model.Position;
 import eindopdracht.util.ModelUtil;
 import eindopdracht.util.PTLog;
 

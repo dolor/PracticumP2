@@ -11,7 +11,6 @@ import eindopdracht.util.PTLog;
 
 public class ConnectionHandler implements Runnable {
 
-	private Socket socket;
 	protected BufferedReader in;
 	protected BufferedWriter out;
 	Boolean stop;
@@ -28,7 +27,6 @@ public class ConnectionHandler implements Runnable {
 	 *             thrown if the socket could not be opened
 	 */
 	public ConnectionHandler(Socket socket, Network network) throws IOException {
-		this.socket = socket;
 		this.network = network;
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(

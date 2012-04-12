@@ -2,7 +2,6 @@ package eindopdracht.client.gui.gameboard;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,19 +23,19 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Block;
 import eindopdracht.model.Color;
-import eindopdracht.model.Position;
-import eindopdracht.util.PTLog;
 
 public class BlockPanel extends JPanel implements MouseMotionListener,
 		MouseListener, ComponentListener, ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7377956939596338747L;
 	private BufferedImage blockImage;
 	private BufferedImage highlightImage;
 

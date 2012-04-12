@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import eindopdracht.model.Tile;
-import eindopdracht.util.PTLog;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

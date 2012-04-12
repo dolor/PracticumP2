@@ -1,14 +1,14 @@
 package eindopdracht.ai;
 
 import java.util.ArrayList;
-import java.util.Locale;
+
 
 import eindopdracht.client.model.Set;
 import eindopdracht.client.model.Turn;
 import eindopdracht.model.Board;
 import eindopdracht.model.Color;
 import eindopdracht.model.Position;
-import eindopdracht.util.PTLog;
+
 
 public class RandomAI extends AI {
 

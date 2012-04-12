@@ -1,12 +1,12 @@
 package eindopdracht.client;
 
-import java.awt.EventQueue;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import eindopdracht.client.gui.PentagoXLWindow;
-import eindopdracht.client.gui.gameboard.BoardPanel;
+
 import eindopdracht.client.model.player.AIPlayer;
 import eindopdracht.client.model.player.HumanPlayer;
 import eindopdracht.client.model.player.NetworkPlayer;

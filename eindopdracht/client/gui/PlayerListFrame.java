@@ -10,6 +10,11 @@ import eindopdracht.client.model.player.Player;
 public class PlayerListFrame extends JTextPane {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8395310759764451389L;
+
+	/**
 	 * Adds the player with his own color to the textpane
 	 * 
 	 * @param player player that is being added to the pane. This players name and

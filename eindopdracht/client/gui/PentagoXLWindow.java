@@ -25,7 +25,6 @@ import javax.swing.JMenuItem;
 import eindopdracht.client.GameController;
 import eindopdracht.client.MainController;
 import eindopdracht.client.model.player.HumanPlayer;
-import eindopdracht.client.model.player.NetworkPlayer;
 import eindopdracht.client.model.player.Player;
 import eindopdracht.client.network.Network;
 import eindopdracht.model.Command;
@@ -48,6 +47,11 @@ import javax.swing.Box;
 
 public class PentagoXLWindow extends JFrame implements WindowListener,
 		ComponentListener, ActionListener, Observer {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3169476248916799596L;
 
 	private JPanel contentPane;
 
