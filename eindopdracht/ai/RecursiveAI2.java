@@ -15,9 +15,9 @@ public class RecursiveAI2 extends AI {
 
 	ArrayList<Integer> players;
 	
-	public RecursiveAI2(int color, Board board, ArrayList<Integer> players) {
+	public RecursiveAI2(int color, Board board, ArrayList<Integer> players, int depth) {
 		super(color, board, players);
-		
+		this.RECURSION_DEPTH = depth;
 		this.players = players;
 		this.chatLines = new String[] { "Hahaha, your going down mate!", "HAAAAA! GAAAAAAAAY",
 						"You blocked me on facebook, and now you're going to die!",
@@ -30,7 +30,7 @@ public class RecursiveAI2 extends AI {
 	public static final int ONBESLIST = -1;
 	
 	// instellingen voor AI
-	public static final int RECURSION_DEPTH = 3;
+	public int RECURSION_DEPTH = 3;
 	
 	/**
 	 * Geeft WINNEND als ik win en VERLIEZEND als ik verlies

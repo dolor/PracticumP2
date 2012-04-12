@@ -17,6 +17,7 @@ public class AIPlayer extends Player {
 
 	private AI ai;
 	private int aiType;
+	private int aiDepth;
 
 	public static int randomAI = 0;
 	public static int intelligentAI = 1;
@@ -24,9 +25,10 @@ public class AIPlayer extends Player {
 
 	public static int chatChance = 10; // Chance in percentage of chatting
 
-	public AIPlayer(int aiType) {
+	public AIPlayer(int aiType, int aiDepth) {
 		this.setLocal(true);
 		this.aiType = aiType;
+		this.aiDepth = aiDepth;
 	}
 
 	public void initializeAI() {
@@ -43,7 +45,7 @@ public class AIPlayer extends Player {
 					.getBoard(), playerColors);
 		else
 			this.ai = new RecursiveAI2(this.getColor(), this.getGame()
-					.getBoard(), playerColors);
+					.getBoard(), playerColors, aiDepth);
 
 	}
 

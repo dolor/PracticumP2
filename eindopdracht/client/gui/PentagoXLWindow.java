@@ -418,8 +418,8 @@ public class PentagoXLWindow extends JFrame implements WindowListener,
 	 * @param humanPlayer
 	 * @param aiType
 	 */
-	public void join(String name, int size, boolean humanPlayer, int aiType) {
-		mc.join(name, size, humanPlayer, aiType);
+	public void join(String name, int size, boolean humanPlayer, int aiType, int aiDepth) {
+		mc.join(name, size, humanPlayer, aiType, aiDepth);
 	}
 
 	/**
