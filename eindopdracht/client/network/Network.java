@@ -111,6 +111,7 @@ public class Network extends Observable implements Observer {
 
 		// Give the turn to the localplayer
 		else if (command.getCommand().equals(Protocol.YOUR_TURN)) {
+			PTLog.log("Network", "YOUR_TURN");
 			this.setChanged();
 			this.notifyObservers(command);
 		}
