@@ -29,11 +29,13 @@ public abstract class AI {
 	{
 		this.color = color;
 		this.board = board;
+
 		this.otherplayers = new ArrayList<Integer>();
 		for (Integer i:players) {
 			if (i != color)
 				otherplayers.add(i);
 		}
+
 	}
 	
 	/**
