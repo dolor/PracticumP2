@@ -1,4 +1,4 @@
-AI:
+Het Testen van de AI
 
 We hebben de RecursiveAI tegen de RandomAI laten spelen.
 Het enige wat wij uit deze test wilden halen is het feit dat hij geen errors genereerd
@@ -9,3 +9,5 @@ Ook is het mogelijk met TestClient. Dit joint automatisch een game, en rejoint v
 
 TestClient <String name> <int numberOfPlayers> <humanplayer yes/no> <int aiType> <int number of replays>
 AIType: 0 = random, 1 = intelligent, 2 = recursive
+
+Hier volgt de test van de AI dmv TestA met 60 loops.

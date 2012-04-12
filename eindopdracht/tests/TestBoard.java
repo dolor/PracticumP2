@@ -45,7 +45,21 @@ public class TestBoard
 						b.calculateHash();
 						System.out.println(b.getHash());
 					}
-					else if (argumenten[0].equals("t"))
+
+					
+				}
+				catch (NumberFormatException e)
+				{
+					PTLog.log("TestBoard", "Error in converting to int");
+				}	
+				
+			} 
+			else if (argumenten.length == 3)
+			{
+				try
+				{
+
+					if (argumenten[0].equals("t"))
 					{
 						int block = Integer.parseInt(argumenten[1]);
 						int rotation = Integer.parseInt(argumenten[2]);
@@ -60,14 +74,16 @@ public class TestBoard
 				{
 					PTLog.log("TestBoard", "Error in converting to int");
 				}	
-			} else{
-				PTLog.log("BoardTest", "Usage: S <x> <y> <colo>");
-				PTLog.log("BoardTest", "Usage: T <block> <rotation>");
+				
+			}
+			
+			else{
+				PTLog.log("BoardTest", "Usage: s <x> <y> <colo>");
+				PTLog.log("BoardTest", "Usage: t <block> <rotation>");
 			}
 			
 			
 			if (b.getWinners().size() > 0) {
-				doorgaan = false;
 				for (int winner : b.getWinners())
 				{
 					PTLog.log("TestBoard", "Winner : "+winner);
