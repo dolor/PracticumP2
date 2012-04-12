@@ -19,6 +19,7 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		this.RECURSION_DEPTH = depth;
 		this.players = players;
+		PTLog.log("RecursiveAI2", "Assigned " + players.toString() + " to " + this.players.toString());
 		this.chatLines = new String[] { "Hahaha, your going down mate!", "HAAAAA! GAAAAAAAAY",
 						"You blocked me on facebook, and now you're going to die!",
 				 "Hah!" , "Not bad!"};
@@ -124,6 +125,8 @@ public class RecursiveAI2 extends AI {
 	 * @return color of next player
 	 */
 	public int nextPlayerForColor(int color) {
+		PTLog.log("RecursiveAI2", "Looking for the player after " + color + " in an array of " + players.size() + " players.");
+		PTLog.log("RecursiveAI2", players.toString());
 		for (int player : this.players) {
 			if (player == color) {
 				if (players.indexOf(player) == players.size() - 1) {
