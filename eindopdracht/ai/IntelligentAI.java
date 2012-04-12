@@ -29,6 +29,9 @@ public class IntelligentAI extends AI {
 			otherplayersAI = null;
 	}
 	
+	/**
+	 * Returns an AI for the other players in this game.
+	 */
 	protected IntelligentAI getOtherPlayersAI()
 	{
 		return this.otherplayersAI;
@@ -53,7 +56,15 @@ public class IntelligentAI extends AI {
 	public static final int BREAK_OPPONENT_CHAIN = 5; // breekt een reeks van de tegenstander door * aantal
 	public static final int CREATE_CHAIN = 7; // creeer een keten voor jezelf * aantal
 	
-	public int countChain_Diagonal(Board b, Position pos, IntelligentSet set)
+	
+	/**
+	 * Gives the length of the diagonal chains
+	 * @param board the board
+	 * @param pos position of the move calculated
+	 * @param set
+	 * @return the length of the diagonal chains after this move
+	 */
+	public int countChain_Diagonal(Board board, Position pos, IntelligentSet set)
 	{
 		int x = pos.getX();
 		int y = pos.getY();
@@ -80,7 +91,7 @@ public class IntelligentAI extends AI {
 		{
 			for (int xI = x; xI >= xL; xI--)
 			{
-				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				if (board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 				{
 					chainLength++;
 					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
@@ -98,7 +109,7 @@ public class IntelligentAI extends AI {
 		{
 			for (int xI = x; xI >= xL; xI--)
 			{
-				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				if (board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 				{
 					chainLength++;
 					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
@@ -116,7 +127,7 @@ public class IntelligentAI extends AI {
 		{
 			for (int xI = x; xI <= xR; xI++)
 			{
-				if ( b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				if ( board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 				{
 					chainLength++;
 					if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
@@ -134,7 +145,7 @@ public class IntelligentAI extends AI {
 		{
 			for (int xI = x; xI <= xR; xI++)
 			{
-				if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+				if (board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 
 				{
 					chainLength++;
@@ -150,8 +161,15 @@ public class IntelligentAI extends AI {
 		
 		return chainLength;
 	}
+	/**
+	 * Gives the length of the vertical chains after this move
+	 * @param board the board
+	 * @param pos the position of the calculated move
+	 * @param set
+	 * @return the length of the vertical chains after this move
+	 */
 	
-	public int countChain_Vertical(Board b, Position pos, IntelligentSet set)
+	public int countChain_Vertical(Board board, Position pos, IntelligentSet set)
 	{
 		int chainLength = 1;
 		int y = pos.getY();
@@ -169,7 +187,7 @@ public class IntelligentAI extends AI {
 		// kijk links
 		for (int yI = y; y >= yL; y--)
 		{
-			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+			if (board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 			{
 				chainLength++;
 				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
@@ -182,7 +200,7 @@ public class IntelligentAI extends AI {
 		}
 		for (int yI = y; y <= yR; y++)
 		{
-			if (b.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
+			if (board.getTileXY(xI, yI).getColor() == this.getColor() && xI != x && yI != y)
 			{
 				chainLength++;
 				if (new Position(xI, yI).getBlock() == pos.getBlock() && set != null)
@@ -196,7 +214,13 @@ public class IntelligentAI extends AI {
 		
 		return chainLength;
 	}
-	
+	/**
+	 * Gives the length of the horizontal chains after this move
+	 * @param board the board
+	 * @param pos the position of the calculated move
+	 * @param set
+	 * @return the length of the horizontal chains after this move
+	 */
 	public int countChain_Horizontal(Board b, Position pos, IntelligentSet set)
 	{
 		int chainLength = 1;
@@ -242,7 +266,13 @@ public class IntelligentAI extends AI {
 		
 		return chainLength;
 	}
-	
+	/**
+	 * Gives the number of tiles on the same block
+	 * @param board the board
+	 * @param pos the position of the calculated move
+	 * @param set
+	 * @return the number of tiles on the same block
+	 */
 	public int countSameBlock(Board b, Position pos, IntelligentSet set)
 	{
 		// SAME_BLOCK
@@ -288,7 +318,10 @@ public class IntelligentAI extends AI {
 		r.calculateTurn(turn);
 	}
 	
-	
+	/**
+	 * Gives a list of possible sets.
+	 * @return list of possible sets
+	 */
 	public ArrayList<IntelligentSet> getOptions()
 	{
 		// lijst van alle zetten

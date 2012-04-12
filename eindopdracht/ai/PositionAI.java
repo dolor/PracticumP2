@@ -13,20 +13,25 @@ public class PositionAI extends Position {
 		this.depth = 0;
 	}
 
-	
+	/**
+	 * Depth of the recursion at which this position is calculated.
+	 * @return
+	 */
 	public int getDepth()
 	{
 		return this.depth;
 	}
-	
+	/**
+	 * @ensure this.getDepth() == depth
+	 * @param score the depth of a certain position (Only used in AI)
+	 */
 	public void setDepth(int depth)
 	{
 		this.depth = depth;
 	}
 	
 	
-	/*/**
-	 * @ensure getScore() >= 0 && getScore() <= 4
+	/**
 	 * @return the score of a certain position (Only used in AI)
 	 */
 	public long getScore()

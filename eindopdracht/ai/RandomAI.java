@@ -12,7 +12,7 @@ import eindopdracht.util.PTLog;
 
 public class RandomAI extends AI {
 
-	private static int sleepTime = 5;
+	private static int SLEEP_TIME = 5;
 	// Used because these dumb AIs are so fast there gets a race condition in
 	// the network. Shouldn't be necessary with the recursive AI
 
@@ -24,7 +24,7 @@ public class RandomAI extends AI {
 	@Override
 	public void calculateTurn(Turn turn) {
 		try {
-			Thread.sleep(sleepTime);
+			Thread.sleep(SLEEP_TIME);
 		} catch (InterruptedException e) {
 		}
 
@@ -40,7 +40,7 @@ public class RandomAI extends AI {
 	@Override
 	public void calculateSet(Set set) {
 		try {
-			Thread.sleep(sleepTime);
+			Thread.sleep(SLEEP_TIME);
 		} catch (InterruptedException e) {
 		}
 

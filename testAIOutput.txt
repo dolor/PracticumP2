@@ -42,3 +42,209 @@ Spel gespeeld
 Winnaar: recursiveAI
 Spel duurde: 113625 ms
 
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 169465 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 158667 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 150203 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 138670 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 124719 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 127202 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 122348 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 96635 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 124237 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 125195 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 170326 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 92450 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 140330 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 53083 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 44465 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 54527 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 62315 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 44056 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 66592 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 44565 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 159501 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 153192 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 126542 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 154971 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 70605 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 91632 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 84579 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 153176 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 126291 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 119797 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 176119 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 151414 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 124572 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 117454 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 122192 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 150624 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 125372 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 126385 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 173989 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 125367 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 86218 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 117584 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 94366 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 149175 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 127311 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 67891 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 45055 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 42899 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 43358 ms
+
+Spel gespeeld
+Winnaar: recursiveAI
+Spel duurde: 43065 ms
+
+Test afgelopen
+60 spellen gespeeld.
+RecursiveAI heeft 61 keer gewonnen.
+RandomAI heeft 0 keer gewonnen.
+De gemiddelde spelduur was 113789
+De totale spelduur was 6827396
