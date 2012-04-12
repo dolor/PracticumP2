@@ -1,0 +1,11 @@
+AI:
+
+We hebben de RecursiveAI tegen de RandomAI laten spelen.
+Het enige wat wij uit deze test wilden halen is het feit dat hij geen errors genereerd
+en dat de RecursiveAI beter is dan de RandomAI. Dit doet de klasse TestAI. Aan te roepen door:
+TestAI <number of games>
+
+Ook is het mogelijk met TestClient. Dit joint automatisch een game, en rejoint voor het gegeven aantal keer nadat dit klaar is. 
+
+TestClient <String name> <int numberOfPlayers> <humanplayer yes/no> <int aiType> <int number of replays>
+AIType: 0 = random, 1 = intelligent, 2 = recursive

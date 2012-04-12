@@ -28,7 +28,7 @@ public class TestAI {
 			players.add(Color.RED);
 			players.add(Color.BLUE);
 			
-			printLN(players.toString());
+			//printLN(players.toString());
 			
 			
 			RecursiveAI2 recursive = new RecursiveAI2(Color.RED, board, players, RECURSION_DEPTH);

@@ -1,4 +1,4 @@
-package eindopdracht;
+package eindopdracht.tests;
 
 import eindopdracht.client.MainController;
 import eindopdracht.client.gui.PentagoXLWindow;
