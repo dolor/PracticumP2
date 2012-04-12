@@ -6,10 +6,9 @@ import eindopdracht.util.PTLog;
  * Starts the server
  */
 public class Server {
-	// TODO: quit sturen als de server afgesloten wordt met control-c
 
 	public static void main(String[] args) {
-		if (args.length > 1) {
+		if (args.length >= 1) {
 			int port = -1;
 			try {
 				port = Integer.parseInt(args[0]);

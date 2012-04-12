@@ -100,7 +100,7 @@ public class PlayerHandler implements Runnable {
 	 *         message if it is an invalid command
 	 */
 	private synchronized void handleInput(String input) {
-		//PTLog.log(name, input);
+		PTLog.log(name, "Received: " + input);
 		Command command = new Command(input);
 		String c = command.getCommand();
 
@@ -163,6 +163,7 @@ public class PlayerHandler implements Runnable {
 	 * @param msg
 	 */
 	public void sendMessage(String msg) {
+		PTLog.log(name, "Sending: " + msg);
 		try {
 			out.write(msg + "\n");
 			out.flush();

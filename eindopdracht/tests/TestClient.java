@@ -4,8 +4,6 @@ import eindopdracht.client.MainController;
 import eindopdracht.client.gui.PentagoXLWindow;
 import eindopdracht.util.PTLog;
 
-//TODO: Verplaatsen naar tests
-//TODO: fix TestClient
 public class TestClient {
 
 	private static String USAGE = "USAGE: String name, int players, boolean humanPlayer, int aiType, int number of replays\naiType: 0=random, 1=intelligent, 2=recursive";
@@ -34,6 +32,6 @@ public class TestClient {
 		MainController mc = new MainController();
 		mc.setNumberOfReplays(replays);
 		mc.connect("localhost", 8888);
-		mc.join(name, players, humanPlayer, aiType);
+		mc.join(name, players, humanPlayer, aiType, 3);
 	}
 }

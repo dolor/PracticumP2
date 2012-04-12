@@ -168,7 +168,7 @@ public class Board {
 					r.addPosition(new Position(x, y));
 				} else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
 					//einde van een rij gevonden dus sluit hem voor de zekerheid af
-					lastcolor = 0;
+					lastcolor = Color.EMPTY;
 					r = new Row();
 				}
 				lastcolor = color;
@@ -201,7 +201,7 @@ public class Board {
 						r.addPosition(new Position(x, y));
 					} else if (color == Color.EMPTY && r.getLength() > Color.EMPTY) {
 						//einde van een rij gevonden dus sluit hem voor de zekerheid af
-						lastcolor = 0;
+						lastcolor = Color.EMPTY;
 						r = new Row();
 					}
 					lastcolor = color;

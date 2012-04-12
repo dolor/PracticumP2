@@ -11,6 +11,11 @@ import eindopdracht.model.Color;
 import eindopdracht.model.Position;
 import eindopdracht.util.PTLog;
 
+/**
+ * Dit is de 2e versie van de recursieve AI, en degene die we uiteindelijk hebben gebruikt.
+ * @author Mick vd Vegt
+ *
+ */
 public class RecursiveAI2 extends AI {
 
 	ArrayList<Integer> players;
@@ -19,7 +24,6 @@ public class RecursiveAI2 extends AI {
 		super(color, board, players);
 		this.RECURSION_DEPTH = depth;
 		this.players = players;
-		//PTLog.log("RecursiveAI2", "Assigned " + players.toString() + " to " + this.players.toString());
 		this.chatLines = new String[] { "Hahaha, your going down mate!", "HAAAAA! GAAAAAAAAY",
 						"You blocked me on facebook, and now you're going to die!",
 				 "Hah!" , "Not bad!"};
@@ -111,7 +115,6 @@ public class RecursiveAI2 extends AI {
 	
 	@Override
 	public void calculateTurn(Turn turn) {
-		//PTLog.log("RecursiveAI", "Start calculating best rotation");
 		Rotation r = giveBestRotation(this.getBoard().deepCopy(), this.getColor());
 		
 		turn.setBlock(r.getBlock());
@@ -147,7 +150,7 @@ public class RecursiveAI2 extends AI {
 		{
 			for (int x = 0; x <= 8; x++)
 			{
-				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // valkje = leeg
+				if (b.getTileXY(x, y).getColor() == Color.EMPTY) // vakje = leeg
 				{
 
 					PositionAI p = new PositionAI(x, y);
@@ -206,7 +209,6 @@ public class RecursiveAI2 extends AI {
 						{
 							if (returnPos == null  || recPos.getDepth() > returnPos.getDepth() && recPos.getColor() == playerColor)
 							{
-								//returnPos = recPos;
 								p.setDepth(recPos.getDepth());
 								returnPos = p;
 							}
@@ -224,9 +226,7 @@ public class RecursiveAI2 extends AI {
 	
 	@Override
 	public void calculateSet(Set set) {
-		//PTLog.log("RecursiveAI", "Start calculating best move");
 		Position pos = this.getBestMove(this.getBoard().deepCopy(), this.getColor(), RECURSION_DEPTH);
-		//PTLog.log("RecursiveAI", "Move: "+pos.getX()+", "+pos.getY());
 		set.setBlock(pos.getBlock());
 		set.setTile(pos.getTile());
 		
