@@ -262,19 +262,6 @@ public class ServerGameController extends Observable {
 	}
 
 	/**
-	 * Removes the players from the game and tells them the game ended
-	 * 
-	 * @require player != null
-	 * @ensure all hooked players will receive the message that this game is
-	 *         OVER
-	 * @param player
-	 */
-	public void playerLeft(Player player) {
-		PTLog.log(name, "THE PLAYER LEFT AND THIS METHOD WAS CALLED!!!?!?!?!?!!!!111");
-		// TODO implement
-	}
-
-	/**
 	 * Quit the server. Tell all players that the game is over, and the reason
 	 * why.
 	 */

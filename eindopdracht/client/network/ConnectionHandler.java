@@ -53,8 +53,6 @@ public class ConnectionHandler implements Runnable {
 			out.write(string + "\n");
 			out.flush();
 		} catch (IOException e) {
-			// TODO Check how an error for sending should be handled; Locally or
-			// throwing to the caller.
 			e.printStackTrace();
 		}
 	}

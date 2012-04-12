@@ -320,7 +320,10 @@ public class Board {
 		return b;
 	}
 	
-	//TODO: Erik kan je hier javadock in stoppen?
+	/**
+	 * Calculates an hash value for the board that can be used to cache it.
+	 * @ensure an unique hash value is stored in stringValue.
+	 */
 	public void calculateHash() {
 		Position pos = new Position(0, 0);
 		StringBuffer newValue = new StringBuffer();
